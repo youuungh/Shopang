@@ -38,6 +38,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
 }
 
@@ -83,12 +84,18 @@ dependencies {
     annotationProcessor(libs.androidx.room.compiler)
     kapt(libs.androidx.room.compiler)
 
+    // SharedPreference
+    implementation(libs.androidx.preference.ktx)
+
     // Glide
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
 
     // BlurView
     implementation("com.github.Dimezis:BlurView:version-2.0.3")
+
+    // PagerDotsIndicator
+    implementation(libs.dotsindicator)
 }
 
 kapt {
