@@ -4,6 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">@android:color/transparent</color>
 
+    <color name="custom_text_color">#353E43</color>
+
     <color name="green_neutral_99">#FDFDF6</color>
 
     <color name="custom_yellow_80">#e8c349</color>

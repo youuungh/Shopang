@@ -79,20 +79,18 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>(
         }
     }
 
-    private fun updateOnBoardingUI(position: Int, animated: Boolean) {
+    private fun updateOnBoardingUI(position: Int, animated: Boolean) = with(binding) {
         val skipAlpha = if (position < 2) 1f else 0f
         val buttonAlpha = if (position == 2) 1f else 0f
 
-        with(binding) {
-            if (animated) {
-                skip.animate().alpha(skipAlpha).setDuration(200).start()
-                getStart.animate().alpha(buttonAlpha).setDuration(200).start()
-            } else {
-                skip.alpha = skipAlpha
-                getStart.alpha = buttonAlpha
-            }
-            skip.isEnabled = position < 2
-            getStart.isEnabled = position == 2
+        if (animated) {
+            skip.animate().alpha(skipAlpha).setDuration(200).start()
+            getStart.animate().alpha(buttonAlpha).setDuration(200).start()
+        } else {
+            skip.alpha = skipAlpha
+            getStart.alpha = buttonAlpha
         }
+        skip.isEnabled = position < 2
+        getStart.isEnabled = position == 2
     }
 }

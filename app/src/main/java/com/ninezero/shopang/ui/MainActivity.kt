@@ -73,11 +73,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setBottomNavVisibility(visible: Boolean) {
+    private fun setBottomNavVisibility(visible: Boolean) = with(binding) {
         if (visible) {
-            binding.bottomBar.show()
+            bottomBar.show()
         } else {
-            binding.bottomBar.hide()
+            bottomBar.hide()
         }
     }
 }

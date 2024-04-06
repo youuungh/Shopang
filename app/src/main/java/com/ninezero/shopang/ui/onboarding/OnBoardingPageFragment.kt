@@ -37,7 +37,7 @@ class OnBoardingPageFragment : BaseFragment<FragmentOnBoardingPageBinding>(
         }
     }
 
-    fun updateLayout(force: Boolean) {
+    fun updateLayout(force: Boolean) = with(binding) {
         if (context == null) return
 
         val orientation = resources.configuration.orientation
@@ -51,22 +51,18 @@ class OnBoardingPageFragment : BaseFragment<FragmentOnBoardingPageBinding>(
             params?.width = binding.container.height
         }
 
-        with(binding) {
-            container.requestLayout()
-            if (force) container.forceLayout()
-        }
+        container.requestLayout()
+        if (force) container.forceLayout()
     }
 
-    fun setOffset(position: Int, offset: Float) {
+    fun setOffset(position: Int, offset: Float) = with(binding) {
         val bgOffset = -200
         val titleOffset = 150
 
-        with(binding) {
-            bgImage.translationX =
-                if (position == this@OnBoardingPageFragment.position) offset * -bgOffset.toFloat() else (1 - offset) * bgOffset
-            title.translationX =
-                if (position == this@OnBoardingPageFragment.position) offset * -titleOffset.toFloat() else (1 - offset) * titleOffset
-        }
+        bgImage.translationX =
+            if (position == this@OnBoardingPageFragment.position) offset * -bgOffset.toFloat() else (1 - offset) * bgOffset
+        title.translationX =
+            if (position == this@OnBoardingPageFragment.position) offset * -titleOffset.toFloat() else (1 - offset) * titleOffset
     }
 
     override fun onResume() {

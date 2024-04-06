@@ -1,7 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Shopang" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
         <item name="android:colorPrimaryDark">?android:attr/colorBackground</item>
         <item name="android:colorControlNormal">?attr/colorOnBackground</item>
         <item name="android:colorControlActivated">?attr/colorSecondary</item>
@@ -10,6 +9,7 @@
 
         <item name="android:fontFamily">@font/google_sans_regular</item>
         <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+        <item name="android:background">@color/white</item>
 
         <!-- Custom colors -->
         <item name="colorCustomBlue">@color/base_theme_colorCustomBlue</item>
@@ -29,8 +29,6 @@
         <item name="colorCustomOrangeContainer">@color/base_theme_colorCustomOrangeContainer</item>
         <item name="colorOnCustomOrangeContainer">@color/base_theme_colorOnCustomOrangeContainer</item>
 
-        <!-- Widget styles -->
-
         <!-- SnackBar -->
         <item name="snackbarStyle">@style/Widget.Shopang.Snackbar</item>
         <item name="snackbarTextViewStyle">@style/Widget.Shopang.Snackbar.TextView</item>
@@ -42,13 +40,6 @@
 
     </style>
 
-    <style name="Theme.Shopang" parent="Base.Theme.Shopang" />
-
-
-    <style name="Theme.Shopang.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
-        <item name="enableEdgeToEdge">true</item>
-        <item name="android:navigationBarColor">@color/transparent</item>
-    </style>
 
     <style name="ThemeOverlay.Shopang.MediumContrast" parent="">
         <item name="colorCustomBlue">@color/base_theme_colorCustomBlue_mediumContrast</item>

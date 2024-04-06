@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="Theme.Shopang" parent="Base.Theme.Shopang" />
+
     <!-- TextView -->
 
     <style name="Base.Shopang.TextView" parent="Widget.MaterialComponents.TextView">
@@ -8,13 +10,13 @@
         <item name="android:textColor">?attr/colorOnBackground</item>
         <item name="android:textAlignment">viewStart</item>
         <item name="android:fontFamily">@font/google_sans_regular</item>
-        <item name="android:breakStrategy" >high_quality</item>
-        <item name="android:hyphenationFrequency" >full</item>
+        <item name="android:breakStrategy">high_quality</item>
+        <item name="android:hyphenationFrequency">full</item>
         <item name="android:lineBreakWordStyle" tools:targetApi="33">phrase</item>
     </style>
 
     <style name="Widget.Shopang.TextView" parent="Base.Shopang.TextView">
-        <item name="android:hyphenationFrequency" >full</item>
+        <item name="android:hyphenationFrequency">full</item>
     </style>
 
     <style name="Widget.Shopang.TextView.Medium" parent="Widget.Shopang.TextView">
@@ -62,6 +64,13 @@
         <item name="fontFamily">@font/google_sans_regular</item>
     </style>
 
+    <!--BottomSheetDialog-->
+
+    <style name="Theme.Shopang.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="enableEdgeToEdge">true</item>
+        <item name="android:navigationBarColor">@color/transparent</item>
+    </style>
+
     <!-- BottomNavigation -->
 
     <style name="BottomNavigation.Shopang.Active.Text" parent="TextAppearance.MaterialComponents.Subtitle1">
@@ -91,7 +100,7 @@
         <item name="android:maxLines">4</item>
     </style>
 
-    <!-- Material3 Typography -->
+    <!-- MD3 Typography -->
 
     <style name="Widget.Shopang.TextView.HeadlineSmall" parent="Widget.Shopang.TextView">
         <item name="android:textAppearance">?attr/textAppearanceHeadlineSmall</item>
