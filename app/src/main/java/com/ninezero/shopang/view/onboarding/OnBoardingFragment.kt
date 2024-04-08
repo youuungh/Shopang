@@ -20,7 +20,6 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>(
     @Inject
     lateinit var prefsUtil: PrefsUtil
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
         updateOnBoardingUI(0, false)
 
