@@ -84,7 +84,7 @@ dependencies {
     annotationProcessor(libs.androidx.room.compiler)
     kapt(libs.androidx.room.compiler)
 
-    // SharedPreference
+    // DataStore
     implementation(libs.androidx.preference.ktx)
 
     // Glide

@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.onboarding.OnBoardingFragment">
+        tools:context=".view.onboarding.OnBoardingFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/top_container"
@@ -71,9 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:layout_marginHorizontal="24dp"
-                android:paddingVertical="12dp"
-                android:text="시작하기"
-                android:textSize="16sp" />
+                android:text="시작하기" />
 
             <LinearLayout
                 android:id="@+id/container"

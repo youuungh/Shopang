@@ -3,18 +3,20 @@ package com.ninezero.shopang.util
 import androidx.appcompat.app.AppCompatDelegate
 
 object Constants {
-    object Setting {
-        object Appearance {
-            const val THEME = "app_theme"
-            const val DARK_MODE = "dark_mode"
-            const val UI_CONTRAST = "contrast"
-        }
-    }
+    const val USER_PREFS = "user_prefs"
+
     object SettingDefault {
         object Appearance {
             const val THEME = ""
             const val DARK_MODE = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            const val UI_CONTRAST = Contrast.STANDARD
+            const val CONTRAST = Contrast.STANDARD
+        }
+    }
+    object Setting {
+        object Appearance {
+            const val THEME = "app_theme"
+            const val DARK_MODE = "dark_mode"
+            const val CONTRAST = "contrast"
         }
     }
     object Argument {

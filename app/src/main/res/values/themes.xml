@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Shopang" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:colorBackground">@color/white</item>
         <item name="android:colorPrimaryDark">?android:attr/colorBackground</item>
         <item name="android:colorControlNormal">?attr/colorOnBackground</item>
         <item name="android:colorControlActivated">?attr/colorSecondary</item>
@@ -9,7 +10,15 @@
 
         <item name="android:fontFamily">@font/google_sans_regular</item>
         <item name="android:navigationBarColor">?android:attr/colorBackground</item>
-        <item name="android:background">@color/white</item>
+
+        <!-- SnackBar -->
+        <item name="snackbarStyle">@style/Widget.Shopang.Snackbar</item>
+        <item name="snackbarTextViewStyle">@style/Widget.Shopang.Snackbar.TextView</item>
+        <item name="snackbarButtonStyle">@style/Widget.Shopang.Button.TextButton.Snackbar</item>
+
+        <!-- Dialog themes -->
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.Shopang.AlertDialog</item>
+        <item name="bottomSheetDialogTheme">@style/Theme.Shopang.BottomSheetDialog</item>
 
         <!-- Custom colors -->
         <item name="colorCustomBlue">@color/base_theme_colorCustomBlue</item>
@@ -28,18 +37,7 @@
         <item name="colorOnCustomOrange">@color/base_theme_colorOnCustomOrange</item>
         <item name="colorCustomOrangeContainer">@color/base_theme_colorCustomOrangeContainer</item>
         <item name="colorOnCustomOrangeContainer">@color/base_theme_colorOnCustomOrangeContainer</item>
-
-        <!-- SnackBar -->
-        <item name="snackbarStyle">@style/Widget.Shopang.Snackbar</item>
-        <item name="snackbarTextViewStyle">@style/Widget.Shopang.Snackbar.TextView</item>
-        <item name="snackbarButtonStyle">@style/Widget.Shopang.Button.TextButton.Snackbar</item>
-
-        <!-- Dialog themes -->
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.Shopang.AlertDialog</item>
-        <item name="bottomSheetDialogTheme">@style/Theme.Shopang.BottomSheetDialog</item>
-
     </style>
-
 
     <style name="ThemeOverlay.Shopang.MediumContrast" parent="">
         <item name="colorCustomBlue">@color/base_theme_colorCustomBlue_mediumContrast</item>

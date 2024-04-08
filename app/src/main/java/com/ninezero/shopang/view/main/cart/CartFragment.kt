@@ -1,4 +1,4 @@
-package com.ninezero.shopang.ui.main.cart
+package com.ninezero.shopang.view.main.cart
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

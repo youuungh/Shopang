@@ -5,7 +5,7 @@
     <data>
         <variable
             name="fragment"
-            type="com.ninezero.shopang.ui.onboarding.OnBoardingPageFragment" />
+            type="com.ninezero.shopang.view.onboarding.OnBoardingPageFragment" />
     </data>
 
     <LinearLayout

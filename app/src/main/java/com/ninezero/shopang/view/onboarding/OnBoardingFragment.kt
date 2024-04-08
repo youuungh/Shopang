@@ -1,31 +1,24 @@
-package com.ninezero.shopang.ui.onboarding
+package com.ninezero.shopang.view.onboarding
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.SharedPreferences
-import android.graphics.drawable.Animatable
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.core.view.children
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayoutMediator
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentOnBoardingBinding
-import com.ninezero.shopang.ui.BaseFragment
-import com.ninezero.shopang.ui.MainActivity
-import com.ninezero.shopang.util.Constants
 import com.ninezero.shopang.util.PrefsUtil
+import com.ninezero.shopang.view.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>(
     R.layout.fragment_on_boarding
 ) {
     private val fragments = arrayOfNulls<OnBoardingPageFragment>(3)
+
+    @Inject
+    lateinit var prefsUtil: PrefsUtil
 
     @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
@@ -36,10 +29,9 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>(
                 viewpager.currentItem = 2
             }
             getStart.setOnClickListener {
-//                if (!PrefsUtil.onboardShown) {
-//                    PrefsUtil.onboardShown = true
-//                }
-                // navigate to login
+                prefsUtil.onboardShown = true
+                val action = OnBoardingFragmentDirections.actionOnBoardingFragmentToNavLogin()
+                findNavController().navigate(action)
             }
             viewpager.apply {
                 adapter = OnBoardingPagerAdapter(this@OnBoardingFragment)

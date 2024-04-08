@@ -70,8 +70,8 @@ object ThemeUtil {
         @StyleRes resIdHigh: Int
     ) {
         val contrast = shardPrefs.getString(
-            Constants.Setting.Appearance.UI_CONTRAST,
-            Constants.SettingDefault.Appearance.UI_CONTRAST)
+            Constants.Setting.Appearance.CONTRAST,
+            Constants.SettingDefault.Appearance.CONTRAST)
         when (contrast) {
             Constants.Contrast.MEDIUM -> activity.setTheme(resIdMedium)
             Constants.Contrast.HIGH -> activity.setTheme(resIdHigh)

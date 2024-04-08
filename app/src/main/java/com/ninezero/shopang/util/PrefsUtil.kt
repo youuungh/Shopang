@@ -1,18 +1,12 @@
 package com.ninezero.shopang.util
 
-import android.app.Activity
 import android.content.SharedPreferences
-import androidx.annotation.StyleRes
 import androidx.core.content.edit
-import com.google.android.material.color.ColorContrast
-import com.google.android.material.color.ColorContrastOptions
-import com.google.android.material.color.DynamicColors
-import com.ninezero.shopang.MyApplication
-import com.ninezero.shopang.R
+import javax.inject.Inject
 
-object PrefsUtil {
-    private val sharedPrefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(
-        MyApplication.getContext())
+class PrefsUtil @Inject constructor(
+    private val sharedPrefs: SharedPreferences
+) {
 
     fun getSharedPreferences(): SharedPreferences {
         return sharedPrefs

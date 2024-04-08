@@ -10,30 +10,85 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.auth.AuthFragment">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/bg_blur_top"
-            app:layout_constraintTop_toTopOf="parent" />
-        
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/bg_blur_bottom"
-            app:layout_constraintBottom_toBottomOf="parent" />
+        tools:context=".view.auth.AuthFragment">
 
         <ImageView
             android:id="@+id/thumbnail"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:background="@android:color/transparent"
+            android:background="@color/transparent"
             android:src="@drawable/ic_thumbnail"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+        
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/userId"
+            style="@style/Widget.Shopang.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:hint="휴대폰 번호"
+            app:layout_constraintTop_toBottomOf="@id/vertical"
+            app:layout_constraintStart_toStartOf="@id/start"
+            app:layout_constraintEnd_toEndOf="@id/end">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login"
+            style="@style/Widget.Shopang.Button.UnelevatedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:text="로그인"
+            app:layout_constraintTop_toBottomOf="@id/userId"
+            app:layout_constraintStart_toStartOf="@id/start"
+            app:layout_constraintEnd_toEndOf="@id/end" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/naver"
+            style="@style/Widget.Shopang.Button.UnelevatedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:text="네이버로 시작하기"
+            app:icon="@drawable/ic_naver"
+            app:backgroundTint="@color/naver"
+            app:layout_constraintTop_toBottomOf="@id/login"
+            app:layout_constraintStart_toStartOf="@id/start"
+            app:layout_constraintEnd_toEndOf="@id/end" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/google"
+            style="@style/Widget.Shopang.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:text="Google로 시작하기"
+            app:icon="@drawable/ic_google"
+            app:iconTint="@color/transparent"
+            app:iconTintMode="add"
+            app:backgroundTint="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/naver"
+            app:layout_constraintStart_toStartOf="@id/start"
+            app:layout_constraintEnd_toEndOf="@id/end" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/signup"
+            style="@style/Widget.Shopang.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="회원가입"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/start"
+            app:layout_constraintEnd_toEndOf="@id/end" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/vertical"

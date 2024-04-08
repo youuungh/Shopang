@@ -1,4 +1,4 @@
-package com.ninezero.shopang.ui.onboarding
+package com.ninezero.shopang.view.onboarding
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

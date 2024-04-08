@@ -1,4 +1,4 @@
-package com.ninezero.shopang.ui.main.search
+package com.ninezero.shopang.view.main.search
 
 import android.os.Bundle
 import android.view.LayoutInflater

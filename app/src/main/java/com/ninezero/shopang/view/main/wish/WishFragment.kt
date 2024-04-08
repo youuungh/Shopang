@@ -1,4 +1,4 @@
-package com.ninezero.shopang.ui.main.wish
+package com.ninezero.shopang.view.main.wish
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

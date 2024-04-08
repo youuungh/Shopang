@@ -1,10 +1,10 @@
-package com.ninezero.shopang.ui.onboarding
+package com.ninezero.shopang.view.onboarding
 
 import android.content.res.Configuration
 import android.view.ViewTreeObserver
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentOnBoardingPageBinding
-import com.ninezero.shopang.ui.BaseFragment
+import com.ninezero.shopang.view.BaseFragment
 import com.ninezero.shopang.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 

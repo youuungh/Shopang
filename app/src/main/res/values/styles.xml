@@ -34,6 +34,22 @@
     <style name="Widget.Shopang.Button.UnelevatedButton" parent="Base.Shopang.Button.UnelevatedButton">
         <item name="android:fontFamily">@font/google_sans_bold</item>
         <item name="fontFamily">@font/google_sans_bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="Base.Shopang.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Widget.Shopang.Button.OutlinedButton" parent="Base.Shopang.OutlinedButton">
+        <item name="android:fontFamily">@font/google_sans_bold</item>
+        <item name="fontFamily">@font/google_sans_bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
     </style>
 
     <!-- ImageButton -->
@@ -47,6 +63,18 @@
         <item name="android:paddingRight">8dp</item>
         <item name="iconTint">@color/image_button_color</item>
         <item name="iconSize">24dp</item>
+    </style>
+
+    <!-- TextInputLayout -->
+
+    <style
+        name="Widget.Shopang.TextInputLayout.OutlinedBox" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
     </style>
 
     <!-- SnackBar -->
