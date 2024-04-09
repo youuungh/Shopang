@@ -1,12 +1,17 @@
 package com.ninezero.shopang.util
 
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import javax.inject.Inject
+import androidx.preference.PreferenceManager
 
-class PrefsUtil @Inject constructor(
-    private val sharedPrefs: SharedPreferences
-) {
+object PrefsUtil {
+
+    private lateinit var sharedPrefs: SharedPreferences
+
+    fun init(context: Context) {
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+    }
 
     fun getSharedPreferences(): SharedPreferences {
         return sharedPrefs

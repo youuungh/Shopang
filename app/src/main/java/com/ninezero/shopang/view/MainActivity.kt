@@ -25,26 +25,14 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     private lateinit var binding: ActivityMainBinding
 
-    @Inject
-    lateinit var prefsUtil: PrefsUtil
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        ThemeUtil.setTheme(this, prefsUtil.getSharedPreferences())
+        ThemeUtil.setTheme(this, PrefsUtil.getSharedPreferences())
 
-        setupWindowInsets()
         setupNavigationController()
-    }
-
-    private fun setupWindowInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.navHost) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.updatePadding(systemBars.left, systemBars.top, systemBars.right)
-            insets
-        }
     }
 
     private fun setupNavigationController() {
@@ -53,7 +41,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         val navController = navHostFragment.navController
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
 
-        if (prefsUtil.onboardShown) {
+        if (PrefsUtil.onboardShown) {
             navGraph.setStartDestination(R.id.authFragment)
         } else {
             navGraph.setStartDestination(R.id.onBoardingFragment)

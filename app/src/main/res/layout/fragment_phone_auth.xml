@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.auth.phone.PhoneAuthFragment">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            android:fitsSystemWindows="true">
+            
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                style="@style/Widget.Shopang.Toolbar.Back" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+        
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:overScrollMode="ifContentScrolls">
+            
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:paddingBottom="24dp">
+
+                <TextView
+                    android:id="@+id/headline"
+                    style="@style/TextAppearance.Shopang.HeadlineSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="인증번호 전송 완료"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/start"
+                    app:layout_constraintEnd_toEndOf="@id/end" />
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textAlignment="center"
+                    app:layout_constraintTop_toBottomOf="@id/headline"
+                    app:layout_constraintStart_toStartOf="@id/start"
+                    app:layout_constraintEnd_toEndOf="@id/end"
+                    android:text="문자 메시지를 통해 +82 10-0000-0000 번호로 전송된\n인증 코드를 입력하세요"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/description"
+                    app:layout_constraintStart_toStartOf="@id/start"
+                    app:layout_constraintEnd_toEndOf="@id/end">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layout1"
+                        style="@style/Widget.Shopang.TextInputLayout.OutlinedBox.Code">
+                        
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et1"
+                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code"
+                            tools:text="0" />
+                        
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layout2"
+                        style="@style/Widget.Shopang.TextInputLayout.OutlinedBox.Code">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et2"
+                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code"
+                            tools:text="0" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layout3"
+                        style="@style/Widget.Shopang.TextInputLayout.OutlinedBox.Code">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et3"
+                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code"
+                            tools:text="0" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layout4"
+                        style="@style/Widget.Shopang.TextInputLayout.OutlinedBox.Code">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et4"
+                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code"
+                            tools:text="0" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layout5"
+                        style="@style/Widget.Shopang.TextInputLayout.OutlinedBox.Code">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et5"
+                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code"
+                            tools:text="0" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layout6"
+                        style="@style/Widget.Shopang.TextInputLayout.OutlinedBox.Code">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et6"
+                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code"
+                            tools:text="0" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.06"/>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.94"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

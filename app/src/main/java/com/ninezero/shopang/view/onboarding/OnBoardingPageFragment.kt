@@ -18,37 +18,38 @@ class OnBoardingPageFragment : BaseFragment<FragmentOnBoardingPageBinding>(
     var titleResource: Int = 0
     var descriptResource: Int = 0
 
-    override fun initView() {
+    override fun initView() = with(binding) {
         position = arguments?.getInt(Constants.Argument.ONBOARDING_POSITION) ?: 0
 
         bgImageResource = getBgImage(position)
         titleResource = getTitle(position)
         descriptResource = getDescription(position)
 
-        with(binding) {
-            fragment = this@OnBoardingPageFragment
+        fragment = this@OnBoardingPageFragment
 
-            container.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener  {
-                override fun onGlobalLayout() {
-                    updateLayout(true)
-                    container.viewTreeObserver?.removeOnGlobalLayoutListener(this)
-                }
-            })
-        }
+        container.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener  {
+            override fun onGlobalLayout() {
+                updateLayout(true)
+                container.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+            }
+        })
     }
 
     fun updateLayout(force: Boolean) = with(binding) {
-        if (context == null) return
+        if (context == null)
+            return
 
         val orientation = resources.configuration.orientation
-        val params = binding.container.layoutParams
+        val params = container.layoutParams
 
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            if (!force && (params?.height ?: 0) > 0) return
-            params?.height = binding.container.width
+            if (!force && (params?.height ?: 0) > 0)
+                return
+            params?.height = container.width
         } else {
-            if (!force && (params?.width ?: 0) > 0) return
-            params?.width = binding.container.height
+            if (!force && (params?.width ?: 0) > 0)
+                return
+            params?.width = container.height
         }
 
         container.requestLayout()

@@ -7,20 +7,8 @@ import javax.inject.Inject
 
 @HiltAndroidApp
 class MyApplication: Application() {
-
-    @Inject
-    lateinit var prefsUtil: PrefsUtil
-
     override fun onCreate() {
         super.onCreate()
-        instance = this
-    }
-
-    companion object {
-        private var instance: MyApplication? = null
-
-        fun getContext(): MyApplication {
-            return instance!!
-        }
+        PrefsUtil.init(this)
     }
 }

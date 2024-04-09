@@ -2,10 +2,16 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="naver">#03C75A</color>
+    <color name="google">#2684f9</color>
     <color name="transparent">@android:color/transparent</color>
 
-    <color name="custom_text_color">#353E43</color>
-    <color name="naver">#03C75A</color>
+    <color name="custom_text_1">#353E43</color>
+    <color name="custom_text_2">#bababa</color>
+    <color name="custom_hint">#fafafa</color>
+    <color name="custom_error">#f0999c</color>
+    <color name="custom_stroke">#efefef</color>
+    <color name="custom_off">#eeeeee</color>
 
     <color name="green_neutral_99">#FDFDF6</color>
 

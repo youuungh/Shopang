@@ -47,6 +47,7 @@
     <style name="Widget.Shopang.Button.OutlinedButton" parent="Base.Shopang.OutlinedButton">
         <item name="android:fontFamily">@font/google_sans_bold</item>
         <item name="fontFamily">@font/google_sans_bold</item>
+        <item name="strokeWidth">2dp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>
@@ -67,14 +68,53 @@
 
     <!-- TextInputLayout -->
 
-    <style
-        name="Widget.Shopang.TextInputLayout.OutlinedBox" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+    <style name="Widget.Shopang.TextInputLayout.OutlinedBox" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="boxCornerRadiusTopStart">8dp</item>
-        <item name="boxCornerRadiusTopEnd">8dp</item>
-        <item name="boxCornerRadiusBottomStart">8dp</item>
-        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">3dp</item>
+        <item name="boxCornerRadiusTopEnd">3dp</item>
+        <item name="boxCornerRadiusBottomStart">3dp</item>
+        <item name="boxCornerRadiusBottomEnd">3dp</item>
+    </style>
+
+    <style name="Widget.Shopang.TextInputLayout.OutlinedBox.Code" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">46dp</item>
+        <item name="android:layout_height">46dp</item>
+        <item name="android:layout_marginStart">6dp</item>
+        <item name="android:layout_marginEnd">6dp</item>
+        <item name="android:gravity">center</item>
+        <item name="hintEnabled">false</item>
+        <item name="errorEnabled">false</item>
+        <item name="counterMaxLength">1</item>
+        <item name="boxStrokeColor">@color/selector_text_input_outlined</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+    </style>
+
+    <style name="Widget.Shopang.TextInputLayout.FilledBox" parent="Widget.Material3.TextInputLayout.FilledBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="boxCornerRadiusTopStart">3dp</item>
+        <item name="boxCornerRadiusTopEnd">3dp</item>
+        <item name="boxCornerRadiusBottomStart">3dp</item>
+        <item name="boxCornerRadiusBottomEnd">3dp</item>
+    </style>
+
+    <!-- TextInputEditText -->
+
+    <style name="Widget.Shopang.TextInputEditText.OutlinedBox.Code" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLength">1</item>
+        <item name="maxLines">1</item>
     </style>
 
     <!-- SnackBar -->
@@ -90,6 +130,27 @@
     <style name="Widget.Shopang.Button.TextButton.Snackbar" parent="Widget.Material3.Button.TextButton.Snackbar">
         <item name="android:fontFamily">@font/google_sans_regular</item>
         <item name="fontFamily">@font/google_sans_regular</item>
+    </style>
+
+    <!-- Toolbar -->
+
+    <style name="Widget.Shopang.Toolbar" parent="@style/Widget.Material3.Toolbar.OnSurface">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="titleTextAppearance">@style/TextAppearance.Shopang.TitleLarge</item>
+        <item name="titleMarginStart">0dp</item>
+        <item name="titleCentered">true</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+    </style>
+
+    <style name="Widget.Shopang.Toolbar.Back" parent="@style/Widget.Shopang.Toolbar">
+        <item name="navigationIcon">@drawable/ic_arrow_back</item>
+        <item name="navigationContentDescription">@string/action_back</item>
+    </style>
+
+    <style name="Widget.Shopang.Toolbar.Close" parent="@style/Widget.Shopang.Toolbar">
+        <item name="navigationIcon">@drawable/ic_close</item>
+        <item name="navigationContentDescription">@string/action_close</item>
     </style>
 
     <!--BottomSheetDialog-->
@@ -160,6 +221,49 @@
 
     <style name="Widget.Shopang.TextView.LabelSmall" parent="Widget.Shopang.TextView.Medium">
         <item name="android:textAppearance">?attr/textAppearanceLabelSmall</item>
+    </style>
+
+    <!-- TextAppearance -->
+
+    <style name="TextAppearance.Shopang.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:fontFamily">@font/google_sans_regular</item>
+        <item name="fontFamily">@font/google_sans_regular</item>
+    </style>
+
+    <style name="TextAppearance.Shopang.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:fontFamily">@font/google_sans_regular</item>
+        <item name="fontFamily">@font/google_sans_regular</item>
+    </style>
+
+    <style name="TextAppearance.Shopang.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:fontFamily">@font/google_sans_regular</item>
+        <item name="fontFamily">@font/google_sans_regular</item>
+    </style>
+
+    <style name="TextAppearance.Shopang.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">@font/google_sans_regular</item>
+        <item name="fontFamily">@font/google_sans_regular</item>
+    </style>
+
+    <style name="TextAppearance.Shopang.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">@font/google_sans_medium</item>
+        <item name="fontFamily">@font/google_sans_medium</item>
+    </style>
+
+    <style name="TextAppearance.Shopang.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">@font/google_sans_medium</item>
+        <item name="fontFamily">@font/google_sans_medium</item>
+    </style>
+
+    <style name="TextAppearance.Shopang.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:fontFamily">@font/google_sans_medium</item>
+        <item name="fontFamily">@font/google_sans_medium</item>
+    </style>
+
+    <style name="TextAppearance.Shopang.Tooltip" parent="TextAppearance.MaterialComponents.Tooltip">
+        <item name="android:textColor">?android:attr/colorBackground</item>
+        <item name="android:fontFamily">@font/google_sans_regular</item>
+        <item name="fontFamily">@font/google_sans_regular</item>
     </style>
 
 </resources>

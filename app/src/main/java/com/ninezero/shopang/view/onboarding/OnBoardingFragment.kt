@@ -15,58 +15,62 @@ import javax.inject.Inject
 class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>(
     R.layout.fragment_on_boarding
 ) {
-    private val fragments = arrayOfNulls<OnBoardingPageFragment>(3)
+    private val fragments = mutableListOf<OnBoardingPageFragment>()
 
-    @Inject
-    lateinit var prefsUtil: PrefsUtil
-
-    override fun initView() {
+    override fun initView() = with(binding) {
         updateOnBoardingUI(0, false)
 
-        with(binding) {
-            skip.setOnClickListener {
-                viewpager.currentItem = 2
-            }
-            getStart.setOnClickListener {
-                prefsUtil.onboardShown = true
-                val action = OnBoardingFragmentDirections.actionOnBoardingFragmentToNavLogin()
-                findNavController().navigate(action)
-            }
-            viewpager.apply {
-                adapter = OnBoardingPagerAdapter(this@OnBoardingFragment)
-                currentItem = 0
-                getChildAt(0).overScrollMode = View.OVER_SCROLL_NEVER
-                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                    override fun onPageSelected(position: Int) {
-                        super.onPageSelected(position)
-                        updateOnBoardingUI(position, true)
-                    }
+        viewpager.apply {
+            adapter = OnBoardingPagerAdapter(this@OnBoardingFragment)
+            currentItem = 0
+            getChildAt(0).overScrollMode = View.OVER_SCROLL_NEVER
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    updateOnBoardingUI(position, true)
+                }
 
-                    override fun onPageScrolled(
-                        position: Int,
-                        positionOffset: Float,
-                        positionOffsetPixels: Int
-                    ) {
-                        for (i in 0..2) {
-                            if (fragments[i] == null) {
-                                fragments[i] = childFragmentManager.findFragmentByTag("f$i") as? OnBoardingPageFragment
-                                fragments[i]?.updateLayout(false)
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+                    val itemCount = binding.viewpager.adapter?.itemCount ?: return
+                    for (i in 0 until itemCount) {
+                        if (fragments.size <= i) {
+                            val fragment = childFragmentManager.findFragmentByTag("f$i") as? OnBoardingPageFragment
+                            fragment?.let {
+                                fragments.add(it)
+                                it.updateLayout(false)
                             }
                         }
-                        fragments[position]?.setOffset(position, positionOffset)
-                        if (position > 0)
-                            fragments[position - 1]?.setOffset(position, positionOffset)
-                        if (position < (binding.viewpager.adapter?.itemCount?.minus(1) ?: 0))
-                            fragments[position + 1]?.setOffset(position, positionOffset)
-
-                        val targetPosition = if (positionOffset < 0.5f) position else position + 1
-                        container.alpha = if (positionOffset < 0.5f) 1 - 2 * positionOffset else 2 * positionOffset - 1
-                        title.setText(OnBoardingPageFragment.getTitle(targetPosition))
-                        description.setText(OnBoardingPageFragment.getDescription(targetPosition))
                     }
-                })
-            }
-            indicator.attachTo(viewpager)
+
+                    fragments.getOrNull(position)?.setOffset(position, positionOffset)
+                    if (position > 0) {
+                        fragments.getOrNull(position - 1)?.setOffset(position, positionOffset)
+                    }
+                    if (position < fragments.size - 1) {
+                        fragments.getOrNull(position + 1)?.setOffset(position, positionOffset)
+                    }
+
+                    val targetPosition = if (positionOffset < 0.5f) position else position + 1
+                    container.alpha = if (positionOffset < 0.5f) 1 - 2 * positionOffset else 2 * positionOffset - 1
+                    title.setText(OnBoardingPageFragment.getTitle(targetPosition))
+                    description.setText(OnBoardingPageFragment.getDescription(targetPosition))
+                }
+            })
+        }
+        indicator.attachTo(viewpager)
+    }
+
+    override fun initListener() = with(binding) {
+        skip.setOnClickListener {
+            viewpager.currentItem = 2
+        }
+        getStart.setOnClickListener {
+            PrefsUtil.onboardShown = true
+            navigateToAuthFragment()
         }
     }
 
@@ -83,5 +87,10 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>(
         }
         skip.isEnabled = position < 2
         getStart.isEnabled = position == 2
+    }
+
+    private fun navigateToAuthFragment() {
+        val action = OnBoardingFragmentDirections.actionOnBoardingFragmentToAuthFragment()
+        findNavController().navigate(action)
     }
 }

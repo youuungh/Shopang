@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
     id("androidx.navigation.safeargs")
     id("kotlin-kapt")
 }
@@ -96,6 +97,13 @@ dependencies {
 
     // PagerDotsIndicator
     implementation(libs.dotsindicator)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
+    implementation(libs.play.services.auth)
 }
 
 kapt {
