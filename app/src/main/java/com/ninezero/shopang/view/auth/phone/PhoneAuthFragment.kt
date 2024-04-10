@@ -15,8 +15,8 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     R.layout.fragment_phone_auth
 ) {
 
-    override fun initView() {
-
+    override fun initView() = with(binding) {
+        fragment = this@PhoneAuthFragment
     }
 
 }

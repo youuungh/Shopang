@@ -12,7 +12,7 @@
     <string name="description_1">간편한 구매 프로세스와\n다양한 결제 옵션</string>
     <string name="description_2">주문한 제품의 배송 상황을\n실시간으로 확인</string>
     <string name="description_3">엄격한 품질 관리와\n신속한 배송 서비스</string>
-
     <string name="action_back">이전</string>
     <string name="action_close">닫기</string>
+    <string name="countdown">00:%1$02d</string>
 </resources>

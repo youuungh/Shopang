@@ -6,8 +6,15 @@
     <color name="google">#2684f9</color>
     <color name="transparent">@android:color/transparent</color>
 
-    <color name="custom_text_1">#353E43</color>
-    <color name="custom_text_2">#bababa</color>
+    <color name="box_outline_focused">#353E43</color>
+    <color name="box_outline_unfocused">#e1e6ec</color>
+    <color name="box_text_hint">#bababa</color>
+
+    <color name="custom_background">#f7f8fc</color>
+    <color name="custom_card_view">#e1e6ec</color>
+    <color name="custom_label">#f2f7fd</color>
+
+    <color name="custom_text">#353E43</color>
     <color name="custom_hint">#fafafa</color>
     <color name="custom_error">#f0999c</color>
     <color name="custom_stroke">#efefef</color>

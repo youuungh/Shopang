@@ -31,12 +31,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:textColorHint="@color/custom_text_2"
-            app:hintTextColor="@color/custom_text_2"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:boxStrokeColor="@color/transparent"
-            app:boxBackgroundColor="@color/custom_stroke"
+            android:textColorHint="@color/box_text_hint"
+            app:hintTextColor="@color/box_text_hint"
             app:layout_constraintTop_toBottomOf="@id/vertical"
             app:layout_constraintStart_toStartOf="@id/start"
             app:layout_constraintEnd_toEndOf="@id/end">
@@ -86,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:text="또는"
-                android:textColor="@color/custom_text_2" />
+                android:textColor="@color/box_text_hint" />
 
             <View
                 android:layout_width="0dp"

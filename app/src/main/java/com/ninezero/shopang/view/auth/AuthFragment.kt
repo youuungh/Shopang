@@ -11,8 +11,8 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
     R.layout.fragment_auth
 ) {
 
-    override fun initView() {
-        binding.fragment = this@AuthFragment
+    override fun initView() = with(binding) {
+        fragment = this@AuthFragment
     }
 
     fun navigateToPhoneAuthFragment() {

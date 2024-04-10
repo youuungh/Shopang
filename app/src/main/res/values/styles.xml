@@ -97,6 +97,10 @@
     <style name="Widget.Shopang.TextInputLayout.FilledBox" parent="Widget.Material3.TextInputLayout.FilledBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="boxStrokeColor">@color/transparent</item>
+        <item name="boxBackgroundColor">@color/custom_background</item>
         <item name="boxCornerRadiusTopStart">3dp</item>
         <item name="boxCornerRadiusTopEnd">3dp</item>
         <item name="boxCornerRadiusBottomStart">3dp</item>
@@ -114,6 +118,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:inputType">number</item>
         <item name="android:maxLength">1</item>
+        <item name="android:cursorVisible">false</item>
         <item name="maxLines">1</item>
     </style>
 
