@@ -6,7 +6,7 @@
         <item name="android:colorControlNormal">?attr/colorOnBackground</item>
         <item name="android:colorControlActivated">?attr/colorSecondary</item>
         <item name="android:colorEdgeEffect">?attr/colorSecondary</item>
-        <item name="android:textColorHighlight">@color/text_selected_highlighted</item>
+        <item name="android:textColorHighlight">@color/selector_icon_button</item>
 
         <item name="android:fontFamily">@font/google_sans_regular</item>
         <item name="android:navigationBarColor">?android:attr/colorBackground</item>

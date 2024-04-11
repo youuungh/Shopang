@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentPhoneAuthBinding
+import com.ninezero.shopang.util.extension.closeFragment
 import com.ninezero.shopang.view.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,4 +20,8 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         fragment = this@PhoneAuthFragment
     }
 
+    override fun initListener() = with(binding) {
+        super.initListener()
+        back.setOnClickListener { closeFragment() }
+    }
 }
