@@ -70,7 +70,7 @@
         <action
             android:id="@+id/action_phoneAuthFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="phoneAuthFragment"
+            app:popUpTo="@id/phoneAuthFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
