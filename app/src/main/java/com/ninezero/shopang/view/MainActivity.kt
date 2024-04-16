@@ -17,6 +17,7 @@ import com.ninezero.shopang.util.PrefsUtil
 import com.ninezero.shopang.util.ThemeUtil
 import com.ninezero.shopang.util.extension.hide
 import com.ninezero.shopang.util.extension.show
+import com.ninezero.shopang.view.auth.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         enableEdgeToEdge()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        ThemeUtil.setTheme(this, PrefsUtil.getSharedPreferences())
+        ThemeUtil.setTheme(this, PrefsUtil.getSharedPrefs())
 
         setupNavigationController()
     }
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         val navController = navHostFragment.navController
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
 
-        if (PrefsUtil.onboardShown) {
+        if (PrefsUtil.onBoardingState) {
             navGraph.setStartDestination(R.id.authFragment)
         } else {
             navGraph.setStartDestination(R.id.onBoardingFragment)

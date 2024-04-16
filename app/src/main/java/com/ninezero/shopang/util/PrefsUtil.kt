@@ -1,23 +1,16 @@
 package com.ninezero.shopang.util
 
-import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import com.ninezero.shopang.MyApp
 
 object PrefsUtil {
+    private val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext())
 
-    private lateinit var sharedPrefs: SharedPreferences
+    fun getSharedPrefs(): SharedPreferences { return sharedPrefs }
 
-    fun init(context: Context) {
-        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
-    }
-
-    fun getSharedPreferences(): SharedPreferences {
-        return sharedPrefs
-    }
-
-    var onboardShown: Boolean
+    var onBoardingState: Boolean
         get() = sharedPrefs.getBoolean(Constants.Pref.ONBOARDING_SHOWN, false)
         set(value) = sharedPrefs.edit {
             putBoolean(Constants.Pref.ONBOARDING_SHOWN, value)
