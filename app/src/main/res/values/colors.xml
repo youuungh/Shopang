@@ -10,6 +10,7 @@
     <color name="box_outline_unfocused">#e1e6ec</color>
     <color name="box_text_hint">#bababa</color>
 
+    <color name="custom_dialog">#99FFFFFF</color>
     <color name="custom_background">#f7f8fc</color>
     <color name="custom_card_view">#e1e6ec</color>
     <color name="custom_label">#f2f7fd</color>
