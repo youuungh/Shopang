@@ -28,6 +28,10 @@ class AuthRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
+    init {
+        fAuth.firebaseAuthSettings.setAppVerificationDisabledForTesting(true)
+    }
+
     fun authCallBack(authLiveData: MutableLiveData<AuthState>): PhoneAuthProvider.OnVerificationStateChangedCallbacks {
         return object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
@@ -49,7 +53,7 @@ class AuthRepository @Inject constructor(
             fAuth.signInWithCredential(credential).await()
             ResponseWrapper.Success(null)
         } catch (e: Exception) {
-            ResponseWrapper.Error(context.getString(R.string.errorMsg))
+            ResponseWrapper.Error(context.getString(R.string.error_msg))
         }
     }
 }

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Shopang</string>
+    <string name="client_id">CLIENT ID</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_home">HOME</string>
     <string name="menu_wish">WISH</string>
@@ -13,11 +14,17 @@
     <string name="description_3">엄격한 품질 관리와\n신속한 배송 서비스</string>
     <string name="action_back">이전</string>
     <string name="action_close">닫기</string>
-    <string name="countdown">00:%1$02d</string>
-    <string name="errorMsg">오류가 발생했습니다, 나중에 다시 시도해주세요</string>
+    <string name="action_sign_in">로그인</string>
+    <string name="action_naver">네이버로 시작하기</string>
+    <string name="action_google">Google로 시작하기</string>
+    <string name="action_resend">재전송</string>
+    <string name="or">또는</string>
+    <string name="phone_number">휴대폰 번호</string>
+    <string name="count_down">00:%1$02d</string>
+    <string name="error_msg">오류가 발생했습니다, 나중에 다시 시도해주세요</string>
     <string name="chk_internet_connection">인터넷 연결을 확인해주세요</string>
     <string name="chk_empty_phone_number">휴대폰 번호를 입력해주세요</string>
     <string name="chk_valid_phone_number">유효하지 않은 휴대폰 번호입니다, 입력한 번호를 다시 한 번 확인해주세요</string>
     <string name="chk_code_from_valid_phone_number">문자 메시지를 통해 +82 10–0000–0000 번호로 전송된\n인증 코드를 입력하세요</string>
-    <string name="clientId">CLIENT ID</string>
+    <string name="phone_auth_title">인증번호 전송 완료</string>
 </resources>

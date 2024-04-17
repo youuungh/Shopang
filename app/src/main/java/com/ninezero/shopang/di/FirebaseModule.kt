@@ -39,7 +39,7 @@ class FirebaseModule {
     @Provides
     fun provideGoogleSignInOptions(@ApplicationContext context: Context): GoogleSignInOptions {
         return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(context.getString(R.string.clientId))
+            .requestIdToken(context.getString(R.string.client_id))
             .requestEmail()
             .build()
     }

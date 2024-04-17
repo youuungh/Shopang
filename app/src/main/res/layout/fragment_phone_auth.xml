@@ -42,7 +42,7 @@
                     style="@style/TextAppearance.Shopang.HeadlineSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="인증번호 전송 완료"
+                    android:text="@string/phone_auth_title"
                     android:textStyle="bold"
                     android:textAlignment="center"
                     app:layout_constraintTop_toTopOf="parent"
@@ -150,7 +150,6 @@
                     app:layout_constraintTop_toBottomOf="@id/codeLayout"
                     app:layout_constraintStart_toStartOf="@id/start"
                     app:layout_constraintEnd_toEndOf="@id/end"
-                    tools:visibility="visible"
                     tools:text="00:00" />
                 
                 <TextView
@@ -158,16 +157,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="24dp"
+                    android:text="@string/action_resend"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="?attr/colorPrimary"
                     android:textAlignment="center"
                     android:visibility="gone"
+                    android:onClick="@{()-> fragment.resendCode()}"
                     app:layout_constraintTop_toBottomOf="@id/codeLayout"
                     app:layout_constraintStart_toStartOf="@id/start"
-                    app:layout_constraintEnd_toEndOf="@id/end"
-                    tools:visibility="invisible"
-                    tools:text="재전송" />
+                    app:layout_constraintEnd_toEndOf="@id/end" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/start"

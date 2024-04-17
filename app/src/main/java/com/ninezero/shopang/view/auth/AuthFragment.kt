@@ -1,6 +1,12 @@
 package com.ninezero.shopang.view.auth
 
+import android.annotation.SuppressLint
 import android.app.Dialog
+import android.util.Log
+import android.view.MotionEvent
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -13,6 +19,7 @@ import com.ninezero.shopang.model.PhoneVerification
 import com.ninezero.shopang.util.AuthState
 import com.ninezero.shopang.util.Constants
 import com.ninezero.shopang.util.ResponseWrapper
+import com.ninezero.shopang.util.extension.showKeyBoard
 import com.ninezero.shopang.util.extension.showSnack
 import com.ninezero.shopang.view.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,12 +45,22 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
     private var timeOut: Long = 0
     private var validPhoneNumber: String = ""
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
-        binding.fragment = this@AuthFragment
+        with(binding) {
+            fragment = this@AuthFragment
+
+            root.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    hideKeyBoard(v)
+                }
+                true
+            }
+        }
     }
 
-    override fun initListener() {
-        super.initListener()
+    override fun initViewModel() {
+        super.initViewModel()
         observeListener()
     }
 
@@ -69,7 +86,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
                             binding.root.showSnack(getString(R.string.chk_internet_connection))
                         }
                         else -> {
-                            binding.root.showSnack(getString(R.string.errorMsg))
+                            binding.root.showSnack(getString(R.string.error_msg))
                         }
                     }
                 }
@@ -93,17 +110,20 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
     }
 
     fun checkPhoneNumber() = with(binding) {
-        val phoneNumber = phoneNumber.text.toString().trim()
+        hideKeyBoard(view)
+        val input = phoneNumber.text.toString().trim()
         val countryCode = 82
         when {
-            phoneNumber.isBlank() -> {
+            input.isBlank() -> {
                 root.showSnack(getString(R.string.chk_empty_phone_number))
             }
-            phoneNumber.toInt() < 11 -> {
+            input.length < 11 || !isValidPhoneNumber(input) -> {
                 root.showSnack(getString(R.string.chk_valid_phone_number))
             }
             else -> {
-                validPhoneNumber = "+$countryCode$phoneNumber"
+                val preNumber = input.substring(1, 3)
+                val postNumber = input.substring(3)
+                validPhoneNumber = "+$countryCode$preNumber$postNumber"
                 if (timeOut == 0L || timeOut < System.currentTimeMillis()) {
                     sendVerificationCode(validPhoneNumber)
                 } else {
@@ -111,6 +131,11 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
                 }
             }
         }
+    }
+
+    private fun isValidPhoneNumber(phoneNumber: String): Boolean {
+        val regex = "^01(0|1|[6-9])(\\d{3,4})(\\d{4})$".toRegex()
+        return regex.matches(phoneNumber)
     }
 
     private fun sendVerificationCode(validPhoneNumber: String) {
@@ -127,6 +152,14 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
             .build()
         timeOut = (System.currentTimeMillis() + 60000L)
         PhoneAuthProvider.verifyPhoneNumber(options)
+    }
+
+    private fun hideKeyBoard(view: View?) {
+        if (view != null) {
+            val imm = requireContext().getSystemService<InputMethodManager>()
+            imm?.hideSoftInputFromWindow(view.windowToken, 0)
+            binding.phoneNumber.clearFocus()
+        }
     }
 
     private fun navigateToPhoneAuthFragment(

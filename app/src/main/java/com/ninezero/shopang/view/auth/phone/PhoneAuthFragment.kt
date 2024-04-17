@@ -3,10 +3,13 @@ package com.ninezero.shopang.view.auth.phone
 import android.app.Dialog
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.getSystemService
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -47,12 +50,17 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
 
     override fun initView() {
         binding.fragment = this@PhoneAuthFragment
+
+        startCountDown()
     }
 
     override fun initListener() {
         super.initListener()
         binding.back.setOnClickListener { closeFragment() }
+    }
 
+    override fun initViewModel() {
+        super.initViewModel()
         observeListener()
     }
 
@@ -78,7 +86,7 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
             Constants.COUNT_DOWN_INTERVAL
         ) {
             override fun onTick(millisUntilFinished: Long) {
-                binding.timer.text = getString(R.string.countdown, (millisUntilFinished / 1000))
+                binding.timer.text = getString(R.string.count_down, (millisUntilFinished / 1000))
             }
 
             override fun onFinish() {
@@ -99,16 +107,6 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         }
     }
 
-//    fun verifyPhoneNumber() {
-//        val code = codeNum
-//        if (code.isEmpty()) {
-//            binding.root.showSnack(getString(R.string.
-//        } else {
-//            val credential = PhoneAuthProvider.getCredential(verificationData.verificationId, code)
-//            authViewModel.signInAuthCredential(credential)
-//        }
-//    }
-
     fun resendCode() {
         if (isResendTextEnabled) {
             toggleResendCode(true)
@@ -126,6 +124,13 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
             .setForceResendingToken(verification.token)
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
+    }
+
+    private fun hideKeyBoard(view: View?) {
+        if (view != null) {
+            val imm = requireContext().getSystemService<InputMethodManager>()
+            imm?.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
     private fun navigateToHomeFragment() {

@@ -9,10 +9,10 @@ fun Fragment.closeFragment() {
     findNavController().popBackStack()
 }
 
-fun Fragment.showToast(msg: String) {
-    Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+fun Fragment.showToast(msg: String, length: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(requireContext(), msg, length).show()
 }
 
-fun Fragment.showToast(@StringRes resId: Int) {
-    Toast.makeText(requireContext(), resId, Toast.LENGTH_SHORT).show()
+fun Fragment.showToast(@StringRes resId: Int, length: Int = Toast.LENGTH_SHORT) {
+    showToast(getString(resId), length)
 }

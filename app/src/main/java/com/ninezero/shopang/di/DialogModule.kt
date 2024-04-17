@@ -23,7 +23,6 @@ import javax.inject.Named
 @InstallIn(ActivityComponent::class)
 class DialogModule {
 
-    @RequiresApi(Build.VERSION_CODES.S)
     @ActivityScoped
     @Provides
     @Named(Constants.LOADING)
