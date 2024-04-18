@@ -25,6 +25,6 @@
     <string name="chk_internet_connection">인터넷 연결을 확인해주세요</string>
     <string name="chk_empty_phone_number">휴대폰 번호를 입력해주세요</string>
     <string name="chk_valid_phone_number">유효하지 않은 휴대폰 번호입니다, 입력한 번호를 다시 한 번 확인해주세요</string>
-    <string name="chk_code_from_valid_phone_number">문자 메시지를 통해 +82 10–0000–0000 번호로 전송된\n인증 코드를 입력하세요</string>
+    <string name="chk_code_from_valid_phone_number">문자 메시지를 통해 %s 번호로 전송된\n인증 코드를 입력하세요</string>
     <string name="phone_auth_title">인증번호 전송 완료</string>
 </resources>

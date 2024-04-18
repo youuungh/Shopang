@@ -1,13 +1,12 @@
 package com.ninezero.shopang.view.auth.phone
 
 import android.app.Dialog
-import android.os.Bundle
+import android.graphics.Typeface
 import android.os.CountDownTimer
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.getSystemService
 import androidx.fragment.app.activityViewModels
@@ -46,11 +45,13 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     @Named(Constants.LOADING)
     lateinit var loading: Dialog
 
+    private var validPhoneNumber: String = ""
     private var isResendTextEnabled = false
 
     override fun initView() {
         binding.fragment = this@PhoneAuthFragment
 
+        formatPhoneNumber()
         startCountDown()
     }
 
@@ -80,6 +81,24 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         }
     }
 
+    private fun formatPhoneNumber() {
+        val phoneNumber = verification.phoneNumber
+        val countryCode = phoneNumber.substring(0,3)
+        val areaCode = phoneNumber.substring(3, 5)
+        val middle = phoneNumber.substring(5, 9)
+        val last = phoneNumber.substring(9)
+
+        validPhoneNumber = "$countryCode $areaCode-$middle-$last"
+
+        val formattedString = getString(R.string.chk_code_from_valid_phone_number, validPhoneNumber)
+        val spannableString = SpannableString(formattedString)
+        val start = formattedString.indexOf(validPhoneNumber)
+        val end = start + validPhoneNumber.length
+        spannableString.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        binding.description.text = spannableString
+    }
+
     private fun startCountDown() {
         object : CountDownTimer(
             Constants.COUNT_DOWN_DURATION_MILLIS,
@@ -96,14 +115,14 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     }
 
     private fun toggleResendCode(timerExpired: Boolean) = with(binding) {
-        if (timerExpired) {
+        isResendTextEnabled = if (timerExpired) {
             timer.show()
             resend.hide()
-            isResendTextEnabled = false
+            false
         } else {
             timer.hide()
             resend.show()
-            isResendTextEnabled = true
+            true
         }
     }
 

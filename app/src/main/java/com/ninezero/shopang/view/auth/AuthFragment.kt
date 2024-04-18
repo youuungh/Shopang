@@ -2,7 +2,6 @@ package com.ninezero.shopang.view.auth
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -19,7 +18,6 @@ import com.ninezero.shopang.model.PhoneVerification
 import com.ninezero.shopang.util.AuthState
 import com.ninezero.shopang.util.Constants
 import com.ninezero.shopang.util.ResponseWrapper
-import com.ninezero.shopang.util.extension.showKeyBoard
 import com.ninezero.shopang.util.extension.showSnack
 import com.ninezero.shopang.view.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint

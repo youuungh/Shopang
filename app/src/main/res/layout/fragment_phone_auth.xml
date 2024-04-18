@@ -53,12 +53,12 @@
                     android:id="@+id/description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:text="@string/chk_code_from_valid_phone_number"
                     android:textSize="15sp"
                     android:textAlignment="center"
                     app:layout_constraintTop_toBottomOf="@id/headline"
                     app:layout_constraintStart_toStartOf="@id/start"
-                    app:layout_constraintEnd_toEndOf="@id/end"
-                    android:text="@string/chk_code_from_valid_phone_number"/>
+                    app:layout_constraintEnd_toEndOf="@id/end" />
 
                 <LinearLayout
                     android:id="@+id/codeLayout"
