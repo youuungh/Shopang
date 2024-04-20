@@ -1,13 +1,15 @@
 package com.ninezero.shopang.view.auth.phone
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.Typeface
-import android.os.CountDownTimer
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.StyleSpan
+import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.core.content.getSystemService
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -23,8 +25,11 @@ import com.ninezero.shopang.util.extension.closeFragment
 import com.ninezero.shopang.util.extension.hide
 import com.ninezero.shopang.util.extension.show
 import com.ninezero.shopang.util.extension.showSnack
+import com.ninezero.shopang.util.extension.showToast
 import com.ninezero.shopang.view.BaseFragment
 import com.ninezero.shopang.view.auth.AuthViewModel
+import com.ninezero.shopang.view.dialog.CustomDialog
+import com.ninezero.shopang.view.dialog.CustomDialogInterface
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -33,7 +38,7 @@ import javax.inject.Named
 @AndroidEntryPoint
 class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     R.layout.fragment_phone_auth
-) {
+), CustomDialogInterface {
     private val authViewModel by activityViewModels<AuthViewModel>()
     private val args by navArgs<PhoneAuthFragmentArgs>()
     private val verification by lazy { args.phoneVerificationData }
@@ -52,17 +57,45 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         binding.fragment = this@PhoneAuthFragment
 
         formatPhoneNumber()
-        startCountDown()
+        authViewModel.startCountDown()
     }
 
     override fun initListener() {
         super.initListener()
-        binding.back.setOnClickListener { closeFragment() }
+        binding.back.setOnClickListener {
+            if (authViewModel.isTimerRunning()) {
+                showAlertDialog()
+            } else {
+                closeFragment()
+            }
+        }
     }
 
     override fun initViewModel() {
         super.initViewModel()
+        observeTimer()
         observeListener()
+    }
+
+    private fun showAlertDialog() {
+        val dialog = CustomDialog(
+            this,
+            "나가시겠습니까?",
+            "지금 종료하면 최대 1분 후 재시작할 수 있습니다\n계속 진행할까요?",
+            "나가기",
+            "계속",
+            0)
+        activity?.let { dialog.show(it.supportFragmentManager, "CustomDialog") }
+    }
+
+    override fun negativeClickListener() { closeFragment() }
+    override fun positiveClickListener() { }
+
+    private fun observeTimer() {
+        authViewModel.timerLiveData.observe(viewLifecycleOwner) { millisUntilFinished ->
+            binding.timer.text = getString(R.string.count_down, (millisUntilFinished / 1000))
+            toggleResendCode(millisUntilFinished > 0L)
+        }
     }
 
     private fun observeListener() {
@@ -87,7 +120,6 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         val areaCode = phoneNumber.substring(3, 5)
         val middle = phoneNumber.substring(5, 9)
         val last = phoneNumber.substring(9)
-
         validPhoneNumber = "$countryCode $areaCode-$middle-$last"
 
         val formattedString = getString(R.string.chk_code_from_valid_phone_number, validPhoneNumber)
@@ -95,23 +127,7 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         val start = formattedString.indexOf(validPhoneNumber)
         val end = start + validPhoneNumber.length
         spannableString.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
         binding.description.text = spannableString
-    }
-
-    private fun startCountDown() {
-        object : CountDownTimer(
-            Constants.COUNT_DOWN_DURATION_MILLIS,
-            Constants.COUNT_DOWN_INTERVAL
-        ) {
-            override fun onTick(millisUntilFinished: Long) {
-                binding.timer.text = getString(R.string.count_down, (millisUntilFinished / 1000))
-            }
-
-            override fun onFinish() {
-                toggleResendCode(false)
-            }
-        }.start()
     }
 
     private fun toggleResendCode(timerExpired: Boolean) = with(binding) {
@@ -129,7 +145,7 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     fun resendCode() {
         if (isResendTextEnabled) {
             toggleResendCode(true)
-            startCountDown()
+            authViewModel.startCountDown()
         }
         resendVerificationCode()
     }

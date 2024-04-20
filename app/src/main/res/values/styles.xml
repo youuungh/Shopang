@@ -47,8 +47,8 @@
     <style name="Widget.Shopang.Button.OutlinedButton" parent="Base.Shopang.OutlinedButton">
         <item name="android:fontFamily">@font/google_sans_bold</item>
         <item name="fontFamily">@font/google_sans_bold</item>
-        <item name="strokeWidth">2dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="strokeWidth">1.5dp</item>
+        <item name="strokeColor">?attr/colorPrimary</item>
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>
     </style>

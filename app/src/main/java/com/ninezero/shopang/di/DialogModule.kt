@@ -4,9 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.view.Window
-import androidx.annotation.RequiresApi
 import com.ninezero.shopang.R
 import com.ninezero.shopang.util.Constants
 import dagger.Module
@@ -15,8 +13,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.scopes.ActivityScoped
-import eightbitlab.com.blurview.BlurView
-import eightbitlab.com.blurview.RenderEffectBlur
 import javax.inject.Named
 
 @Module

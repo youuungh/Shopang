@@ -105,6 +105,9 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
     implementation(libs.play.services.auth)
+
+    // CustomDialog
+    implementation("com.github.slavce14:SJ-Dialog:1.7")
 }
 
 kapt {

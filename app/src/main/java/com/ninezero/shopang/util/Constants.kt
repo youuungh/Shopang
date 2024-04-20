@@ -3,7 +3,6 @@ package com.ninezero.shopang.util
 import androidx.appcompat.app.AppCompatDelegate
 
 object Constants {
-    const val USER_PREFS = "user_prefs"
     const val LOADING = "loading"
     const val COUNT_DOWN_DURATION_MILLIS = 60000L
     const val COUNT_DOWN_INTERVAL = 1000L
