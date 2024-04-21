@@ -18,32 +18,16 @@ interface CustomDialogInterface {
 }
 
 class CustomDialog(
-    customDialogInterface: CustomDialogInterface,
-    title: String,
-    msg: String,
-    negativeButtonText: String,
-    positiveButtonText: String,
-    id: Int
+    private val customDialogInterface: CustomDialogInterface?,
+    private val title: String?,
+    private val msg: String? = null,
+    private val negativeButtonText: String? = null,
+    private val positiveButtonText: String,
+    private val showNegativeButton: Boolean = false
 ): DialogFragment() {
 
     private var _binding: AlertDialogLayoutBinding? = null
     private val binding get() = _binding!!
-    private var title: String? = null
-    private var msg: String? = null
-    private var negativeButtonText: String? = null
-    private var positiveButtonText: String? = null
-    private var id: Int? = null
-
-    private var customDialogInterface: CustomDialogInterface? = null
-
-    init {
-        this.title = title
-        this.msg = msg
-        this.negativeButtonText = negativeButtonText
-        this.positiveButtonText = positiveButtonText
-        this.id = id
-        this.customDialogInterface = customDialogInterface
-    }
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreateView(
@@ -57,26 +41,19 @@ class CustomDialog(
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         binding.title.text = title
-
-        if (msg == null) {
-            binding.msg.visibility = View.GONE
-        } else {
-            binding.msg.text = msg
-        }
-
+        binding.msg.text = msg ?: ""
         binding.negative.text = negativeButtonText
         binding.positive.text = positiveButtonText
 
-        if (id == -1) {
-            binding.negative.visibility = View.GONE
-        }
+        binding.msg.visibility = msg?.let { View.VISIBLE } ?: View.GONE
+        binding.negative.visibility = if (showNegativeButton) View.GONE else View.VISIBLE
 
         binding.negative.setOnClickListener {
-            this.customDialogInterface?.negativeClickListener()
+            customDialogInterface?.negativeClickListener()
             dismiss()
         }
         binding.positive.setOnClickListener {
-            this.customDialogInterface?.positiveClickListener()
+            customDialogInterface?.positiveClickListener()
             dismiss()
         }
         return binding.root

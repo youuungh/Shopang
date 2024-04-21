@@ -2,11 +2,15 @@ package com.ninezero.shopang.view.auth
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.getSystemService
+import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -21,7 +25,10 @@ import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.showSnack
 import com.ninezero.shopang.util.extension.showToast
 import com.ninezero.shopang.view.BaseFragment
+import com.ninezero.shopang.view.dialog.CustomDialog
+import com.ninezero.shopang.view.dialog.CustomDialogInterface
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
@@ -29,8 +36,8 @@ import javax.inject.Named
 @AndroidEntryPoint
 class AuthFragment : BaseFragment<FragmentAuthBinding>(
     R.layout.fragment_auth
-) {
-    private val authViewModel by viewModels<AuthViewModel>()
+), CustomDialogInterface {
+    private val authViewModel by activityViewModels<AuthViewModel>()
 
     @Inject
     lateinit var fAuth: FirebaseAuth
@@ -48,7 +55,6 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
     override fun initView() {
         with(binding) {
             fragment = this@AuthFragment
-
             root.setOnTouchListener { v, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
                     hideKeyBoard(v)
@@ -120,13 +126,17 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
                 root.showSnack(getString(R.string.chk_valid_phone_number))
             }
             else -> {
-                val preNumber = input.substring(1, 3)
-                val postNumber = input.substring(3)
-                validPhoneNumber = "+$countryCode$preNumber$postNumber"
-                if (timeOut == 0L || timeOut < System.currentTimeMillis()) {
-                    sendVerificationCode(validPhoneNumber)
+                if (authViewModel.isTimerRunning.value) {
+                    showAlertDialog()
                 } else {
-                    navigateToPhoneAuthFragment(id!!, token!!)
+                    val preNumber = input.substring(1, 3)
+                    val postNumber = input.substring(3)
+                    validPhoneNumber = "+$countryCode$preNumber$postNumber"
+                    if (timeOut == 0L || timeOut < System.currentTimeMillis()) {
+                        sendVerificationCode(validPhoneNumber)
+                    } else {
+                        navigateToPhoneAuthFragment(id!!, token!!)
+                    }
                 }
             }
         }
@@ -153,6 +163,19 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
+    private fun showAlertDialog() {
+        activity?.let {
+            val dialog = CustomDialog(
+                this,
+                getString(R.string.auth_dialog_title),
+                getString(R.string.auth_dialog_msg),
+                null,
+                "확인",
+                true)
+            dialog.show(it.supportFragmentManager, "AlertDialog")
+        }
+    }
+
     private fun hideKeyBoard(view: View?) {
         if (view != null) {
             val imm = requireContext().getSystemService<InputMethodManager>()
@@ -170,13 +193,13 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
         findNavController().navigate(action)
     }
 
-    fun navigateToGoogleAuthFragment() {
-        val action = AuthFragmentDirections.actionAuthFragmentToGoogleAuthFragment()
+    fun navigateToNaverAuthFragment() {
+        val action = AuthFragmentDirections.actionAuthFragmentToNaverAuthFragment()
         findNavController().navigate(action)
     }
 
-    fun navigateToNaverAuthFragment() {
-        val action = AuthFragmentDirections.actionAuthFragmentToNaverAuthFragment()
+    fun navigateToGoogleAuthFragment() {
+        val action = AuthFragmentDirections.actionAuthFragmentToGoogleAuthFragment()
         findNavController().navigate(action)
     }
 
@@ -184,4 +207,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
         val action = AuthFragmentDirections.actionAuthFragmentToHomeFragment()
         findNavController().navigate(action)
     }
+
+    override fun negativeClickListener() { }
+    override fun positiveClickListener() { }
 }

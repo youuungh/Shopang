@@ -26,5 +26,9 @@
     <string name="chk_empty_phone_number">휴대폰 번호를 입력해주세요</string>
     <string name="chk_valid_phone_number">유효하지 않은 휴대폰 번호입니다, 입력한 번호를 다시 한 번 확인해주세요</string>
     <string name="chk_code_from_valid_phone_number">문자 메시지를 통해 %s 번호로 전송된\n인증 코드를 입력하세요</string>
+    <string name="auth_dialog_title">요청 횟수 한도 초과</string>
+    <string name="auth_dialog_msg">1분 후에 다시 시도해주세요</string>
     <string name="phone_auth_title">인증번호 전송 완료</string>
+    <string name="phone_auth_dialog_title">나가시겠습니까?</string>
+    <string name="phone_auth_dialog_msg">지금 종료하면 최대 1분 후 재시작할 수 있습니다\n계속 진행할까요?</string>
 </resources>

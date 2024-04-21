@@ -1,6 +1,7 @@
 package com.ninezero.shopang.view.auth
 
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,12 @@ import com.ninezero.shopang.util.Constants
 import com.ninezero.shopang.util.ResponseWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,30 +40,31 @@ class AuthViewModel @Inject constructor(
         get() = _userInfoLiveData
 
     private var countDownTimer: CountDownTimer? = null
-    private var millisUntilFinished = Constants.COUNT_DOWN_DURATION_MILLIS
-    val timerLiveData = MutableLiveData<Long>()
+
+    private val _isTimerRunning = MutableStateFlow(false)
+    val isTimerRunning: StateFlow<Boolean>
+        get() = _isTimerRunning
+
+    private val _timerSharedFlow = MutableSharedFlow<Long>()
+    val timerSharedFlow: SharedFlow<Long>
+        get() = _timerSharedFlow.asSharedFlow()
 
     fun startCountDown() {
+        countDownTimer?.cancel()
+        _isTimerRunning.value = true
         countDownTimer = object : CountDownTimer(
             Constants.COUNT_DOWN_DURATION_MILLIS,
             Constants.COUNT_DOWN_INTERVAL
         ) {
             override fun onTick(millisUntilFinished: Long) {
-                this@AuthViewModel.millisUntilFinished = millisUntilFinished
-                timerLiveData.value = millisUntilFinished
+                viewModelScope.launch { _timerSharedFlow.emit(millisUntilFinished) }
             }
 
             override fun onFinish() {
-                millisUntilFinished = 0
-                timerLiveData.value = 0
+                _isTimerRunning.value = false
+                viewModelScope.launch { _timerSharedFlow.emit(0) }
             }
         }.start()
-    }
-    fun cancelCountDown() {
-        countDownTimer?.cancel()
-    }
-    fun isTimerRunning(): Boolean {
-        return millisUntilFinished > 0
     }
 
     fun setAuthLiveData(authState: AuthState) { _authLiveData.value = authState }

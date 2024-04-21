@@ -6,12 +6,14 @@ import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.core.content.getSystemService
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
@@ -31,6 +33,8 @@ import com.ninezero.shopang.view.auth.AuthViewModel
 import com.ninezero.shopang.view.dialog.CustomDialog
 import com.ninezero.shopang.view.dialog.CustomDialogInterface
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
@@ -63,7 +67,7 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     override fun initListener() {
         super.initListener()
         binding.back.setOnClickListener {
-            if (authViewModel.isTimerRunning()) {
+            if (authViewModel.isTimerRunning.value) {
                 showAlertDialog()
             } else {
                 closeFragment()
@@ -77,24 +81,12 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         observeListener()
     }
 
-    private fun showAlertDialog() {
-        val dialog = CustomDialog(
-            this,
-            "나가시겠습니까?",
-            "지금 종료하면 최대 1분 후 재시작할 수 있습니다\n계속 진행할까요?",
-            "나가기",
-            "계속",
-            0)
-        activity?.let { dialog.show(it.supportFragmentManager, "CustomDialog") }
-    }
-
-    override fun negativeClickListener() { closeFragment() }
-    override fun positiveClickListener() { }
-
     private fun observeTimer() {
-        authViewModel.timerLiveData.observe(viewLifecycleOwner) { millisUntilFinished ->
-            binding.timer.text = getString(R.string.count_down, (millisUntilFinished / 1000))
-            toggleResendCode(millisUntilFinished > 0L)
+        viewLifecycleOwner.lifecycleScope.launch {
+            authViewModel.timerSharedFlow.collect { millisUntilFinished ->
+                binding.timer.text = getString(R.string.count_down, (millisUntilFinished / 1000))
+                toggleResendCode(millisUntilFinished > 0L)
+            }
         }
     }
 
@@ -161,6 +153,18 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
+    private fun showAlertDialog() {
+        activity?.let {
+            val dialog = CustomDialog(
+                this,
+                getString(R.string.phone_auth_dialog_title),
+                getString(R.string.phone_auth_dialog_msg),
+                "나가기",
+                "계속")
+            dialog.show(it.supportFragmentManager, "AlertDialog")
+        }
+    }
+
     private fun hideKeyBoard(view: View?) {
         if (view != null) {
             val imm = requireContext().getSystemService<InputMethodManager>()
@@ -172,4 +176,7 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         val action = PhoneAuthFragmentDirections.actionPhoneAuthFragmentToHomeFragment()
         findNavController().navigate(action)
     }
+
+    override fun negativeClickListener() { closeFragment() }
+    override fun positiveClickListener() { }
 }

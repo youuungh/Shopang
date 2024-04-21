@@ -21,7 +21,7 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,12 +33,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:textAlignment="center"
             app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="message" />
+            tools:text="message"
+            tools:visibility="visible" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -56,9 +57,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:textColor="?attr/colorPrimary"
-                tools:text="no" />
+                tools:text="no"
+                tools:visibility="visible" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/positive"
@@ -66,7 +68,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 tools:text="yes" />
 
         </LinearLayout>
