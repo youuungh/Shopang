@@ -1,5 +1,6 @@
 package com.ninezero.shopang.view.auth.phone
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.Typeface
@@ -8,14 +9,18 @@ import android.text.SpannableString
 import android.text.style.StyleSpan
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.core.content.getSystemService
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
@@ -26,6 +31,7 @@ import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.closeFragment
 import com.ninezero.shopang.util.extension.hide
 import com.ninezero.shopang.util.extension.show
+import com.ninezero.shopang.util.extension.showKeyBoard
 import com.ninezero.shopang.util.extension.showSnack
 import com.ninezero.shopang.util.extension.showToast
 import com.ninezero.shopang.view.BaseFragment
@@ -56,12 +62,18 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
 
     private var validPhoneNumber: String = ""
     private var isResendTextEnabled = false
+    private val inputEditTexts: List<TextInputEditText> by lazy {
+        with(binding) {
+            listOf(et1, et2, et3, et4, et5, et6)
+        }
+    }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
         binding.fragment = this@PhoneAuthFragment
-
-        formatPhoneNumber()
         authViewModel.startCountDown()
+        formatPhoneNumber()
+        setupCodeInputWatcher()
     }
 
     override fun initListener() {
@@ -122,6 +134,48 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         binding.description.text = spannableString
     }
 
+    private fun setupCodeInputWatcher() {
+        inputEditTexts[0].apply {
+            postDelayed({
+                showKeyBoard()
+            }, 250)
+        }
+        inputEditTexts.forEachIndexed { index, editText ->
+            editText.doAfterTextChanged { editable ->
+                if (editable?.length == 1) {
+                    moveFocusToNext(index)
+                } else if (editable.isNullOrEmpty() && index > 0) {
+                    moveFocusToPreviousAndClear(index)
+                }
+
+                if (index == inputEditTexts.size - 1 && editable?.length == 1) {
+                    val inputCode = inputEditTexts.joinToString("") { editText ->
+                        editText.text.toString()
+                    }
+                    if (inputCode.length == inputEditTexts.size) {
+                        editText.clearFocus()
+                        hideKeyBoard(editText)
+                        binding.root.showSnack("확인")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun moveFocusToNext(index: Int) {
+        if (index < inputEditTexts.size - 1) {
+            inputEditTexts[index + 1].requestFocus()
+        }
+    }
+
+    private fun moveFocusToPreviousAndClear(index: Int) {
+        if (index > 0) {
+            val previousEditText = inputEditTexts[index - 1]
+            previousEditText.requestFocus()
+            previousEditText.text?.clear()
+        }
+    }
+
     private fun toggleResendCode(timerExpired: Boolean) = with(binding) {
         isResendTextEnabled = if (timerExpired) {
             timer.show()
@@ -166,9 +220,9 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     }
 
     private fun hideKeyBoard(view: View?) {
-        if (view != null) {
+        view?.let {
             val imm = requireContext().getSystemService<InputMethodManager>()
-            imm?.hideSoftInputFromWindow(view.windowToken, 0)
+            imm?.hideSoftInputFromWindow(it.windowToken, 0)
         }
     }
 

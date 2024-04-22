@@ -177,9 +177,9 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
     }
 
     private fun hideKeyBoard(view: View?) {
-        if (view != null) {
+        view?.let {
             val imm = requireContext().getSystemService<InputMethodManager>()
-            imm?.hideSoftInputFromWindow(view.windowToken, 0)
+            imm?.hideSoftInputFromWindow(it.windowToken, 0)
             binding.phoneNumber.clearFocus()
         }
     }
