@@ -2,15 +2,11 @@ package com.ninezero.shopang.view.auth
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.getSystemService
-import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -20,15 +16,13 @@ import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentAuthBinding
 import com.ninezero.shopang.model.PhoneVerification
 import com.ninezero.shopang.util.AuthState
-import com.ninezero.shopang.util.Constants
+import com.ninezero.shopang.util.LOADING
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.showSnack
-import com.ninezero.shopang.util.extension.showToast
 import com.ninezero.shopang.view.BaseFragment
 import com.ninezero.shopang.view.dialog.CustomDialog
 import com.ninezero.shopang.view.dialog.CustomDialogInterface
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
@@ -43,7 +37,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
     lateinit var fAuth: FirebaseAuth
 
     @Inject
-    @Named(Constants.LOADING)
+    @Named(LOADING)
     lateinit var loading: Dialog
 
     private var id: String? = null
@@ -65,7 +59,6 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
     }
 
     override fun initViewModel() {
-        super.initViewModel()
         observeListener()
     }
 
@@ -171,7 +164,8 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
                 getString(R.string.auth_dialog_msg),
                 null,
                 "확인",
-                true)
+                true
+            )
             dialog.show(it.supportFragmentManager, "AlertDialog")
         }
     }

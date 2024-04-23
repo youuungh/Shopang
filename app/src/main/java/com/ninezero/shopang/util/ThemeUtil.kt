@@ -14,27 +14,27 @@ import com.ninezero.shopang.R
 
 object ThemeUtil {
     fun setTheme(activity: Activity, shardPrefs: SharedPreferences) {
-        val theme = shardPrefs.getString(Constants.Setting.Appearance.THEME, Constants.SettingDefault.Appearance.THEME)
+        val theme = shardPrefs.getString(Setting.Appearance.THEME, SettingDefault.Appearance.THEME)
         when (theme) {
-            Constants.Theme.RED -> setContrastTheme(
+            Theme.RED -> setContrastTheme(
                 activity, shardPrefs,
                 R.style.Theme_Shopang_Red,
                 R.style.ThemeOverlay_Shopang_Red_MediumContrast,
                 R.style.ThemeOverlay_Shopang_Red_HighContrast
             )
-            Constants.Theme.YELLOW -> setContrastTheme(
+            Theme.YELLOW -> setContrastTheme(
                 activity, shardPrefs,
                 R.style.Theme_Shopang_Yellow,
                 R.style.ThemeOverlay_Shopang_Yellow_MediumContrast,
                 R.style.ThemeOverlay_Shopang_Yellow_HighContrast
             )
-            Constants.Theme.GREEN -> setContrastTheme(
+            Theme.GREEN -> setContrastTheme(
                 activity, shardPrefs,
                 R.style.Theme_Shopang_Green,
                 R.style.ThemeOverlay_Shopang_Green_MediumContrast,
                 R.style.ThemeOverlay_Shopang_Green_HighContrast
             )
-            Constants.Theme.BLUE -> setContrastTheme(
+            Theme.BLUE -> setContrastTheme(
                 activity, shardPrefs,
                 R.style.Theme_Shopang_Blue,
                 R.style.ThemeOverlay_Shopang_Blue_MediumContrast,
@@ -70,11 +70,11 @@ object ThemeUtil {
         @StyleRes resIdHigh: Int
     ) {
         val contrast = shardPrefs.getString(
-            Constants.Setting.Appearance.CONTRAST,
-            Constants.SettingDefault.Appearance.CONTRAST)
+            Setting.Appearance.CONTRAST,
+            SettingDefault.Appearance.CONTRAST)
         when (contrast) {
-            Constants.Contrast.MEDIUM -> activity.setTheme(resIdMedium)
-            Constants.Contrast.HIGH -> activity.setTheme(resIdHigh)
+            Contrast.MEDIUM -> activity.setTheme(resIdMedium)
+            Contrast.HIGH -> activity.setTheme(resIdHigh)
             else -> activity.setTheme(resIdStandard)
         }
     }

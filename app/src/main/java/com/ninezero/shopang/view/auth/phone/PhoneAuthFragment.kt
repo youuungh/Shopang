@@ -1,18 +1,15 @@
 package com.ninezero.shopang.view.auth.phone
 
-import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.StyleSpan
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.MotionEvent
+import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.getSystemService
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
@@ -20,26 +17,24 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentPhoneAuthBinding
-import com.ninezero.shopang.util.Constants
+import com.ninezero.shopang.util.LOADING
+import com.ninezero.shopang.util.MAX_ATTEMPTS
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.closeFragment
 import com.ninezero.shopang.util.extension.hide
 import com.ninezero.shopang.util.extension.show
 import com.ninezero.shopang.util.extension.showKeyBoard
 import com.ninezero.shopang.util.extension.showSnack
-import com.ninezero.shopang.util.extension.showToast
 import com.ninezero.shopang.view.BaseFragment
 import com.ninezero.shopang.view.auth.AuthViewModel
 import com.ninezero.shopang.view.dialog.CustomDialog
 import com.ninezero.shopang.view.dialog.CustomDialogInterface
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -52,23 +47,43 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     private val authViewModel by activityViewModels<AuthViewModel>()
     private val args by navArgs<PhoneAuthFragmentArgs>()
     private val verification by lazy { args.phoneVerificationData }
+    private lateinit var callback: OnBackPressedCallback
 
     @Inject
     lateinit var fAuth: FirebaseAuth
 
     @Inject
-    @Named(Constants.LOADING)
+    @Named(LOADING)
     lateinit var loading: Dialog
 
-    private var validPhoneNumber: String = ""
-    private var isResendTextEnabled = false
     private val inputEditTexts: List<TextInputEditText> by lazy {
         with(binding) {
             listOf(et1, et2, et3, et4, et5, et6)
         }
     }
+    private var isAttempts = 0
+    private var isResendTextEnabled = false
+    private var validPhoneNumber: String = ""
 
-    @SuppressLint("ClickableViewAccessibility")
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (authViewModel.isTimerRunning.value) {
+                    showDialog(
+                        getString(R.string.phone_auth_dialog_title),
+                        getString(R.string.phone_auth_dialog_msg),
+                        getString(R.string.exit),
+                        getString(R.string.keep)
+                    )
+                } else {
+                    closeFragment()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
     override fun initView() {
         binding.fragment = this@PhoneAuthFragment
         authViewModel.startCountDown()
@@ -77,10 +92,14 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     }
 
     override fun initListener() {
-        super.initListener()
         binding.back.setOnClickListener {
             if (authViewModel.isTimerRunning.value) {
-                showAlertDialog()
+                showDialog(
+                    getString(R.string.phone_auth_dialog_title),
+                    getString(R.string.phone_auth_dialog_msg),
+                    getString(R.string.exit),
+                    getString(R.string.keep)
+                )
             } else {
                 closeFragment()
             }
@@ -88,7 +107,6 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     }
 
     override fun initViewModel() {
-        super.initViewModel()
         observeTimer()
         observeListener()
     }
@@ -111,43 +129,24 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
                 }
                 is ResponseWrapper.Error -> {
                     loading.hide()
-                    binding.root.showSnack(it.msg!!)
+                    binding.root.showSnack(getString(R.string.error_auth_failed))
                 }
                 else -> loading.show()
             }
         }
     }
 
-    private fun formatPhoneNumber() {
-        val phoneNumber = verification.phoneNumber
-        val countryCode = phoneNumber.substring(0,3)
-        val areaCode = phoneNumber.substring(3, 5)
-        val middle = phoneNumber.substring(5, 9)
-        val last = phoneNumber.substring(9)
-        validPhoneNumber = "$countryCode $areaCode-$middle-$last"
-
-        val formattedString = getString(R.string.chk_code_from_valid_phone_number, validPhoneNumber)
-        val spannableString = SpannableString(formattedString)
-        val start = formattedString.indexOf(validPhoneNumber)
-        val end = start + validPhoneNumber.length
-        spannableString.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        binding.description.text = spannableString
-    }
-
     private fun setupCodeInputWatcher() {
         inputEditTexts[0].apply {
             postDelayed({
                 showKeyBoard()
-            }, 250)
+            }, 300)
         }
         inputEditTexts.forEachIndexed { index, editText ->
             editText.doAfterTextChanged { editable ->
                 if (editable?.length == 1) {
                     moveFocusToNext(index)
-                } else if (editable.isNullOrEmpty() && index > 0) {
-                    moveFocusToPreviousAndClear(index)
                 }
-
                 if (index == inputEditTexts.size - 1 && editable?.length == 1) {
                     val inputCode = inputEditTexts.joinToString("") { editText ->
                         editText.text.toString()
@@ -155,8 +154,29 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
                     if (inputCode.length == inputEditTexts.size) {
                         editText.clearFocus()
                         hideKeyBoard(editText)
-                        binding.root.showSnack("확인")
+                        verifyCode(inputCode)
                     }
+                }
+            }
+
+            editText.setOnKeyListener { _, keyCode, event ->
+                if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && index > 0) {
+                    if (editText.text.isNullOrEmpty()) {
+                        moveFocusToPreviousAndClear(index)
+                    } else {
+                        editText.text?.clear()
+                    }
+                    true
+                } else if (event.action == KeyEvent.ACTION_UP) {
+                    if (editText.text.toString().length == 1) {
+                        val newText = event.unicodeChar.toChar().toString()
+                        editText.setText(newText)
+                        editText.setSelection(newText.length)
+                        moveFocusToNext(index)
+                    }
+                    true
+                } else {
+                    false
                 }
             }
         }
@@ -173,6 +193,22 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
             val previousEditText = inputEditTexts[index - 1]
             previousEditText.requestFocus()
             previousEditText.text?.clear()
+        }
+    }
+
+    private fun verifyCode(inputCode: String) {
+        isAttempts++
+        if (isAttempts > MAX_ATTEMPTS) {
+            showDialog(
+                getString(R.string.phone_auth_failed_dialog_title),
+                getString(R.string.phone_auth_failed_dialog_msg),
+                null,
+                getString(R.string.confirm),
+                true
+            )
+        } else {
+            val credential = PhoneAuthProvider.getCredential(verification.id, inputCode)
+            authViewModel.signInAuthCredential(credential)
         }
     }
 
@@ -207,15 +243,39 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
-    private fun showAlertDialog() {
+    private fun formatPhoneNumber() {
+        val phoneNumber = verification.phoneNumber
+        val countryCode = phoneNumber.substring(0,3)
+        val areaCode = phoneNumber.substring(3, 5)
+        val middle = phoneNumber.substring(5, 9)
+        val last = phoneNumber.substring(9)
+        validPhoneNumber = "$countryCode $areaCode-$middle-$last"
+
+        val formattedString = getString(R.string.chk_code_from_valid_phone_number, validPhoneNumber)
+        val spannableString = SpannableString(formattedString)
+        val start = formattedString.indexOf(validPhoneNumber)
+        val end = start + validPhoneNumber.length
+        spannableString.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        binding.description.text = spannableString
+    }
+
+    private fun showDialog(
+        title: String,
+        message: String,
+        negativeButton: String?,
+        positiveButton: String,
+        showNegativeButton: Boolean = false
+    ) {
         activity?.let {
             val dialog = CustomDialog(
                 this,
-                getString(R.string.phone_auth_dialog_title),
-                getString(R.string.phone_auth_dialog_msg),
-                "나가기",
-                "계속")
-            dialog.show(it.supportFragmentManager, "AlertDialog")
+                title,
+                message,
+                negativeButton,
+                positiveButton,
+                showNegativeButton
+            )
+            dialog.show(it.supportFragmentManager, "Dialog")
         }
     }
 
@@ -232,5 +292,13 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     }
 
     override fun negativeClickListener() { closeFragment() }
-    override fun positiveClickListener() { }
+    override fun positiveClickListener() {
+        if (isAttempts > MAX_ATTEMPTS)
+            closeFragment()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
+    }
 }

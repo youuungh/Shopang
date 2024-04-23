@@ -11,7 +11,6 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.ninezero.shopang.databinding.AlertDialogLayoutBinding
 
-
 interface CustomDialogInterface {
     fun negativeClickListener()
     fun positiveClickListener()

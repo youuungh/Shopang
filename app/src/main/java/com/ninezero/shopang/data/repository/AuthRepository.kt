@@ -14,6 +14,7 @@ import com.ninezero.shopang.R
 import com.ninezero.shopang.util.AuthState
 import com.ninezero.shopang.util.PrefsUtil
 import com.ninezero.shopang.util.ResponseWrapper
+import com.ninezero.shopang.util.USER_COLLECTION
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.tasks.await
@@ -27,6 +28,9 @@ class AuthRepository @Inject constructor(
     private val fStorage: FirebaseStorage,
     @ApplicationContext private val context: Context
 ) {
+
+    private val userUid by lazy { fAuth.uid!! }
+    private val fUserCollection by lazy { fStore.collection(USER_COLLECTION) }
 
     init {
         fAuth.firebaseAuthSettings.setAppVerificationDisabledForTesting(true)

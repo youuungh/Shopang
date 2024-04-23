@@ -6,7 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.Window
 import com.ninezero.shopang.R
-import com.ninezero.shopang.util.Constants
+import com.ninezero.shopang.util.LOADING
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +21,7 @@ class DialogModule {
 
     @ActivityScoped
     @Provides
-    @Named(Constants.LOADING)
+    @Named(LOADING)
     fun provideLoadingDialog(@ActivityContext context: Context): Dialog {
         val dialog = Dialog(context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)

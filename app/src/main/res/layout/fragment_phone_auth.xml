@@ -77,7 +77,8 @@
                         
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et1"
-                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code" />
+                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code"
+                            tools:text="0" />
                         
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -87,7 +88,8 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et2"
-                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code" />
+                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code"
+                            tools:text="0" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,7 +99,8 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et3"
-                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code" />
+                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code"
+                            tools:text="0" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,7 +110,8 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et4"
-                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code" />
+                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code"
+                            tools:text="0" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,7 +121,8 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et5"
-                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code" />
+                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code"
+                            tools:text="0" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -127,7 +132,8 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et6"
-                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code" />
+                            style="@style/Widget.Shopang.TextInputEditText.OutlinedBox.Code"
+                            tools:text="0" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 

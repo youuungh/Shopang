@@ -1,17 +1,13 @@
 package com.ninezero.shopang.view.onboarding
 
-import android.annotation.SuppressLint
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentOnBoardingBinding
 import com.ninezero.shopang.util.PrefsUtil
 import com.ninezero.shopang.view.BaseFragment
-import com.ninezero.shopang.view.auth.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>(

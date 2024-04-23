@@ -4,8 +4,8 @@ import android.content.res.Configuration
 import android.view.ViewTreeObserver
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentOnBoardingPageBinding
+import com.ninezero.shopang.util.Argument
 import com.ninezero.shopang.view.BaseFragment
-import com.ninezero.shopang.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,7 +19,7 @@ class OnBoardingPageFragment : BaseFragment<FragmentOnBoardingPageBinding>(
     var descriptResource: Int = 0
 
     override fun initView() = with(binding) {
-        position = arguments?.getInt(Constants.Argument.ONBOARDING_POSITION) ?: 0
+        position = arguments?.getInt(Argument.ONBOARDING_POSITION) ?: 0
 
         bgImageResource = getBgImage(position)
         titleResource = getTitle(position)

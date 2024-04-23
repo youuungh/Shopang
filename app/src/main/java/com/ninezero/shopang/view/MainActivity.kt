@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.ActivityMainBinding
 import com.ninezero.shopang.util.PrefsUtil
@@ -26,11 +27,15 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     private lateinit var binding: ActivityMainBinding
 
+    @Inject
+    lateinit var fAuth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        PrefsUtil.updateUserLoggedInState(fAuth)
         ThemeUtil.setTheme(this, PrefsUtil.getSharedPrefs())
 
         setupNavigationController()
@@ -43,7 +48,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
 
         if (PrefsUtil.onBoardingState) {
-            navGraph.setStartDestination(R.id.authFragment)
+            if (PrefsUtil.isUserLoggedIn) {
+                navGraph.setStartDestination(R.id.homeFragment)
+            } else {
+                navGraph.setStartDestination(R.id.authFragment)
+            }
         } else {
             navGraph.setStartDestination(R.id.onBoardingFragment)
         }

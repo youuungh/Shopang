@@ -19,9 +19,14 @@
     <string name="action_google">Google로 시작하기</string>
     <string name="action_resend">재전송</string>
     <string name="or">또는</string>
+    <string name="cancel">취소</string>
+    <string name="confirm">확인</string>
+    <string name="exit">나가기</string>
+    <string name="keep">계속</string>
     <string name="phone_number">휴대폰 번호</string>
     <string name="count_down">00:%1$02d</string>
     <string name="error_msg">오류가 발생했습니다, 나중에 다시 시도해주세요</string>
+    <string name="error_auth_failed">인증 번호가 일치하지 않습니다</string>
     <string name="chk_internet_connection">인터넷 연결을 확인해주세요</string>
     <string name="chk_empty_phone_number">휴대폰 번호를 입력해주세요</string>
     <string name="chk_valid_phone_number">유효하지 않은 휴대폰 번호입니다, 입력한 번호를 다시 한 번 확인해주세요</string>
@@ -31,4 +36,6 @@
     <string name="phone_auth_title">인증번호 전송 완료</string>
     <string name="phone_auth_dialog_title">나가시겠습니까?</string>
     <string name="phone_auth_dialog_msg">지금 종료하면 최대 1분 후 재시작할 수 있습니다\n계속 진행할까요?</string>
+    <string name="phone_auth_failed_dialog_title">인증 실패</string>
+    <string name="phone_auth_failed_dialog_msg">반복적으로 코드를 잘못 입력했습니다\n처음으로 돌아가 다시 시도해 주세요</string>
 </resources>

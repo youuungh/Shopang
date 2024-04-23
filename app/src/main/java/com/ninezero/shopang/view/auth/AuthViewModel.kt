@@ -9,7 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.PhoneAuthCredential
 import com.ninezero.shopang.data.repository.AuthRepository
 import com.ninezero.shopang.util.AuthState
-import com.ninezero.shopang.util.Constants
+import com.ninezero.shopang.util.COUNT_DOWN_DURATION_MILLIS
+import com.ninezero.shopang.util.COUNT_DOWN_INTERVAL
 import com.ninezero.shopang.util.ResponseWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -53,8 +54,8 @@ class AuthViewModel @Inject constructor(
         countDownTimer?.cancel()
         _isTimerRunning.value = true
         countDownTimer = object : CountDownTimer(
-            Constants.COUNT_DOWN_DURATION_MILLIS,
-            Constants.COUNT_DOWN_INTERVAL
+            COUNT_DOWN_DURATION_MILLIS,
+            COUNT_DOWN_INTERVAL
         ) {
             override fun onTick(millisUntilFinished: Long) {
                 viewModelScope.launch { _timerSharedFlow.emit(millisUntilFinished) }
@@ -66,7 +67,6 @@ class AuthViewModel @Inject constructor(
             }
         }.start()
     }
-
     fun setAuthLiveData(authState: AuthState) { _authLiveData.value = authState }
     fun setUserInfoLiveData() { _userInfoLiveData.value = ResponseWrapper.Idle() }
     fun signInAuthCredential(credential: PhoneAuthCredential) {
