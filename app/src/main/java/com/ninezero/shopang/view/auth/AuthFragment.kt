@@ -2,12 +2,17 @@ package com.ninezero.shopang.view.auth
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Intent
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.getSystemService
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthOptions
@@ -37,6 +42,9 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
     lateinit var fAuth: FirebaseAuth
 
     @Inject
+    lateinit var googleSignInOptions: GoogleSignInOptions
+
+    @Inject
     @Named(LOADING)
     lateinit var loading: Dialog
 
@@ -44,6 +52,13 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
     private var token: PhoneAuthProvider.ForceResendingToken? = null
     private var timeOut: Long = 0
     private var validPhoneNumber: String = ""
+
+    private val googleSignInLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val data: Intent? = result.data
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            authViewModel.processGoogleSignInResult(task, getString(R.string.error_msg))
+        }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
@@ -105,6 +120,19 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
                 else -> loading.show()
             }
         }
+        authViewModel.googleAuthLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                is ResponseWrapper.Success -> {
+                    navigateToHomeFragment()
+                    loading.hide()
+                }
+                is ResponseWrapper.Error -> {
+                    loading.hide()
+                    binding.root.showSnack(it.msg!!)
+                }
+                else -> loading.show()
+            }
+        }
     }
 
     fun checkPhoneNumber() = with(binding) {
@@ -133,6 +161,16 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
                 }
             }
         }
+    }
+
+    fun startGoogleSignInIntent() {
+        loading.show()
+        val mGoogleSignInClient = GoogleSignIn.getClient(
+            requireContext(),
+            googleSignInOptions
+        )
+        val signInIntent = mGoogleSignInClient.signInIntent
+        googleSignInLauncher.launch(signInIntent)
     }
 
     private fun isValidPhoneNumber(phoneNumber: String): Boolean {
@@ -184,16 +222,6 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
     ) {
         val verification = PhoneVerification(id, token, validPhoneNumber)
         val action = AuthFragmentDirections.actionAuthFragmentToPhoneAuthFragment(verification)
-        findNavController().navigate(action)
-    }
-
-    fun navigateToNaverAuthFragment() {
-        val action = AuthFragmentDirections.actionAuthFragmentToNaverAuthFragment()
-        findNavController().navigate(action)
-    }
-
-    fun navigateToGoogleAuthFragment() {
-        val action = AuthFragmentDirections.actionAuthFragmentToGoogleAuthFragment()
         findNavController().navigate(action)
     }
 

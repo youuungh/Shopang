@@ -6,14 +6,14 @@
     <data>
         <variable
             name="fragment"
-            type="com.ninezero.shopang.view.auth.phone.PhoneAuthFragment" />
+            type="com.ninezero.shopang.view.auth.PhoneAuthFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".view.auth.phone.PhoneAuthFragment">
+        tools:context=".view.auth.PhoneAuthFragment">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/back"

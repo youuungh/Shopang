@@ -35,6 +35,7 @@ class AuthRepository @Inject constructor(
     }
 
     fun isUserLoggedIn(): Boolean = fAuth.currentUser != null
+
     fun authCallBack(authLiveData: MutableLiveData<AuthState>): PhoneAuthProvider.OnVerificationStateChangedCallbacks {
         return object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
@@ -50,6 +51,7 @@ class AuthRepository @Inject constructor(
             }
         }
     }
+
     suspend fun signInWithCredential(credential: AuthCredential): ResponseWrapper<Unit?> {
         return try {
             fAuth.signInWithCredential(credential).await()

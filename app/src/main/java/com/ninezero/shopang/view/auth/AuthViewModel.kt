@@ -1,10 +1,16 @@
 package com.ninezero.shopang.view.auth
 
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.PhoneAuthCredential
 import com.ninezero.shopang.data.repository.AuthRepository
 import com.ninezero.shopang.util.AuthState
@@ -38,7 +44,9 @@ class AuthViewModel @Inject constructor(
     val userInfoLiveData: LiveData<ResponseWrapper<String>>
         get() = _userInfoLiveData
 
-    private var countDownTimer: CountDownTimer? = null
+    private val _googleAuthLiveData = MutableLiveData<ResponseWrapper<Unit?>>()
+    val googleAuthLiveData
+        get() = _googleAuthLiveData
 
     private val _isTimerRunning = MutableStateFlow(false)
     val isTimerRunning: StateFlow<Boolean>
@@ -47,6 +55,8 @@ class AuthViewModel @Inject constructor(
     private val _timerSharedFlow = MutableSharedFlow<Long>()
     val timerSharedFlow: SharedFlow<Long>
         get() = _timerSharedFlow.asSharedFlow()
+
+    private var countDownTimer: CountDownTimer? = null
 
     fun startCountDown() {
         countDownTimer?.cancel()
@@ -65,14 +75,36 @@ class AuthViewModel @Inject constructor(
             }
         }.start()
     }
+
     fun isUserLoggedIn(): Boolean = authRepository.isUserLoggedIn()
+
     fun setAuthLiveData(authState: AuthState) { _authLiveData.value = authState }
+
     fun setUserInfoLiveData() { _userInfoLiveData.value = ResponseWrapper.Idle() }
+
+    fun processGoogleSignInResult(task: Task<GoogleSignInAccount>, errorMsg: String) {
+        try {
+            val account = task.getResult(ApiException::class.java)!!
+            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+            fAuthWithGoogle(credential)
+        } catch (e: ApiException) {
+            Log.e("GoogleSignIn", "Google 로그인 실패: ${e.message}", e)
+            _googleAuthLiveData.value = ResponseWrapper.Error(errorMsg)
+        }
+    }
+
+    private fun fAuthWithGoogle(credential: AuthCredential) {
+        viewModelScope.launch {
+            _googleAuthLiveData.postValue(authRepository.signInWithCredential(credential))
+        }
+    }
+
     fun signInAuthCredential(credential: PhoneAuthCredential) {
         _authStatusLiveData.value = ResponseWrapper.Loading()
         viewModelScope.launch(IO) {
             _authStatusLiveData.postValue(authRepository.signInWithCredential(credential))
         }
     }
+
     fun authCallBack() = authRepository.authCallBack(_authLiveData)
 }

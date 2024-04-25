@@ -1,4 +1,4 @@
-package com.ninezero.shopang.view.auth.phone
+package com.ninezero.shopang.view.auth
 
 import android.app.Dialog
 import android.content.Context
@@ -31,7 +31,6 @@ import com.ninezero.shopang.util.extension.show
 import com.ninezero.shopang.util.extension.showKeyBoard
 import com.ninezero.shopang.util.extension.showSnack
 import com.ninezero.shopang.view.BaseFragment
-import com.ninezero.shopang.view.auth.AuthViewModel
 import com.ninezero.shopang.view.dialog.CustomDialog
 import com.ninezero.shopang.view.dialog.CustomDialogInterface
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,6 +50,7 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
 
     @Inject
     lateinit var fAuth: FirebaseAuth
+
     @Inject
     @Named(LOADING)
     lateinit var loading: Dialog

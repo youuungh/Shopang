@@ -1,13 +1,9 @@
 package com.ninezero.shopang.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -32,6 +28,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     @Inject
     lateinit var fAuth: FirebaseAuth
+
     @Inject
     lateinit var prefsUtil: PrefsUtil
 
