@@ -51,7 +51,6 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
 
     @Inject
     lateinit var fAuth: FirebaseAuth
-
     @Inject
     @Named(LOADING)
     lateinit var loading: Dialog
@@ -61,9 +60,9 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
             listOf(et1, et2, et3, et4, et5, et6)
         }
     }
-    private var isAttempts = 0
-    private var isResendTextEnabled = false
     private var validPhoneNumber: String = ""
+    private var isResendTextEnabled = false
+    private var isAttempts = 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

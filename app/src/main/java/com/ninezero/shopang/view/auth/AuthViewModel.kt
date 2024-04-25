@@ -1,7 +1,6 @@
 package com.ninezero.shopang.view.auth
 
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +18,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -67,6 +65,7 @@ class AuthViewModel @Inject constructor(
             }
         }.start()
     }
+    fun isUserLoggedIn(): Boolean = authRepository.isUserLoggedIn()
     fun setAuthLiveData(authState: AuthState) { _authLiveData.value = authState }
     fun setUserInfoLiveData() { _userInfoLiveData.value = ResponseWrapper.Idle() }
     fun signInAuthCredential(credential: PhoneAuthCredential) {

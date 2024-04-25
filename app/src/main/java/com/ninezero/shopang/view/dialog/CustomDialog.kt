@@ -25,8 +25,7 @@ class CustomDialog(
     private val showNegativeButton: Boolean = false
 ): DialogFragment() {
 
-    private var _binding: AlertDialogLayoutBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: AlertDialogLayoutBinding
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreateView(
@@ -34,7 +33,7 @@ class CustomDialog(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = AlertDialogLayoutBinding.inflate(inflater, container, false)
+        binding = AlertDialogLayoutBinding.inflate(inflater, container, false)
 
         dialog?.setCancelable(false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -66,10 +65,5 @@ class CustomDialog(
     override fun onResume() {
         super.onResume()
         resize()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

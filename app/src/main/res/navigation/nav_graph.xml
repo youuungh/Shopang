@@ -29,7 +29,9 @@
             app:destination="@id/googleAuthFragment" />
         <action
             android:id="@+id/action_authFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/authFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_authFragment_to_naverAuthFragment"
             app:destination="@id/naverAuthFragment" />
@@ -70,7 +72,7 @@
         <action
             android:id="@+id/action_phoneAuthFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/phoneAuthFragment"
+            app:popUpTo="@id/authFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment

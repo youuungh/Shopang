@@ -6,12 +6,12 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.google.firebase.auth.FirebaseAuth
 import com.ninezero.shopang.MyApp
+import javax.inject.Inject
 
-object PrefsUtil {
-    private val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext())
-
+class PrefsUtil @Inject constructor(
+    private val sharedPrefs: SharedPreferences
+) {
     fun getSharedPrefs(): SharedPreferences { return sharedPrefs }
-    fun updateUserLoggedInState(fAuth: FirebaseAuth) { isUserLoggedIn = fAuth.currentUser != null }
 
     var onBoardingState: Boolean
         get() = sharedPrefs.getBoolean(Pref.ONBOARDING_SHOWN, false)
@@ -19,9 +19,4 @@ object PrefsUtil {
             putBoolean(Pref.ONBOARDING_SHOWN, value)
         }
 
-    var isUserLoggedIn: Boolean
-        get() = sharedPrefs.getBoolean(Pref.USER_LOGGED_IN, false)
-        set(value) = sharedPrefs.edit {
-            putBoolean(Pref.USER_LOGGED_IN, value)
-        }
 }

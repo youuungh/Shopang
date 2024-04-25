@@ -8,12 +8,16 @@ import com.ninezero.shopang.databinding.FragmentOnBoardingBinding
 import com.ninezero.shopang.util.PrefsUtil
 import com.ninezero.shopang.view.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>(
     R.layout.fragment_on_boarding
 ) {
     private val fragments = mutableListOf<OnBoardingPageFragment>()
+
+    @Inject
+    lateinit var prefsUtil: PrefsUtil
 
     override fun initView() = with(binding) {
         updateOnBoardingUI(0, false)
@@ -67,7 +71,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>(
             viewpager.currentItem = 2
         }
         getStart.setOnClickListener {
-            PrefsUtil.onBoardingState = true
+            prefsUtil.onBoardingState = true
             navigateToAuthFragment()
         }
     }

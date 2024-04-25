@@ -1,7 +1,6 @@
 package com.ninezero.shopang.data.repository
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.AuthCredential
@@ -12,7 +11,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.ninezero.shopang.R
 import com.ninezero.shopang.util.AuthState
-import com.ninezero.shopang.util.PrefsUtil
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.USER_COLLECTION
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -36,6 +34,7 @@ class AuthRepository @Inject constructor(
         fAuth.firebaseAuthSettings.setAppVerificationDisabledForTesting(true)
     }
 
+    fun isUserLoggedIn(): Boolean = fAuth.currentUser != null
     fun authCallBack(authLiveData: MutableLiveData<AuthState>): PhoneAuthProvider.OnVerificationStateChangedCallbacks {
         return object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
@@ -51,7 +50,6 @@ class AuthRepository @Inject constructor(
             }
         }
     }
-
     suspend fun signInWithCredential(credential: AuthCredential): ResponseWrapper<Unit?> {
         return try {
             fAuth.signInWithCredential(credential).await()

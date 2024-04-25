@@ -1,7 +1,9 @@
 package com.ninezero.shopang.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -26,17 +28,19 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 
     private lateinit var binding: ActivityMainBinding
+    private val authViewModel by viewModels<AuthViewModel>()
 
     @Inject
     lateinit var fAuth: FirebaseAuth
+    @Inject
+    lateinit var prefsUtil: PrefsUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        PrefsUtil.updateUserLoggedInState(fAuth)
-        ThemeUtil.setTheme(this, PrefsUtil.getSharedPrefs())
+        ThemeUtil.setTheme(this, prefsUtil.getSharedPrefs())
 
         setupNavigationController()
     }
@@ -47,8 +51,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         val navController = navHostFragment.navController
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
 
-        if (PrefsUtil.onBoardingState) {
-            if (PrefsUtil.isUserLoggedIn) {
+        if (prefsUtil.onBoardingState) {
+            val isUserLoggedIn = authViewModel.isUserLoggedIn()
+            if (isUserLoggedIn) {
                 navGraph.setStartDestination(R.id.homeFragment)
             } else {
                 navGraph.setStartDestination(R.id.authFragment)

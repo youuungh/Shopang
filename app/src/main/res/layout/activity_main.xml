@@ -27,6 +27,7 @@
             android:id="@+id/bottom_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
             app:menu="@menu/nav_menu"
             app:itemTextAppearanceActive="@style/BottomNavigation.Shopang.Active.Text"
             app:itemHorizontalTranslationEnabled="false"

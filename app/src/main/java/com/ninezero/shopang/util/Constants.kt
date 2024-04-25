@@ -27,7 +27,6 @@ object Argument {
 }
 object Pref {
     const val ONBOARDING_SHOWN = "onboarding_shown"
-    const val USER_LOGGED_IN = "user_logged_in"
 }
 object Theme {
     const val DYNAMIC = "dynamic"
