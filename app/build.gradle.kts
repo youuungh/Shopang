@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -7,6 +10,8 @@ plugins {
     id("kotlin-parcelize")
     id("kotlin-kapt")
 }
+
+val properties = Properties().apply { load(FileInputStream(rootProject.file("local.properties"))) }
 
 android {
     namespace = "com.ninezero.shopang"
@@ -18,6 +23,11 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        buildConfigField("String", "GOOGLE_CLIENT_ID", "\"${properties.getProperty("GOOGLE_CLIENT_ID")}\"")
+        buildConfigField("String", "NAVER_CLIENT_ID", "\"${properties.getProperty("NAVER_CLIENT_ID")}\"")
+        buildConfigField("String", "NAVER_CLIENT_SECRET", "\"${properties.getProperty("NAVER_CLIENT_SECRET")}\"")
+        buildConfigField("String", "NAVER_CLIENT_NAME", "\"${properties.getProperty("NAVER_CLIENT_NAME")}\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,6 +51,7 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        buildConfig = true
     }
 }
 
@@ -105,6 +116,9 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
     implementation(libs.play.services.auth)
+
+    // Naver
+    implementation(libs.oauth)
 }
 
 kapt {

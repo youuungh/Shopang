@@ -1,6 +1,7 @@
 package com.ninezero.shopang.data.repository
 
 import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.AuthCredential
@@ -10,13 +11,15 @@ import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.ninezero.shopang.R
+import com.ninezero.shopang.model.UserInfo
+import com.ninezero.shopang.model.mapToUserInfo
+import com.ninezero.shopang.model.toMap
 import com.ninezero.shopang.util.AuthState
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.USER_COLLECTION
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.tasks.await
-import java.lang.Exception
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -36,6 +39,60 @@ class AuthRepository @Inject constructor(
 
     fun isUserLoggedIn(): Boolean = fAuth.currentUser != null
 
+    fun getUserInfo(userInfoLiveData: MutableLiveData<ResponseWrapper<UserInfo>>) {
+        fUserCollection
+            .document(userUid)
+            .addSnapshotListener { value, _ ->
+                if (value != null && value.exists()) {
+                    val userInfo = mapToUserInfo(value.data!!)
+                    userInfoLiveData.postValue(ResponseWrapper.Success(userInfo))
+                } else {
+                    userInfoLiveData.postValue(ResponseWrapper.Error(context.getString(R.string.error_msg)))
+                }
+            }
+    }
+
+    suspend fun uploadUserInfo(
+        userName: String,
+        profileImageUri: Uri?
+    ): ResponseWrapper<String> {
+        return try {
+            val userInfo = if (profileImageUri != null) {
+                val imageUrl = uploadProfileImage(profileImageUri)
+                UserInfo(userUid, userName, imageUrl)
+            } else {
+                UserInfo(userUid, userName, "")
+            }
+
+            val msg = if (profileImageUri != null) {
+                fUserCollection.document(userUid).set(userInfo.toMap()).await()
+                context.getString(R.string.success_create_account)
+            } else {
+                fUserCollection.document(userUid).update(userInfo.toMapWithoutProfileImage()).await()
+                context.getString(R.string.updated_account)
+            }
+            ResponseWrapper.Success(msg)
+        } catch (e: Exception) {
+            ResponseWrapper.Error(context.getString(R.string.error_create_account))
+        }
+    }
+
+    private suspend fun uploadProfileImage(profileImageUri: Uri): String {
+        val fileName = "${USER_COLLECTION}/${System.currentTimeMillis()}.jpg"
+        val task = fStorage.reference.child(fileName).putFile(profileImageUri)
+        val result = task.await()
+        return result.storage.downloadUrl.await().toString()
+    }
+
+    suspend fun signInWithCredential(credential: AuthCredential): ResponseWrapper<Unit?> {
+        return try {
+            fAuth.signInWithCredential(credential).await()
+            ResponseWrapper.Success(null)
+        } catch (e: Exception) {
+            ResponseWrapper.Error(context.getString(R.string.error_msg))
+        }
+    }
+
     fun authCallBack(authLiveData: MutableLiveData<AuthState>): PhoneAuthProvider.OnVerificationStateChangedCallbacks {
         return object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
@@ -49,15 +106,6 @@ class AuthRepository @Inject constructor(
             override fun onCodeSent(id: String, token: PhoneAuthProvider.ForceResendingToken) {
                 authLiveData.value = AuthState.SuccessWithCode(id, token)
             }
-        }
-    }
-
-    suspend fun signInWithCredential(credential: AuthCredential): ResponseWrapper<Unit?> {
-        return try {
-            fAuth.signInWithCredential(credential).await()
-            ResponseWrapper.Success(null)
-        } catch (e: Exception) {
-            ResponseWrapper.Error(context.getString(R.string.error_msg))
         }
     }
 }

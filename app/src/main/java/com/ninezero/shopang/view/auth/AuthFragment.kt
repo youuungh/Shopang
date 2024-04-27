@@ -1,8 +1,11 @@
 package com.ninezero.shopang.view.auth
 
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_CANCELED
+import android.app.Activity.RESULT_OK
 import android.app.Dialog
 import android.content.Intent
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -17,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentAuthBinding
 import com.ninezero.shopang.model.PhoneVerification
@@ -37,6 +42,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
     R.layout.fragment_auth
 ), CustomDialogInterface {
     private val authViewModel by activityViewModels<AuthViewModel>()
+    private val userInfoViewModel by activityViewModels<UserInfoViewModel>()
 
     @Inject
     lateinit var fAuth: FirebaseAuth
@@ -123,6 +129,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
         authViewModel.googleAuthLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseWrapper.Success -> {
+                    // create user info
                     navigateToHomeFragment()
                     loading.hide()
                 }
@@ -135,7 +142,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
         }
     }
 
-    fun checkPhoneNumber() = with(binding) {
+    fun startPhoneSignIn() = with(binding) {
         hideKeyBoard(view)
         val input = phoneNumber.text.toString().trim()
         val countryCode = 82
@@ -163,7 +170,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
         }
     }
 
-    fun startGoogleSignInIntent() {
+    fun startGoogleSignIn() {
         loading.show()
         val mGoogleSignInClient = GoogleSignIn.getClient(
             requireContext(),
@@ -171,6 +178,28 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
         )
         val signInIntent = mGoogleSignInClient.signInIntent
         googleSignInLauncher.launch(signInIntent)
+    }
+
+    fun startNaverSignIn() {
+        loading.show()
+        NaverIdLoginSDK.authenticate(requireContext(), object : OAuthLoginCallback {
+            override fun onSuccess() {
+                // create user info
+                navigateToHomeFragment()
+                loading.hide()
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                loading.hide()
+                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                Log.e("NaverSignIn", "Naver 로그인 실패 [$errorCode] : $errorDescription")
+            }
+
+            override fun onError(errorCode: Int, message: String) {
+                onFailure(errorCode, message)
+            }
+        })
     }
 
     private fun isValidPhoneNumber(phoneNumber: String): Boolean {

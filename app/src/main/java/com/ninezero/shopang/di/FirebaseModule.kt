@@ -5,7 +5,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.ninezero.shopang.R
+import com.ninezero.shopang.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,7 +39,7 @@ class FirebaseModule {
     @Provides
     fun provideGoogleSignInOptions(@ApplicationContext context: Context): GoogleSignInOptions {
         return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(context.getString(R.string.client_id))
+            .requestIdToken(BuildConfig.GOOGLE_CLIENT_ID)
             .requestEmail()
             .build()
     }

@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.firestore.auth.User
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentPhoneAuthBinding
 import com.ninezero.shopang.util.LOADING
@@ -44,6 +45,7 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     R.layout.fragment_phone_auth
 ), CustomDialogInterface {
     private val authViewModel by activityViewModels<AuthViewModel>()
+    private val userInfoViewModel by activityViewModels<UserInfoViewModel>()
     private val args by navArgs<PhoneAuthFragmentArgs>()
     private val verification by lazy { args.phoneVerificationData }
     private lateinit var callback: OnBackPressedCallback
@@ -123,6 +125,7 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         authViewModel.authStatusLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseWrapper.Success -> {
+                    // create user info
                     loading.hide()
                     navigateToHomeFragment()
                 }

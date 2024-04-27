@@ -1,5 +1,6 @@
 package com.ninezero.shopang.view.auth
 
+import android.net.Uri
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -82,13 +83,20 @@ class AuthViewModel @Inject constructor(
 
     fun setUserInfoLiveData() { _userInfoLiveData.value = ResponseWrapper.Idle() }
 
+    fun uploadUserInfo(userName: String, profileImageUri: Uri) {
+        _userInfoLiveData.value = ResponseWrapper.Loading()
+        viewModelScope.launch(IO) {
+            _userInfoLiveData.postValue(authRepository.uploadUserInfo(userName, profileImageUri))
+        }
+    }
+
     fun processGoogleSignInResult(task: Task<GoogleSignInAccount>, errorMsg: String) {
         try {
             val account = task.getResult(ApiException::class.java)!!
             val credential = GoogleAuthProvider.getCredential(account.idToken, null)
             fAuthWithGoogle(credential)
         } catch (e: ApiException) {
-            Log.e("GoogleSignIn", "Google 로그인 실패: ${e.message}", e)
+            Log.e("GoogleSignIn", "Google 로그인 실패 ${e.message}", e)
             _googleAuthLiveData.value = ResponseWrapper.Error(errorMsg)
         }
     }
