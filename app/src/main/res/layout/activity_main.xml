@@ -24,12 +24,13 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_bar"
+            style="@style/Widget.MaterialComponents.BottomNavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
             app:menu="@menu/nav_menu"
             app:itemBackground="@color/white"
-            app:labelVisibilityMode="unlabeled"
+            app:labelVisibilityMode="labeled"
             app:itemTextAppearanceInactive="@style/BottomNavigation.Shopang.InActive.Text"
             app:itemTextAppearanceActive="@style/BottomNavigation.Shopang.Active.Text"
             app:itemTextAppearanceActiveBoldEnabled="false"
