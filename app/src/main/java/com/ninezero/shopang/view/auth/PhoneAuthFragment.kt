@@ -3,6 +3,7 @@ package com.ninezero.shopang.view.auth
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Typeface
+import android.net.Uri
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.StyleSpan
@@ -20,17 +21,18 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
-import com.google.firebase.firestore.auth.User
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentPhoneAuthBinding
 import com.ninezero.shopang.util.LOADING
 import com.ninezero.shopang.util.MAX_ATTEMPTS
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.closeFragment
+import com.ninezero.shopang.util.extension.generateRandomNickname
 import com.ninezero.shopang.util.extension.hide
 import com.ninezero.shopang.util.extension.show
 import com.ninezero.shopang.util.extension.showKeyBoard
 import com.ninezero.shopang.util.extension.showSnack
+import com.ninezero.shopang.util.extension.showToast
 import com.ninezero.shopang.view.BaseFragment
 import com.ninezero.shopang.view.dialog.CustomDialog
 import com.ninezero.shopang.view.dialog.CustomDialogInterface
@@ -45,7 +47,6 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     R.layout.fragment_phone_auth
 ), CustomDialogInterface {
     private val authViewModel by activityViewModels<AuthViewModel>()
-    private val userInfoViewModel by activityViewModels<UserInfoViewModel>()
     private val args by navArgs<PhoneAuthFragmentArgs>()
     private val verification by lazy { args.phoneVerificationData }
     private lateinit var callback: OnBackPressedCallback
@@ -63,6 +64,8 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         }
     }
     private var validPhoneNumber: String = ""
+    private var last: String = ""
+    private var profileImageUri: Uri? = null
     private var isResendTextEnabled = false
     private var isAttempts = 0
 
@@ -125,13 +128,26 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         authViewModel.authStatusLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseWrapper.Success -> {
-                    // create user info
-                    loading.hide()
-                    navigateToHomeFragment()
+                    val userName = last.generateRandomNickname()
+                    authViewModel.uploadUserInfo(userName, profileImageUri, false)
                 }
                 is ResponseWrapper.Error -> {
                     loading.hide()
                     binding.root.showSnack(getString(R.string.error_auth_failed))
+                }
+                else -> loading.show()
+            }
+        }
+        authViewModel.userInfoLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                is ResponseWrapper.Success -> {
+                    showToast(it.data!!)
+                    navigateToHomeFragment()
+                    loading.hide()
+                }
+                is ResponseWrapper.Error -> {
+                    loading.hide()
+                    binding.root.showSnack(it.msg!!)
                 }
                 else -> loading.show()
             }
@@ -250,7 +266,7 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         val countryCode = phoneNumber.substring(0,3)
         val areaCode = phoneNumber.substring(3, 5)
         val middle = phoneNumber.substring(5, 9)
-        val last = phoneNumber.substring(9)
+        last = phoneNumber.substring(9)
         validPhoneNumber = "$countryCode $areaCode-$middle-$last"
 
         val formattedString = getString(R.string.chk_code_from_valid_phone_number, validPhoneNumber)
@@ -294,10 +310,7 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     }
 
     override fun negativeClickListener() { closeFragment() }
-    override fun positiveClickListener() {
-        if (isAttempts > MAX_ATTEMPTS)
-            closeFragment()
-    }
+    override fun positiveClickListener() { if (isAttempts > MAX_ATTEMPTS) closeFragment() }
 
     override fun onDetach() {
         super.onDetach()

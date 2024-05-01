@@ -71,7 +71,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>(
             viewpager.currentItem = 2
         }
         getStart.setOnClickListener {
-            prefsUtil.onBoardingState = true
+            prefsUtil.onboardingState = true
             navigateToAuthFragment()
         }
     }

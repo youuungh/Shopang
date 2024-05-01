@@ -110,6 +110,9 @@ dependencies {
     // PagerDotsIndicator
     implementation(libs.dotsindicator)
 
+    // CircleImageView
+    implementation(libs.circleimageview)
+
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)

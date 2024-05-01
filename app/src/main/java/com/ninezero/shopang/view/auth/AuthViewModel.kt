@@ -59,6 +59,12 @@ class AuthViewModel @Inject constructor(
 
     private var countDownTimer: CountDownTimer? = null
 
+    fun isUserLoggedIn(): Boolean = authRepository.isUserLoggedIn()
+
+    fun authCallBack() = authRepository.authCallBack(_authLiveData)
+
+    fun setAuthLiveData(authState: AuthState) { _authLiveData.value = authState }
+
     fun startCountDown() {
         countDownTimer?.cancel()
         _isTimerRunning.value = true
@@ -77,16 +83,17 @@ class AuthViewModel @Inject constructor(
         }.start()
     }
 
-    fun isUserLoggedIn(): Boolean = authRepository.isUserLoggedIn()
+    fun signInAuthCredential(credential: PhoneAuthCredential) {
+        _authStatusLiveData.value = ResponseWrapper.Loading()
+        viewModelScope.launch(IO) {
+            _authStatusLiveData.postValue(authRepository.signInWithCredential(credential))
+        }
+    }
 
-    fun setAuthLiveData(authState: AuthState) { _authLiveData.value = authState }
-
-    fun setUserInfoLiveData() { _userInfoLiveData.value = ResponseWrapper.Idle() }
-
-    fun uploadUserInfo(userName: String, profileImageUri: Uri) {
+    fun uploadUserInfo(userName: String, profileImageUri: Uri?, isUpdate: Boolean) {
         _userInfoLiveData.value = ResponseWrapper.Loading()
         viewModelScope.launch(IO) {
-            _userInfoLiveData.postValue(authRepository.uploadUserInfo(userName, profileImageUri))
+            _userInfoLiveData.postValue(authRepository.uploadUserInfo(userName, profileImageUri, isUpdate))
         }
     }
 
@@ -106,13 +113,4 @@ class AuthViewModel @Inject constructor(
             _googleAuthLiveData.postValue(authRepository.signInWithCredential(credential))
         }
     }
-
-    fun signInAuthCredential(credential: PhoneAuthCredential) {
-        _authStatusLiveData.value = ResponseWrapper.Loading()
-        viewModelScope.launch(IO) {
-            _authStatusLiveData.postValue(authRepository.signInWithCredential(credential))
-        }
-    }
-
-    fun authCallBack() = authRepository.authCallBack(_authLiveData)
 }

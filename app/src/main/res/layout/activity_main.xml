@@ -18,7 +18,6 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:fitsSystemWindows="true"
             app:defaultNavHost="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -29,7 +28,11 @@
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
             app:menu="@menu/nav_menu"
+            app:itemBackground="@color/white"
+            app:labelVisibilityMode="unlabeled"
+            app:itemTextAppearanceInactive="@style/BottomNavigation.Shopang.InActive.Text"
             app:itemTextAppearanceActive="@style/BottomNavigation.Shopang.Active.Text"
+            app:itemTextAppearanceActiveBoldEnabled="false"
             app:itemHorizontalTranslationEnabled="false"
             app:layout_constraintBottom_toBottomOf="parent" />
 

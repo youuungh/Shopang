@@ -13,10 +13,16 @@ class PrefsUtil @Inject constructor(
 ) {
     fun getSharedPrefs(): SharedPreferences { return sharedPrefs }
 
-    var onBoardingState: Boolean
-        get() = sharedPrefs.getBoolean(Pref.ONBOARDING_SHOWN, false)
+    var onboardingState: Boolean
+        get() = sharedPrefs.getBoolean(Pref.ONBOARDING_STATE, false)
         set(value) = sharedPrefs.edit {
-            putBoolean(Pref.ONBOARDING_SHOWN, value)
+            putBoolean(Pref.ONBOARDING_STATE, value)
+        }
+
+    var naverState: Boolean
+        get() = sharedPrefs.getBoolean(Pref.NAVER_STATE, false)
+        set(value) = sharedPrefs.edit {
+            putBoolean(Pref.NAVER_STATE, value)
         }
 
 }

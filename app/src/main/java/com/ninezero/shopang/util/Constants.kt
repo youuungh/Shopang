@@ -26,7 +26,8 @@ object Argument {
     const val ONBOARDING_POSITION = "onboarding_position"
 }
 object Pref {
-    const val ONBOARDING_SHOWN = "onboarding_shown"
+    const val ONBOARDING_STATE = "onboarding_state"
+    const val NAVER_STATE = "naver_state"
 }
 object Theme {
     const val DYNAMIC = "dynamic"

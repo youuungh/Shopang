@@ -7,30 +7,18 @@ import kotlinx.parcelize.Parcelize
 data class UserInfo(
     val userUid: String = "",
     val userName: String,
-    val profileImageUrl: String,
+    val profileImageUrl: String? = null,
 ): Parcelable {
 
-    fun toMapWithoutProfileImage(): MutableMap<String, Any> {
-        return mutableMapOf(
+    fun toMap(): Map<String, Any?> = mapOf(
             "userUid" to userUid,
-            "userName" to userName
-        )
-    }
-
-}
-
-fun UserInfo.toMap(): Map<String, Any> {
-    return mapOf(
-        "userUid" to userUid,
-        "userName" to userName,
-        "profileImageUrl" to profileImageUrl
+            "userName" to userName,
+            "profileImageUrl" to profileImageUrl
     )
 }
 
-fun mapToUserInfo(map: Map<String, Any>): UserInfo {
-    return UserInfo(
+fun mapToUserInfo(map: Map<String, Any>): UserInfo = UserInfo(
         userUid = map["userUid"].toString(),
         userName = map["userName"].toString(),
-        profileImageUrl = map["profileImageUrl"].toString()
-    )
-}
+        profileImageUrl = map["profileImageUrl"] as? String
+)

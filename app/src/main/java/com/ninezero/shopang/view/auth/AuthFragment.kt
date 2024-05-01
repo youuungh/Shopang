@@ -5,6 +5,7 @@ import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.app.Dialog
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -29,6 +30,7 @@ import com.ninezero.shopang.util.AuthState
 import com.ninezero.shopang.util.LOADING
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.showSnack
+import com.ninezero.shopang.util.extension.showToast
 import com.ninezero.shopang.view.BaseFragment
 import com.ninezero.shopang.view.dialog.CustomDialog
 import com.ninezero.shopang.view.dialog.CustomDialogInterface
@@ -56,12 +58,13 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
 
     private var id: String? = null
     private var token: PhoneAuthProvider.ForceResendingToken? = null
+    private var profileImageUri: Uri? = null
     private var timeOut: Long = 0
     private var validPhoneNumber: String = ""
 
     private val googleSignInLauncher: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            val data: Intent? = result.data
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            val data: Intent? = it.data
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             authViewModel.processGoogleSignInResult(task, getString(R.string.error_msg))
         }
@@ -129,7 +132,22 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
         authViewModel.googleAuthLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseWrapper.Success -> {
-                    // create user info
+                    val account = GoogleSignIn.getLastSignedInAccount(requireContext())
+                    val userName = account?.displayName ?: account?.email?.substringBefore("@") ?: ""
+                    profileImageUri = account?.photoUrl
+                    authViewModel.uploadUserInfo(userName, profileImageUri, false)
+                }
+                is ResponseWrapper.Error -> {
+                    loading.hide()
+                    binding.root.showSnack(it.msg!!)
+                }
+                else -> loading.show()
+            }
+        }
+        authViewModel.userInfoLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                is ResponseWrapper.Success -> {
+                    showToast(it.data!!)
                     navigateToHomeFragment()
                     loading.hide()
                 }

@@ -66,6 +66,15 @@
         <item name="iconSize">24dp</item>
     </style>
 
+    <!-- ImageView -->
+
+    <style name="Widget.Shopang.ImageView.Icon" parent="">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="tint">?attr/colorOnSurfaceVariant</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+
     <!-- TextInputLayout -->
 
     <style name="Widget.Shopang.TextInputLayout.OutlinedBox" parent="Widget.Material3.TextInputLayout.OutlinedBox">
@@ -123,6 +132,24 @@
         <item name="maxLines">1</item>
     </style>
 
+    <!-- MaterialCardView -->
+
+    <style name="Widget.Shopang.CardView.Text" parent="Widget.Material3.CardView.Filled">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="contentPadding">16dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardCornerRadius">16dp</item>
+    </style>
+
+    <style name="Widget.Shopang.CardView.Outlined" parent="Widget.Material3.CardView.Outlined">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="contentPadding">16dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardCornerRadius">16dp</item>
+    </style>
+
     <!-- SnackBar -->
 
     <style name="Widget.Shopang.Snackbar" parent="Widget.Material3.Snackbar">
@@ -169,6 +196,11 @@
     <!-- BottomNavigation -->
 
     <style name="BottomNavigation.Shopang.Active.Text" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="fontFamily">@font/google_sans_medium</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="BottomNavigation.Shopang.InActive.Text" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="fontFamily">@font/google_sans_regular</item>
         <item name="android:textSize">12sp</item>
     </style>
@@ -193,6 +225,56 @@
         <item name="android:capitalize">none</item>
         <item name="android:singleLine">false</item>
         <item name="android:maxLines">4</item>
+    </style>
+
+    <!-- List Item -->
+
+    <style name="Widget.Shopang.LinearLayout.ListItem" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="Widget.Shopang.LinearLayout.ListItem.SingleLine" parent="Widget.Shopang.LinearLayout.ListItem">
+        <item name="android:minHeight">56dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <style name="Widget.Shopang.LinearLayout.ListItem.SingleLine.Clickable" parent="Widget.Shopang.LinearLayout.ListItem.SingleLine">
+        <item name="android:background">@drawable/ripple_list_item</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="Widget.Shopang.ImageView.ListItem.Icon" parent="">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="tint">?attr/colorOnSurfaceVariant</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+
+    <style name="Widget.Shopang.LinearLayout.ListItem.TextBox" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="Widget.Shopang.LinearLayout.ListItem.TextBox.Stretch" parent="Widget.Shopang.LinearLayout.ListItem.TextBox">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="Widget.Shopang.TextView.ListItem.Title" parent="Widget.Shopang.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
     <!-- MD3 Typography -->

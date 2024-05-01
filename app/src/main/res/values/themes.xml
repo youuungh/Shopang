@@ -10,6 +10,8 @@
 
         <item name="android:fontFamily">@font/google_sans_regular</item>
         <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+        <item name="android:windowLightStatusBar">true</item>
+
         <!-- SnackBar -->
         <item name="snackbarStyle">@style/Widget.Shopang.Snackbar</item>
         <item name="snackbarTextViewStyle">@style/Widget.Shopang.Snackbar.TextView</item>

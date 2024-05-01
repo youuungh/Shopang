@@ -6,14 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ninezero.shopang.R
+import com.ninezero.shopang.databinding.FragmentUserBinding
+import com.ninezero.shopang.view.BaseFragment
 
-class UserFragment : Fragment() {
+class UserFragment : BaseFragment<FragmentUserBinding>(
+    R.layout.fragment_user
+) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user, container, false)
+    override fun initView() {
+        super.initView()
     }
+
+    override fun initListener() {
+        super.initListener()
+    }
+
 }
