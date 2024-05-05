@@ -78,7 +78,9 @@ class AuthRepository @Inject constructor(
     }
 
     suspend fun uploadUserInfo(
+        platform: String,
         userName: String,
+        userAddress: String?,
         profileImageUri: Uri?,
         isUpdate: Boolean
     ): ResponseWrapper<String> {
@@ -86,16 +88,18 @@ class AuthRepository @Inject constructor(
             if (isUpdate) {
                 if (profileImageUri != null) {
                     val imageUrl = uploadProfileImage(profileImageUri)
-                    val userInfo = UserInfo(userUid, userName, imageUrl)
+                    val userInfo = UserInfo(userUid, platform, userName, userAddress, imageUrl)
                     fUserCollection.document(userUid).update(userInfo.toMap()).await()
                 } else {
-                    val userInfo = UserInfo(userUid, userName)
+                    val userInfo = UserInfo(userUid, platform, userName, userAddress)
                     fUserCollection.document(userUid).update(userInfo.toMap()).await()
                 }
+                Log.d("uploadUserInfo", "계정 업데이트 성공")
                 ResponseWrapper.Success(context.getString(R.string.updated_account))
             } else {
-                val userInfo = UserInfo(userUid, userName)
+                val userInfo = UserInfo(userUid, platform, userName, userAddress)
                 fUserCollection.document(userUid).set(userInfo.toMap()).await()
+                Log.d("uploadUserInfo", "계정 생성 성공")
                 ResponseWrapper.Success(context.getString(R.string.success_create_account))
             }
         } catch (e: Exception) {

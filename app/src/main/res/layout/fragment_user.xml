@@ -22,7 +22,7 @@
             style="@style/TextAppearance.Shopang.HeadlineSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="내 프로필"
+            android:text="@string/my_profile"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/scrollView"
             app:layout_constraintStart_toStartOf="@id/start" />
@@ -34,7 +34,8 @@
             app:icon="@drawable/ic_setting"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/scrollView"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:importantForAccessibility="no" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"
@@ -84,7 +85,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:alpha="0.38"
-                        android:text="프로필 수정"
+                        android:text="@string/action_modify_profile"
                         android:textColor="?attr/colorOnSurface" />
 
                     <ImageView
@@ -135,7 +136,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="결제 카드 추가하기" />
+                                android:text="@string/action_add_credit_card" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -172,7 +173,7 @@
 
                                 <TextView
                                     style="@style/Widget.Shopang.TextView.ListItem.Title"
-                                    android:text="주문목록" />
+                                    android:text="@string/action_order_list" />
 
                             </LinearLayout>
 
@@ -196,7 +197,7 @@
 
                                 <TextView
                                     style="@style/Widget.Shopang.TextView.ListItem.Title"
-                                    android:text="배송 주소록" />
+                                    android:text="@string/action_address_list" />
 
                             </LinearLayout>
 
@@ -220,7 +221,7 @@
 
                                 <TextView
                                     style="@style/Widget.Shopang.TextView.ListItem.Title"
-                                    android:text="정보" />
+                                    android:text="@string/action_app_info" />
 
                             </LinearLayout>
 
@@ -254,23 +255,16 @@
                         <ImageView
                             style="@style/Widget.Shopang.ImageView.ListItem.Icon"
                             android:src="@drawable/ic_sign_out"
-                            android:tint="?attr/colorError"
                             tools:ignore="ContentDescription" />
 
                         <LinearLayout style="@style/Widget.Shopang.LinearLayout.ListItem.TextBox.Stretch">
 
                             <TextView
                                 style="@style/Widget.Shopang.TextView.ListItem.Title"
-                                android:text="로그아웃"
+                                android:text="@string/action_sign_out"
                                 android:textColor="?attr/colorError" />
 
                         </LinearLayout>
-
-                        <ImageView
-                            style="@style/Widget.Shopang.ImageView.Icon"
-                            android:layout_marginStart="16dp"
-                            android:src="@drawable/ic_round_chevron_right"
-                            tools:ignore="ContentDescription" />
 
                     </LinearLayout>
 

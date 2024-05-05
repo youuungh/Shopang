@@ -90,10 +90,10 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun uploadUserInfo(userName: String, profileImageUri: Uri?, isUpdate: Boolean) {
+    fun uploadUserInfo(platform: String, userName: String, userAddress: String?, profileImageUri: Uri?, isUpdate: Boolean) {
         _userInfoLiveData.value = ResponseWrapper.Loading()
         viewModelScope.launch(IO) {
-            _userInfoLiveData.postValue(authRepository.uploadUserInfo(userName, profileImageUri, isUpdate))
+            _userInfoLiveData.postValue(authRepository.uploadUserInfo(platform, userName, userAddress, profileImageUri, isUpdate))
         }
     }
 

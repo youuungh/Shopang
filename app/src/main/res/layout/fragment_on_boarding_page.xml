@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <variable
@@ -37,7 +36,7 @@
                     android:textColor="?attr/colorCustomBlue"
                     android:textAlignment="textEnd"
                     android:maxLines="3"
-                    app:text="@{fragment.titleResource}" />
+                    android:text="@{fragment.titleResource}" />
 
                 <TextView
                     android:id="@+id/description"
@@ -50,7 +49,7 @@
                     android:textAlignment="textEnd"
                     android:maxLines="3"
                     android:minLines="3"
-                    app:text="@{fragment.descriptResource}"/>
+                    android:text="@{fragment.descriptResource}"/>
 
             </RelativeLayout>
 
@@ -68,7 +67,7 @@
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
-                    app:imageResource="@{fragment.bgImageResource}" />
+                    android:imageResource="@{fragment.bgImageResource}" />
 
             </FrameLayout>
 

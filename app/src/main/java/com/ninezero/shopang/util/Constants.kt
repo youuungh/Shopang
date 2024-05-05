@@ -6,7 +6,12 @@ const val LOADING = "loading"
 const val COUNT_DOWN_DURATION_MILLIS = 60000L
 const val COUNT_DOWN_INTERVAL = 1000L
 const val MAX_ATTEMPTS = 5
-const val USER_COLLECTION = "User_collection"
+const val USER_COLLECTION = "user_collection"
+const val PHONE = "phone"
+const val GOOGLE = "google"
+const val NAVER = "naver"
+const val FUNCTIONS_URL = "https://asia-northeast3-shopang-48ecf.cloudfunctions.net/"
+
 
 object SettingDefault {
     object Appearance {

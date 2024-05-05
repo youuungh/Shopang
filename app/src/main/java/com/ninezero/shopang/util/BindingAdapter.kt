@@ -4,12 +4,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 
-@BindingAdapter("app:imageResource")
+@BindingAdapter("android:imageResource")
 fun setImageResource(view: ImageView, resource: Int) {
     view.setImageResource(resource)
 }
 
-@BindingAdapter("app:text")
+@BindingAdapter("android:text")
 fun setText(view: TextView, textResId: Int) {
     view.setText(textResId)
 }

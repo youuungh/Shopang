@@ -43,4 +43,5 @@ class FirebaseModule {
             .requestEmail()
             .build()
     }
+
 }

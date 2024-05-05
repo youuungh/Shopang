@@ -1,11 +1,8 @@
 package com.ninezero.shopang.view.auth
 
 import android.annotation.SuppressLint
-import android.app.Activity.RESULT_CANCELED
-import android.app.Activity.RESULT_OK
 import android.app.Dialog
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -14,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.getSystemService
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -22,19 +20,25 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
+import com.navercorp.nid.profile.NidProfileCallback
+import com.navercorp.nid.profile.data.NidProfileResponse
 import com.ninezero.shopang.R
+import com.ninezero.shopang.data.network.FirebaseFunctionsApiClient
 import com.ninezero.shopang.databinding.FragmentAuthBinding
 import com.ninezero.shopang.model.PhoneVerification
 import com.ninezero.shopang.util.AuthState
+import com.ninezero.shopang.util.GOOGLE
 import com.ninezero.shopang.util.LOADING
+import com.ninezero.shopang.util.NAVER
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.showSnack
-import com.ninezero.shopang.util.extension.showToast
 import com.ninezero.shopang.view.BaseFragment
 import com.ninezero.shopang.view.dialog.CustomDialog
 import com.ninezero.shopang.view.dialog.CustomDialogInterface
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
@@ -44,7 +48,6 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
     R.layout.fragment_auth
 ), CustomDialogInterface {
     private val authViewModel by activityViewModels<AuthViewModel>()
-    private val userInfoViewModel by activityViewModels<UserInfoViewModel>()
 
     @Inject
     lateinit var fAuth: FirebaseAuth
@@ -53,12 +56,14 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
     lateinit var googleSignInOptions: GoogleSignInOptions
 
     @Inject
+    lateinit var firebaseFunctionsApiClient: FirebaseFunctionsApiClient
+
+    @Inject
     @Named(LOADING)
     lateinit var loading: Dialog
 
     private var id: String? = null
     private var token: PhoneAuthProvider.ForceResendingToken? = null
-    private var profileImageUri: Uri? = null
     private var timeOut: Long = 0
     private var validPhoneNumber: String = ""
 
@@ -133,9 +138,12 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
             when (it) {
                 is ResponseWrapper.Success -> {
                     val account = GoogleSignIn.getLastSignedInAccount(requireContext())
-                    val userName = account?.displayName ?: account?.email?.substringBefore("@") ?: ""
-                    profileImageUri = account?.photoUrl
-                    authViewModel.uploadUserInfo(userName, profileImageUri, false)
+                    authViewModel.uploadUserInfo(
+                        GOOGLE,
+                        userName = account?.displayName ?: account?.email?.substringBefore("@") ?: "",
+                        userAddress = null,
+                        profileImageUri = null,
+                        false)
                 }
                 is ResponseWrapper.Error -> {
                     loading.hide()
@@ -147,7 +155,6 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
         authViewModel.userInfoLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseWrapper.Success -> {
-                    showToast(it.data!!)
                     navigateToHomeFragment()
                     loading.hide()
                 }
@@ -202,22 +209,70 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
         loading.show()
         NaverIdLoginSDK.authenticate(requireContext(), object : OAuthLoginCallback {
             override fun onSuccess() {
-                // create user info
-                navigateToHomeFragment()
-                loading.hide()
+                getNidProfileAndSignIn()
             }
 
             override fun onFailure(httpStatus: Int, message: String) {
-                loading.hide()
-                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
-                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                Log.e("NaverSignIn", "Naver 로그인 실패 [$errorCode] : $errorDescription")
+                naverSignInFailure(httpStatus, message)
             }
 
             override fun onError(errorCode: Int, message: String) {
                 onFailure(errorCode, message)
             }
         })
+    }
+
+    private fun getNidProfileAndSignIn() {
+        NidOAuthLogin().callProfileApi(object : NidProfileCallback<NidProfileResponse> {
+            override fun onSuccess(result: NidProfileResponse) {
+                val accessToken = NaverIdLoginSDK.getAccessToken()
+                accessToken?.let {
+                    signInWithFirebaseCustomToken(accessToken, result)
+                }
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                naverSignInFailure(httpStatus, message)
+            }
+
+            override fun onError(errorCode: Int, message: String) {
+                onFailure(errorCode, message)
+            }
+        })
+    }
+
+    private fun signInWithFirebaseCustomToken(accessToken: String, result: NidProfileResponse) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            when (val response = firebaseFunctionsApiClient.getFirebaseNaverCustomToken(accessToken)) {
+                is ResponseWrapper.Success -> {
+                    val firebaseToken = response.data
+                    firebaseToken?.let {
+                        fAuth.signInWithCustomToken(firebaseToken)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    authViewModel.uploadUserInfo(
+                                        NAVER,
+                                        userName = result.profile?.name ?: result.profile?.email?.substringBefore("@") ?: "",
+                                        userAddress = null,
+                                        profileImageUri = null,
+                                        false,
+                                    )
+                                    navigateToHomeFragment()
+                                    loading.hide()
+                                }
+                            }
+                    }
+                }
+                else -> loading.show()
+            }
+        }
+    }
+
+    private fun naverSignInFailure(httpStatus: Int, message: String) {
+        loading.hide()
+        val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+        val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+        Log.e("authenticate", "Naver 로그인 실패 [$errorCode] : $errorDescription")
     }
 
     private fun isValidPhoneNumber(phoneNumber: String): Boolean {

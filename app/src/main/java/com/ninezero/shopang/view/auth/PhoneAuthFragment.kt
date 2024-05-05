@@ -25,6 +25,7 @@ import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentPhoneAuthBinding
 import com.ninezero.shopang.util.LOADING
 import com.ninezero.shopang.util.MAX_ATTEMPTS
+import com.ninezero.shopang.util.PHONE
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.closeFragment
 import com.ninezero.shopang.util.extension.generateRandomNickname
@@ -65,7 +66,6 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     }
     private var validPhoneNumber: String = ""
     private var last: String = ""
-    private var profileImageUri: Uri? = null
     private var isResendTextEnabled = false
     private var isAttempts = 0
 
@@ -77,8 +77,8 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
                     showDialog(
                         getString(R.string.phone_auth_dialog_title),
                         getString(R.string.phone_auth_dialog_msg),
-                        getString(R.string.exit),
-                        getString(R.string.keep)
+                        getString(R.string.action_exit),
+                        getString(R.string.action_keep)
                     )
                 } else {
                     closeFragment()
@@ -101,8 +101,8 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
                 showDialog(
                     getString(R.string.phone_auth_dialog_title),
                     getString(R.string.phone_auth_dialog_msg),
-                    getString(R.string.exit),
-                    getString(R.string.keep)
+                    getString(R.string.action_exit),
+                    getString(R.string.action_keep)
                 )
             } else {
                 closeFragment()
@@ -129,7 +129,13 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
             when (it) {
                 is ResponseWrapper.Success -> {
                     val userName = last.generateRandomNickname()
-                    authViewModel.uploadUserInfo(userName, profileImageUri, false)
+                    authViewModel.uploadUserInfo(
+                        PHONE,
+                        userName,
+                        userAddress = null,
+                        profileImageUri = null,
+                        false
+                    )
                 }
                 is ResponseWrapper.Error -> {
                     loading.hide()
@@ -141,7 +147,6 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         authViewModel.userInfoLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseWrapper.Success -> {
-                    showToast(it.data!!)
                     navigateToHomeFragment()
                     loading.hide()
                 }
@@ -221,7 +226,7 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
                 getString(R.string.phone_auth_failed_dialog_title),
                 getString(R.string.phone_auth_failed_dialog_msg),
                 null,
-                getString(R.string.confirm),
+                getString(R.string.action_confirm),
                 true
             )
         } else {

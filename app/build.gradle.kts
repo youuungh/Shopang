@@ -79,6 +79,11 @@ dependencies {
     // Retrofit2
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation(libs.retrofit2.kotlin.coroutines.adapter)
+
+    // Okhttp3
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
 
     // LifeCycle
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
