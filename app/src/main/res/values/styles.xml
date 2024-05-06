@@ -19,6 +19,16 @@
         <item name="android:hyphenationFrequency">full</item>
     </style>
 
+    <style name="Widget.Shopang.TextView.Label" parent="Widget.Shopang.TextView">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="Widget.Shopang.TextView.Paragraph" parent="Widget.Shopang.TextView">
+        <item name="android:justificationMode" tools:targetApi="o">inter_word</item>
+    </style>
+
     <style name="Widget.Shopang.TextView.Medium" parent="Widget.Shopang.TextView">
         <item name="android:fontFamily">@font/google_sans_medium</item>
         <item name="fontFamily">@font/google_sans_medium</item>

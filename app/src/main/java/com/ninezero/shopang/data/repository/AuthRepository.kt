@@ -95,7 +95,7 @@ class AuthRepository @Inject constructor(
                     fUserCollection.document(userUid).update(userInfo.toMap()).await()
                 }
                 Log.d("uploadUserInfo", "계정 업데이트 성공")
-                ResponseWrapper.Success(context.getString(R.string.updated_account))
+                ResponseWrapper.Success(context.getString(R.string.success_updated_account))
             } else {
                 val userInfo = UserInfo(userUid, platform, userName, userAddress)
                 fUserCollection.document(userUid).set(userInfo.toMap()).await()

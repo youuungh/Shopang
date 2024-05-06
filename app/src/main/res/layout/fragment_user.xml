@@ -54,6 +54,9 @@
                     android:id="@+id/profileImage"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
+                    android:src="@drawable/ic_placeholder"
+                    imageUrl="@{userInfo != null ? userInfo.profileImageUrl : ``}"
+                    app:civ_border_color="@color/custom_background"
                     app:civ_border_width="1dp"
                     app:layout_constraintStart_toStartOf="@id/inner_start"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -62,9 +65,11 @@
                     android:id="@+id/userName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="10dp"
+                    android:text="@{userInfo != null ? userInfo.userName : ``}"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textAlignment="center"
                     app:layout_constraintTop_toTopOf="@id/profileImage"
                     app:layout_constraintBottom_toTopOf="@id/modify"
@@ -75,8 +80,9 @@
                     android:id="@+id/modify"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="10dp"
                     android:orientation="horizontal"
+                    android:onClick="@{()-> fragment.navigateToEditProfileFragment()}"
                     app:layout_constraintTop_toBottomOf="@id/userName"
                     app:layout_constraintBottom_toBottomOf="@id/profileImage"
                     app:layout_constraintStart_toEndOf="@id/profileImage">
@@ -136,7 +142,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/action_add_credit_card" />
+                                android:text="@string/action_add_credit_card"
+                                android:textColor="?attr/colorOnSurfaceVariant" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -186,7 +193,8 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            style="@style/Widget.Shopang.LinearLayout.ListItem.SingleLine.Clickable">
+                            style="@style/Widget.Shopang.LinearLayout.ListItem.SingleLine.Clickable"
+                            android:onClick="@{()-> fragment.navigateToAddressFragment()}">
 
                             <ImageView
                                 style="@style/Widget.Shopang.ImageView.ListItem.Icon"
@@ -250,7 +258,8 @@
                     app:layout_constraintEnd_toEndOf="parent">
 
                     <LinearLayout
-                        style="@style/Widget.Shopang.LinearLayout.ListItem.SingleLine.Clickable">
+                        style="@style/Widget.Shopang.LinearLayout.ListItem.SingleLine.Clickable"
+                        android:onClick="@{()->fragment.signOut()}">
 
                         <ImageView
                             style="@style/Widget.Shopang.ImageView.ListItem.Icon"

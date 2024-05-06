@@ -49,7 +49,17 @@
         android:id="@+id/userFragment"
         android:name="com.ninezero.shopang.view.main.user.UserFragment"
         android:label="fragment_user"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_userFragment_to_authFragment"
+            app:destination="@id/authFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.ninezero.shopang.view.main.search.SearchFragment"
@@ -69,5 +79,19 @@
             app:popUpTo="@id/authFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.ninezero.shopang.view.main.user.EditProfileFragment"
+        android:label="EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile" >
+        <action
+            android:id="@+id/action_editProfileFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addressFragment"
+        android:name="com.ninezero.shopang.view.main.user.AddressFragment"
+        android:label="AddressFragment"
+        tools:layout="@layout/fragment_address" />
 
 </navigation>

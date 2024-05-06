@@ -58,9 +58,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
         if (prefsUtil.onboardingState) {
             val isUserLoggedIn = authViewModel.isUserLoggedIn()
-            val isNaverLoggedIn = prefsUtil.naverState
-
-            if (isUserLoggedIn || isNaverLoggedIn) {
+            if (isUserLoggedIn) {
                 navGraph.setStartDestination(R.id.homeFragment)
             } else {
                 navGraph.setStartDestination(R.id.authFragment)
