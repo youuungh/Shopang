@@ -10,9 +10,9 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         tools:context=".view.main.user.AddressFragment">
 
         <com.google.android.material.button.MaterialButton
@@ -50,25 +50,22 @@
                 android:paddingBottom="24dp">
 
                 <TextView
-                    android:id="@+id/labelZipcode"
+                    android:id="@+id/labelPostcode"
                     style="@style/Widget.Shopang.TextView.Label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/zip_code"
+                    android:text="@string/postcode_and_address"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="@id/inner_start"
                     app:layout_constraintEnd_toEndOf="@id/inner_end" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/zipcodeLayout"
+                    android:id="@+id/postcodeLayout"
                     style="@style/Widget.Shopang.TextInputLayout.FilledBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:layout_marginHorizontal="6dp"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
                     android:textColorHint="@color/box_text_hint"
                     app:hintTextColor="@color/box_text_hint"
                     app:endIconMode="clear_text"
@@ -78,14 +75,17 @@
                     app:boxCornerRadiusTopEnd="6dp"
                     app:boxCornerRadiusBottomStart="6dp"
                     app:boxCornerRadiusBottomEnd="6dp"
-                    app:layout_constraintTop_toBottomOf="@id/labelZipcode"
+                    app:layout_constraintTop_toBottomOf="@id/labelPostcode"
                     app:layout_constraintStart_toStartOf="@id/inner_start"
                     app:layout_constraintEnd_toEndOf="@id/inner_end">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/zipcode"
+                        android:id="@+id/postcode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:paddingVertical="12dp"
                         android:textAlignment="center" />
 
@@ -98,9 +98,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:layout_marginHorizontal="6dp"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
                     android:textColorHint="@color/box_text_hint"
                     app:hintTextColor="@color/box_text_hint"
                     app:endIconMode="clear_text"
@@ -110,7 +107,7 @@
                     app:boxCornerRadiusTopEnd="6dp"
                     app:boxCornerRadiusBottomStart="6dp"
                     app:boxCornerRadiusBottomEnd="6dp"
-                    app:layout_constraintTop_toBottomOf="@id/zipcodeLayout"
+                    app:layout_constraintTop_toBottomOf="@id/postcodeLayout"
                     app:layout_constraintStart_toStartOf="@id/inner_start"
                     app:layout_constraintEnd_toEndOf="@id/inner_end">
 
@@ -118,8 +115,11 @@
                         android:id="@+id/address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="12dp"
-                        android:ellipsize="end"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:paddingVertical="13dp"
+                        android:textSize="13sp"
                         android:textAlignment="center" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -134,8 +134,9 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginHorizontal="6dp"
                     android:paddingVertical="10dp"
-                    app:cornerRadius="6dp"
                     android:text="@string/action_search_address"
+                    android:onClick="@{()-> fragment.openAddressWebView()}"
+                    app:cornerRadius="6dp"
                     app:layout_constraintTop_toBottomOf="@id/addressLayout"
                     app:layout_constraintStart_toStartOf="@id/inner_start"
                     app:layout_constraintEnd_toEndOf="@id/inner_end" />
@@ -199,13 +200,25 @@
 
         </androidx.core.widget.NestedScrollView>
 
+        <View
+            android:id="@+id/anchor"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_gravity="start"
+            android:background="?attr/colorTertiary"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/set"
+            app:layout_constraintStart_toStartOf="@id/start"
+            app:layout_constraintEnd_toEndOf="@id/end" />
+
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/save"
+            android:id="@+id/set"
             style="@style/Widget.Shopang.Button.UnelevatedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="@string/action_save"
+            android:text="@string/action_set"
+            android:onClick="@{()-> fragment.setAddress()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/start"
             app:layout_constraintEnd_toEndOf="@id/end" />

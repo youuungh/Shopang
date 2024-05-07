@@ -17,12 +17,20 @@ fun View.hide() {
     visibility = View.GONE
 }
 
-fun View.showSnack(msg: String, length: Int = Snackbar.LENGTH_SHORT) {
-    Snackbar.make(this, msg, length).show()
+fun View.showSnack(msg: String, length: Int = Snackbar.LENGTH_SHORT, anchor: View? = null) {
+    val snackbar = Snackbar.make(this, msg, length)
+    anchor?.let {
+        snackbar.setAnchorView(it)
+    }
+    snackbar.show()
 }
 
-fun View.showSnack(@StringRes resId: Int, length: Int = Snackbar.LENGTH_SHORT) {
-    showSnack(resId, length)
+fun View.showSnack(@StringRes resId: Int, length: Int = Snackbar.LENGTH_SHORT, anchor: View? = null) {
+    val snackbar = Snackbar.make(this, resId, length)
+    anchor?.let {
+        snackbar.setAnchorView(it)
+    }
+    snackbar.show()
 }
 
 fun ImageView.loadImageFromUrl(url: String) {

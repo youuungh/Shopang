@@ -25,6 +25,12 @@ class UserInfoViewModel @Inject constructor(
         getUserInfo()
     }
 
+    fun updateUserAddress(address: String) {
+        viewModelScope.launch(IO) {
+            authRepository.updateUserAddress(address)
+        }
+    }
+
     private fun getUserInfo() {
         viewModelScope.launch(IO) {
             authRepository.getUserInfo(_userInfoLiveData)

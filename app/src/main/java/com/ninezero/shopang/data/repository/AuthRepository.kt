@@ -86,14 +86,13 @@ class AuthRepository @Inject constructor(
     ): ResponseWrapper<String> {
         return try {
             if (isUpdate) {
-                if (profileImageUri != null) {
+                val userInfo = if (profileImageUri != null) {
                     val imageUrl = uploadProfileImage(profileImageUri)
-                    val userInfo = UserInfo(userUid, platform, userName, userAddress, imageUrl)
-                    fUserCollection.document(userUid).update(userInfo.toMap()).await()
+                    UserInfo(userUid, platform, userName, userAddress, imageUrl)
                 } else {
-                    val userInfo = UserInfo(userUid, platform, userName, userAddress)
-                    fUserCollection.document(userUid).update(userInfo.toMap()).await()
+                    UserInfo(userUid, platform, userName, userAddress, null)
                 }
+                fUserCollection.document(userUid).update(userInfo.toMap()).await()
                 Log.d("uploadUserInfo", "계정 업데이트 성공")
                 ResponseWrapper.Success(context.getString(R.string.success_updated_account))
             } else {
@@ -107,10 +106,21 @@ class AuthRepository @Inject constructor(
         }
     }
 
+    suspend fun updateUserAddress(userAddress: String): ResponseWrapper<Unit?> {
+        return try {
+            fUserCollection.document(userUid).update(mapOf("userAddress" to userAddress)).await()
+            ResponseWrapper.Success(null)
+        } catch (e: Exception) {
+            ResponseWrapper.Error(context.getString(R.string.error_msg))
+        }
+    }
+
     private suspend fun uploadProfileImage(profileImageUri: Uri): String {
         val fileName = "${USER_COLLECTION}/${System.currentTimeMillis()}.jpg"
-        val task = fStorage.reference.child(fileName).putFile(profileImageUri)
+        val inputStream = context.contentResolver.openInputStream(profileImageUri)
+        val task = fStorage.reference.child(fileName).putStream(inputStream!!)
         val result = task.await()
+        inputStream.close()
         return result.storage.downloadUrl.await().toString()
     }
 }

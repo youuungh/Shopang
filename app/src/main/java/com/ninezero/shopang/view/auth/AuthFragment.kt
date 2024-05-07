@@ -143,7 +143,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
                         userName = account?.displayName ?: account?.email?.substringBefore("@") ?: "",
                         userAddress = null,
                         profileImageUri = null,
-                        false)
+                        isUpdate = false)
                 }
                 is ResponseWrapper.Error -> {
                     loading.hide()
@@ -255,7 +255,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
                                         userName = result.profile?.name ?: result.profile?.email?.substringBefore("@") ?: "",
                                         userAddress = null,
                                         profileImageUri = null,
-                                        false,
+                                        isUpdate = false,
                                     )
                                     navigateToHomeFragment()
                                     loading.hide()

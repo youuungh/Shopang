@@ -134,7 +134,7 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
                         userName,
                         userAddress = null,
                         profileImageUri = null,
-                        false
+                        isUpdate = false
                     )
                 }
                 is ResponseWrapper.Error -> {

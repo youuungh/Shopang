@@ -16,7 +16,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         tools:context=".view.main.user.EditProfileFragment">
 
         <com.google.android.material.button.MaterialButton
@@ -58,12 +57,23 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:src="@drawable/ic_placeholder"
-                    imageUrl="@{userInfo != null ? userInfo.profileImageUrl : ``}"
+                    android:onClick="@{()-> fragment.editProfileImage()}"
                     app:civ_border_color="@color/custom_background"
                     app:civ_border_width="1dp"
                     app:layout_constraintStart_toStartOf="@id/inner_start"
                     app:layout_constraintEnd_toEndOf="@id/inner_end"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    imageUrl="@{userInfo != null ? userInfo.profileImageUrl : ``}" />
+
+                <ImageView
+                    android:id="@+id/addProfileImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="3dp"
+                    android:src="@drawable/ic_add_profile"
+                    app:layout_constraintBottom_toBottomOf="@+id/profileImage"
+                    app:layout_constraintEnd_toEndOf="@+id/profileImage" />
 
                 <TextView
                     android:id="@+id/labelName"
@@ -180,6 +190,17 @@
 
         </androidx.core.widget.NestedScrollView>
 
+        <View
+            android:id="@+id/anchor"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_gravity="start"
+            android:background="?attr/colorTertiary"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/save"
+            app:layout_constraintStart_toStartOf="@id/start"
+            app:layout_constraintEnd_toEndOf="@id/end" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/save"
             style="@style/Widget.Shopang.Button.UnelevatedButton"
@@ -187,6 +208,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:text="@string/action_save"
+            android:onClick="@{()-> fragment.saveProfile()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/start"
             app:layout_constraintEnd_toEndOf="@id/end" />

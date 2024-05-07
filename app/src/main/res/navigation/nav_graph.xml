@@ -92,6 +92,15 @@
         android:id="@+id/addressFragment"
         android:name="com.ninezero.shopang.view.main.user.AddressFragment"
         android:label="AddressFragment"
-        tools:layout="@layout/fragment_address" />
+        tools:layout="@layout/fragment_address" >
+        <action
+            android:id="@+id/action_addressFragment_to_addressWebView"
+            app:destination="@id/addressWebView" />
+    </fragment>
+    <fragment
+        android:id="@+id/addressWebView"
+        android:name="com.ninezero.shopang.view.main.user.AddressWebView"
+        android:label="AddressWebView"
+        tools:layout="@layout/address_web_view" />
 
 </navigation>
