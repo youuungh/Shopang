@@ -31,8 +31,11 @@ object Argument {
     const val ONBOARDING_POSITION = "onboarding_position"
 }
 object Pref {
+    const val IS_FIRST_OPENED = "is_first_opened"
     const val ONBOARDING_STATE = "onboarding_state"
-    const val NAVER_STATE = "naver_state"
+    const val PHONE_SIGNED_IN_STATE = "phone_signed_in_state"
+    const val GOOGLE_SIGNED_IN_STATE = "google_signed_in_state"
+    const val NAVER_SIGNED_IN_STATE = "naver_signed_in_state"
 }
 object Theme {
     const val DYNAMIC = "dynamic"

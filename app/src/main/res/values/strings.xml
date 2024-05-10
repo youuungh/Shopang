@@ -53,6 +53,7 @@
     <string name="success_create_account">계정이 생성됨</string>
     <string name="success_sign_out">로그아웃됨</string>
     <string name="success_updated_account">업데이트됨</string>
+    <string name="success_address">배송 주소 설정됨</string>
     <string name="chk_internet_connection">인터넷 연결을 확인해주세요</string>
     <string name="chk_empty_postcode_and_address">우편번호 또는 주소를 확인해주세요</string>
     <string name="chk_empty_user_name">이름을 입력해주세요</string>

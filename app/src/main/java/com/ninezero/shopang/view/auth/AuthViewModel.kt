@@ -14,9 +14,14 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.PhoneAuthCredential
 import com.ninezero.shopang.data.repository.AuthRepository
+import com.ninezero.shopang.model.UserInfo
 import com.ninezero.shopang.util.AuthState
 import com.ninezero.shopang.util.COUNT_DOWN_DURATION_MILLIS
 import com.ninezero.shopang.util.COUNT_DOWN_INTERVAL
+import com.ninezero.shopang.util.GOOGLE
+import com.ninezero.shopang.util.NAVER
+import com.ninezero.shopang.util.PHONE
+import com.ninezero.shopang.util.PrefsUtil
 import com.ninezero.shopang.util.ResponseWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -30,8 +35,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
+    private val prefsUtil: PrefsUtil,
     private val authRepository: AuthRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _authLiveData = MutableLiveData<AuthState>()
     val authLiveData: LiveData<AuthState>
@@ -41,9 +47,9 @@ class AuthViewModel @Inject constructor(
     val authStatusLiveData: LiveData<ResponseWrapper<Unit?>>
         get() = _authStatusLiveData
 
-    private val _userInfoLiveData = MutableLiveData<ResponseWrapper<String>>()
-    val userInfoLiveData: LiveData<ResponseWrapper<String>>
-        get() = _userInfoLiveData
+    private val _authInfoLiveData = MutableLiveData<ResponseWrapper<String>>()
+    val authInfoLiveData: LiveData<ResponseWrapper<String>>
+        get() = _authInfoLiveData
 
     private val _googleAuthLiveData = MutableLiveData<ResponseWrapper<Unit?>>()
     val googleAuthLiveData
@@ -61,9 +67,25 @@ class AuthViewModel @Inject constructor(
 
     fun isUserLoggedIn(): Boolean = authRepository.isUserLoggedIn()
 
+    fun checkSignInPlatform(platform: String) {
+        when (platform) {
+            PHONE -> prefsUtil.phoneSignedIn = true
+            GOOGLE -> prefsUtil.googleSignedIn = true
+            NAVER -> prefsUtil.naverSignedIn = true
+        }
+    }
+
     fun authCallBack() = authRepository.authCallBack(_authLiveData)
 
-    fun setAuthLiveData(authState: AuthState) { _authLiveData.value = authState }
+    fun setAuthLiveData(authState: AuthState) {
+        Log.d("AuthViewModel", "setAuthLiveData()")
+        _authLiveData.value = authState
+    }
+
+    fun resetUserInfoLiveData() {
+        Log.d("AuthViewModel", "resetUserInfoLiveData()")
+        _authInfoLiveData.value = ResponseWrapper.Idle()
+    }
 
     fun startCountDown() {
         countDownTimer?.cancel()
@@ -84,16 +106,34 @@ class AuthViewModel @Inject constructor(
     }
 
     fun signInAuthCredential(credential: PhoneAuthCredential) {
+        Log.d("AuthViewModel", "signInAuthCredential()")
         _authStatusLiveData.value = ResponseWrapper.Loading()
         viewModelScope.launch(IO) {
             _authStatusLiveData.postValue(authRepository.signInWithCredential(credential))
         }
     }
 
-    fun uploadUserInfo(platform: String, userName: String, userAddress: String?, profileImageUri: Uri?, isUpdate: Boolean) {
-        _userInfoLiveData.value = ResponseWrapper.Loading()
-        viewModelScope.launch(IO) {
-            _userInfoLiveData.postValue(authRepository.uploadUserInfo(platform, userName, userAddress, profileImageUri, isUpdate))
+    fun uploadUserInfo(
+        platform: String,
+        userName: String,
+        userAddress: String?,
+        profileImageUri: Uri?,
+        isUpload: Boolean,
+        isUpdate: Boolean
+    ) {
+        Log.d("AuthViewModel", "uploadUserInfo()")
+        _authInfoLiveData.value = ResponseWrapper.Loading()
+        viewModelScope.launch {
+            _authInfoLiveData.postValue(
+                authRepository.uploadUserInfo(
+                    platform,
+                    userName,
+                    userAddress,
+                    profileImageUri,
+                    isUpload,
+                    isUpdate
+                )
+            )
         }
     }
 
@@ -109,6 +149,7 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun fAuthWithGoogle(credential: AuthCredential) {
+        Log.d("AuthViewModel", "fAuthWithGoogle()")
         viewModelScope.launch {
             _googleAuthLiveData.postValue(authRepository.signInWithCredential(credential))
         }

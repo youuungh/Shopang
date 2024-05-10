@@ -1,5 +1,6 @@
 package com.ninezero.shopang.view.auth
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,19 +22,25 @@ class UserInfoViewModel @Inject constructor(
     val userInfoLiveData : LiveData<ResponseWrapper<UserInfo>>
         get() = _userInfoLiveData
 
-    init {
-        getUserInfo()
+    fun getUserInfo() {
+        authRepository.getUserInfo(_userInfoLiveData)
+    }
+
+    fun getUserInfoRealTime() {
+        viewModelScope.launch(IO) {
+            authRepository.getUserInfoRealTime(_userInfoLiveData)
+        }
+    }
+
+    fun updateUserName(name: String) {
+        viewModelScope.launch(IO) {
+            authRepository.updateUserName(name)
+        }
     }
 
     fun updateUserAddress(address: String) {
         viewModelScope.launch(IO) {
             authRepository.updateUserAddress(address)
-        }
-    }
-
-    private fun getUserInfo() {
-        viewModelScope.launch(IO) {
-            authRepository.getUserInfo(_userInfoLiveData)
         }
     }
 

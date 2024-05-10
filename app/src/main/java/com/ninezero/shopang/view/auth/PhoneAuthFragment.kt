@@ -7,6 +7,7 @@ import android.net.Uri
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -14,8 +15,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.getSystemService
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
@@ -26,6 +27,7 @@ import com.ninezero.shopang.databinding.FragmentPhoneAuthBinding
 import com.ninezero.shopang.util.LOADING
 import com.ninezero.shopang.util.MAX_ATTEMPTS
 import com.ninezero.shopang.util.PHONE
+import com.ninezero.shopang.util.PrefsUtil
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.closeFragment
 import com.ninezero.shopang.util.extension.generateRandomNickname
@@ -33,7 +35,6 @@ import com.ninezero.shopang.util.extension.hide
 import com.ninezero.shopang.util.extension.show
 import com.ninezero.shopang.util.extension.showKeyBoard
 import com.ninezero.shopang.util.extension.showSnack
-import com.ninezero.shopang.util.extension.showToast
 import com.ninezero.shopang.view.BaseFragment
 import com.ninezero.shopang.view.dialog.CustomDialog
 import com.ninezero.shopang.view.dialog.CustomDialogInterface
@@ -48,9 +49,13 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
     R.layout.fragment_phone_auth
 ), CustomDialogInterface {
     private val authViewModel by activityViewModels<AuthViewModel>()
+    private val userInfoViewModel by viewModels<UserInfoViewModel>()
     private val args by navArgs<PhoneAuthFragmentArgs>()
     private val verification by lazy { args.phoneVerificationData }
     private lateinit var callback: OnBackPressedCallback
+
+    @Inject
+    lateinit var prefsUtil: PrefsUtil
 
     @Inject
     lateinit var fAuth: FirebaseAuth
@@ -64,10 +69,13 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
             listOf(et1, et2, et3, et4, et5, et6)
         }
     }
+
     private var validPhoneNumber: String = ""
     private var last: String = ""
     private var isResendTextEnabled = false
     private var isAttempts = 0
+
+    private var userInfo: com.ninezero.shopang.model.UserInfo? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -128,35 +136,60 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         authViewModel.authStatusLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseWrapper.Success -> {
-                    val userName = last.generateRandomNickname()
-                    authViewModel.uploadUserInfo(
-                        PHONE,
-                        userName,
-                        userAddress = null,
-                        profileImageUri = null,
-                        isUpdate = false
-                    )
+                    if (prefsUtil.phoneSignedIn) {
+                        loadUserInfo()
+                    } else {
+                        uploadUserInfo()
+                    }
                 }
+
                 is ResponseWrapper.Error -> {
                     loading.hide()
                     binding.root.showSnack(getString(R.string.error_auth_failed))
                 }
+
                 else -> loading.show()
             }
         }
-        authViewModel.userInfoLiveData.observe(viewLifecycleOwner) {
-            when (it) {
-                is ResponseWrapper.Success -> {
-                    navigateToHomeFragment()
-                    loading.hide()
-                }
-                is ResponseWrapper.Error -> {
-                    loading.hide()
-                    binding.root.showSnack(it.msg!!)
-                }
-                else -> loading.show()
+        authViewModel.authInfoLiveData.observe(viewLifecycleOwner) {
+            if (it is ResponseWrapper.Success) {
+                closeFragment()
+                loading.hide()
             }
         }
+    }
+
+    private fun loadUserInfo() {
+        userInfoViewModel.getUserInfo()
+        userInfoViewModel.userInfoLiveData.observe(viewLifecycleOwner) { response ->
+            if (response is ResponseWrapper.Success) {
+                userInfo = response.data
+                userInfo?.let {
+                    authViewModel.uploadUserInfo(
+                        PHONE,
+                        userName = it.userName,
+                        userAddress = it.userAddress,
+                        profileImageUri = it.profileImageUrl?.let { uri -> Uri.parse(uri) },
+                        isUpload = false,
+                        isUpdate = true
+                    )
+                    authViewModel.checkSignInPlatform(PHONE)
+                }
+            }
+        }
+    }
+
+    private fun uploadUserInfo() {
+        val userName = last.generateRandomNickname()
+        authViewModel.uploadUserInfo(
+            PHONE,
+            userName,
+            userAddress = null,
+            profileImageUri = null,
+            isUpload = true,
+            isUpdate = false
+        )
+        authViewModel.checkSignInPlatform(PHONE)
     }
 
     private fun setupCodeInputWatcher() {
@@ -268,7 +301,7 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
 
     private fun formatPhoneNumber() {
         val phoneNumber = verification.phoneNumber
-        val countryCode = phoneNumber.substring(0,3)
+        val countryCode = phoneNumber.substring(0, 3)
         val areaCode = phoneNumber.substring(3, 5)
         val middle = phoneNumber.substring(5, 9)
         last = phoneNumber.substring(9)
@@ -278,7 +311,12 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         val spannableString = SpannableString(formattedString)
         val start = formattedString.indexOf(validPhoneNumber)
         val end = start + validPhoneNumber.length
-        spannableString.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableString.setSpan(
+            StyleSpan(Typeface.BOLD),
+            start,
+            end,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         binding.description.text = spannableString
     }
 
@@ -309,13 +347,13 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         }
     }
 
-    private fun navigateToHomeFragment() {
-        val action = PhoneAuthFragmentDirections.actionPhoneAuthFragmentToHomeFragment()
-        findNavController().navigate(action)
+    override fun negativeClickListener() {
+        closeFragment()
     }
 
-    override fun negativeClickListener() { closeFragment() }
-    override fun positiveClickListener() { if (isAttempts > MAX_ATTEMPTS) closeFragment() }
+    override fun positiveClickListener() {
+        if (isAttempts > MAX_ATTEMPTS) closeFragment()
+    }
 
     override fun onDetach() {
         super.onDetach()

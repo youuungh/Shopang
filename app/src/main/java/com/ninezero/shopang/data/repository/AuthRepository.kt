@@ -30,7 +30,9 @@ class AuthRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
-    private val userUid by lazy { fAuth.uid!! }
+    private val userUid: String?
+        get() = fAuth.uid
+
     private val fUserCollection by lazy { fStore.collection(USER_COLLECTION) }
 
     init {
@@ -65,16 +67,42 @@ class AuthRepository @Inject constructor(
     }
 
     fun getUserInfo(userInfoLiveData: MutableLiveData<ResponseWrapper<UserInfo>>) {
-        fUserCollection
-            .document(userUid)
-            .addSnapshotListener { value, _ ->
-                if (value != null && value.exists()) {
-                    val userInfo = mapToUserInfo(value.data!!)
-                    userInfoLiveData.postValue(ResponseWrapper.Success(userInfo))
-                } else {
+        userUid?.let {
+            fUserCollection
+                .document(userUid!!)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        val userInfo = mapToUserInfo(document.data!!)
+                        Log.d("AuthRepository", "getUserInfo 성공")
+                        userInfoLiveData.postValue(ResponseWrapper.Success(userInfo))
+                    } else {
+                        Log.d("AuthRepository", "getUserInfo 실패")
+                        userInfoLiveData.postValue(ResponseWrapper.Error(context.getString(R.string.error_msg)))
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("AuthRepository", "getUserInfo 실패: ${exception.message}")
                     userInfoLiveData.postValue(ResponseWrapper.Error(context.getString(R.string.error_msg)))
                 }
-            }
+        }
+    }
+
+    fun getUserInfoRealTime(userInfoLiveData: MutableLiveData<ResponseWrapper<UserInfo>>) {
+        userUid?.let {
+            fUserCollection
+                .document(userUid!!)
+                .addSnapshotListener { value, _ ->
+                    if (value != null && value.exists()) {
+                        val userInfo = mapToUserInfo(value.data!!)
+                        Log.d("AuthRepository", "getUserInfoRealTime 성공")
+                        userInfoLiveData.postValue(ResponseWrapper.Success(userInfo))
+                    } else {
+                        Log.d("AuthRepository", "getUserInfoRealTime 실패")
+                        userInfoLiveData.postValue(ResponseWrapper.Error(context.getString(R.string.error_msg)))
+                    }
+                }
+        }
     }
 
     suspend fun uploadUserInfo(
@@ -82,22 +110,24 @@ class AuthRepository @Inject constructor(
         userName: String,
         userAddress: String?,
         profileImageUri: Uri?,
+        isUpload: Boolean,
         isUpdate: Boolean
     ): ResponseWrapper<String> {
         return try {
+            val imageUrl = if (isUpload && profileImageUri != null) {
+                uploadProfileImage(profileImageUri)
+            } else {
+                profileImageUri?.toString()
+            }
+
+            val userInfo = UserInfo(userUid!!, platform, userName, userAddress, imageUrl)
+
             if (isUpdate) {
-                val userInfo = if (profileImageUri != null) {
-                    val imageUrl = uploadProfileImage(profileImageUri)
-                    UserInfo(userUid, platform, userName, userAddress, imageUrl)
-                } else {
-                    UserInfo(userUid, platform, userName, userAddress, null)
-                }
-                fUserCollection.document(userUid).update(userInfo.toMap()).await()
+                fUserCollection.document(userUid!!).update(userInfo.toMap()).await()
                 Log.d("uploadUserInfo", "계정 업데이트 성공")
                 ResponseWrapper.Success(context.getString(R.string.success_updated_account))
             } else {
-                val userInfo = UserInfo(userUid, platform, userName, userAddress)
-                fUserCollection.document(userUid).set(userInfo.toMap()).await()
+                fUserCollection.document(userUid!!).set(userInfo.toMap()).await()
                 Log.d("uploadUserInfo", "계정 생성 성공")
                 ResponseWrapper.Success(context.getString(R.string.success_create_account))
             }
@@ -106,9 +136,18 @@ class AuthRepository @Inject constructor(
         }
     }
 
+    suspend fun updateUserName(userName: String): ResponseWrapper<Unit?> {
+        return try {
+            fUserCollection.document(userUid!!).update(mapOf("userName" to userName)).await()
+            ResponseWrapper.Success(null)
+        } catch (e: Exception) {
+            ResponseWrapper.Error(context.getString(R.string.error_msg))
+        }
+    }
+
     suspend fun updateUserAddress(userAddress: String): ResponseWrapper<Unit?> {
         return try {
-            fUserCollection.document(userUid).update(mapOf("userAddress" to userAddress)).await()
+            fUserCollection.document(userUid!!).update(mapOf("userAddress" to userAddress)).await()
             ResponseWrapper.Success(null)
         } catch (e: Exception) {
             ResponseWrapper.Error(context.getString(R.string.error_msg))
@@ -116,9 +155,17 @@ class AuthRepository @Inject constructor(
     }
 
     private suspend fun uploadProfileImage(profileImageUri: Uri): String {
-        val fileName = "${USER_COLLECTION}/${System.currentTimeMillis()}.jpg"
+        val fileName = "${USER_COLLECTION}/$userUid.jpg"
         val inputStream = context.contentResolver.openInputStream(profileImageUri)
-        val task = fStorage.reference.child(fileName).putStream(inputStream!!)
+        val reference = fStorage.reference.child(fileName)
+
+        try {
+            reference.delete().await()
+        } catch (e: Exception) {
+            Log.d("uploadProfileImage", "기존 이미지 없음")
+        }
+
+        val task = reference.putStream(inputStream!!)
         val result = task.await()
         inputStream.close()
         return result.storage.downloadUrl.await().toString()

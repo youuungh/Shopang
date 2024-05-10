@@ -3,6 +3,7 @@ package com.ninezero.shopang.view.auth
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.getSystemService
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -32,6 +34,7 @@ import com.ninezero.shopang.util.AuthState
 import com.ninezero.shopang.util.GOOGLE
 import com.ninezero.shopang.util.LOADING
 import com.ninezero.shopang.util.NAVER
+import com.ninezero.shopang.util.PrefsUtil
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.showSnack
 import com.ninezero.shopang.view.BaseFragment
@@ -48,9 +51,13 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
     R.layout.fragment_auth
 ), CustomDialogInterface {
     private val authViewModel by activityViewModels<AuthViewModel>()
+    private val userInfoViewModel by viewModels<UserInfoViewModel>()
 
     @Inject
     lateinit var fAuth: FirebaseAuth
+
+    @Inject
+    lateinit var prefsUtil: PrefsUtil
 
     @Inject
     lateinit var googleSignInOptions: GoogleSignInOptions
@@ -64,6 +71,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
 
     private var id: String? = null
     private var token: PhoneAuthProvider.ForceResendingToken? = null
+    private var userInfo: com.ninezero.shopang.model.UserInfo? = null
     private var timeOut: Long = 0
     private var validPhoneNumber: String = ""
 
@@ -101,22 +109,26 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
                     authViewModel.setAuthLiveData(AuthState.Idle)
                     loading.hide()
                 }
+
                 is AuthState.SuccessWithCredential -> {
                     authViewModel.signInAuthCredential(it.data)
                     authViewModel.setAuthLiveData(AuthState.Idle)
                     loading.hide()
                 }
+
                 is AuthState.Error -> {
                     loading.hide()
-                    when (it.error){
+                    when (it.error) {
                         is FirebaseAuthInvalidCredentialsException -> {
                             binding.root.showSnack(getString(R.string.chk_internet_connection))
                         }
+
                         else -> {
                             binding.root.showSnack(getString(R.string.error_msg))
                         }
                     }
                 }
+
                 is AuthState.Loading -> loading.show()
                 is AuthState.Idle -> loading.hide()
             }
@@ -124,45 +136,36 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
         authViewModel.authStatusLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseWrapper.Success -> {
-                    loading.hide()
-                    navigateToHomeFragment()
+                    Log.d("AuthFragment", "authViewModel.authStatusLiveData")
                 }
+
                 is ResponseWrapper.Error -> {
                     loading.hide()
                     binding.root.showSnack(it.msg!!)
                 }
+
                 else -> loading.show()
             }
         }
         authViewModel.googleAuthLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseWrapper.Success -> {
-                    val account = GoogleSignIn.getLastSignedInAccount(requireContext())
-                    authViewModel.uploadUserInfo(
-                        GOOGLE,
-                        userName = account?.displayName ?: account?.email?.substringBefore("@") ?: "",
-                        userAddress = null,
-                        profileImageUri = null,
-                        isUpdate = false)
+                    handleGoogleAuthInfo()
                 }
+
                 is ResponseWrapper.Error -> {
                     loading.hide()
                     binding.root.showSnack(it.msg!!)
                 }
+
                 else -> loading.show()
             }
         }
-        authViewModel.userInfoLiveData.observe(viewLifecycleOwner) {
-            when (it) {
-                is ResponseWrapper.Success -> {
-                    navigateToHomeFragment()
-                    loading.hide()
-                }
-                is ResponseWrapper.Error -> {
-                    loading.hide()
-                    binding.root.showSnack(it.msg!!)
-                }
-                else -> loading.show()
+        authViewModel.authInfoLiveData.observe(viewLifecycleOwner) {
+            if (it is ResponseWrapper.Success) {
+                Log.d("AuthFragment", "authViewModel.authInfoLiveData")
+                navigateToHomeFragment()
+                loading.hide()
             }
         }
     }
@@ -175,9 +178,11 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
             input.isBlank() -> {
                 root.showSnack(getString(R.string.chk_empty_phone_number))
             }
+
             input.length < 11 || !isValidPhoneNumber(input) -> {
                 root.showSnack(getString(R.string.chk_valid_phone_number))
             }
+
             else -> {
                 if (authViewModel.isTimerRunning.value) {
                     showAlertDialog()
@@ -203,6 +208,40 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
         )
         val signInIntent = mGoogleSignInClient.signInIntent
         googleSignInLauncher.launch(signInIntent)
+    }
+
+    private fun handleGoogleAuthInfo() {
+        if (prefsUtil.googleSignedIn) {
+            userInfoViewModel.getUserInfo()
+            userInfoViewModel.userInfoLiveData.observe(viewLifecycleOwner) { response ->
+                if (response is ResponseWrapper.Success) {
+                    userInfo = response.data
+                    userInfo?.let {
+                        authViewModel.uploadUserInfo(
+                            GOOGLE,
+                            userName = userInfo!!.userName,
+                            userAddress = userInfo!!.userAddress,
+                            profileImageUri = userInfo!!.profileImageUrl?.let { uri -> Uri.parse(uri) },
+                            isUpload = false,
+                            isUpdate = true
+                        )
+                        authViewModel.checkSignInPlatform(GOOGLE)
+                    }
+                }
+            }
+        } else {
+            val account = GoogleSignIn.getLastSignedInAccount(requireContext())
+            authViewModel.uploadUserInfo(
+                GOOGLE,
+                userName = account?.displayName ?: account?.email?.substringBefore("@")
+                ?: "",
+                userAddress = null,
+                profileImageUri = null,
+                isUpload = true,
+                isUpdate = false
+            )
+            authViewModel.checkSignInPlatform(GOOGLE)
+        }
     }
 
     fun startNaverSignIn() {
@@ -243,26 +282,50 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
 
     private fun signInWithFirebaseCustomToken(accessToken: String, result: NidProfileResponse) {
         viewLifecycleOwner.lifecycleScope.launch {
-            when (val response = firebaseFunctionsApiClient.getFirebaseNaverCustomToken(accessToken)) {
+            when (val response =
+                firebaseFunctionsApiClient.getFirebaseNaverCustomToken(accessToken)) {
                 is ResponseWrapper.Success -> {
                     val firebaseToken = response.data
                     firebaseToken?.let {
                         fAuth.signInWithCustomToken(firebaseToken)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    authViewModel.uploadUserInfo(
-                                        NAVER,
-                                        userName = result.profile?.name ?: result.profile?.email?.substringBefore("@") ?: "",
-                                        userAddress = null,
-                                        profileImageUri = null,
-                                        isUpdate = false,
-                                    )
-                                    navigateToHomeFragment()
-                                    loading.hide()
+                                    if (prefsUtil.naverSignedIn) {
+                                        userInfoViewModel.getUserInfo()
+                                        userInfoViewModel.userInfoLiveData.observe(viewLifecycleOwner) { response ->
+                                            if (response is ResponseWrapper.Success) {
+                                                userInfo = response.data
+                                                userInfo?.let {
+                                                    authViewModel.uploadUserInfo(
+                                                        NAVER,
+                                                        userName = it.userName,
+                                                        userAddress = it.userAddress,
+                                                        profileImageUri = it.profileImageUrl?.let { uri -> Uri.parse(uri) },
+                                                        isUpload = false,
+                                                        isUpdate = true,
+                                                    )
+                                                    authViewModel.checkSignInPlatform(NAVER)
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        authViewModel.uploadUserInfo(
+                                            NAVER,
+                                            userName = result.profile?.name
+                                                ?: result.profile?.email?.substringBefore("@")
+                                                ?: "",
+                                            userAddress = null,
+                                            profileImageUri = null,
+                                            isUpload = true,
+                                            isUpdate = false,
+                                        )
+                                        authViewModel.checkSignInPlatform(NAVER)
+                                    }
                                 }
                             }
                     }
                 }
+
                 else -> loading.show()
             }
         }
@@ -332,6 +395,6 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
         findNavController().navigate(action)
     }
 
-    override fun negativeClickListener() { }
-    override fun positiveClickListener() { }
+    override fun negativeClickListener() {}
+    override fun positiveClickListener() {}
 }

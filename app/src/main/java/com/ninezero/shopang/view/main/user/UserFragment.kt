@@ -1,34 +1,31 @@
 package com.ninezero.shopang.view.main.user
 
-import android.app.Dialog
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentUserBinding
-import com.ninezero.shopang.util.LOADING
 import com.ninezero.shopang.util.ResponseWrapper
+import com.ninezero.shopang.util.extension.showSnack
 import com.ninezero.shopang.util.extension.showToast
 import com.ninezero.shopang.view.BaseFragment
+import com.ninezero.shopang.view.auth.AuthViewModel
 import com.ninezero.shopang.view.auth.UserInfoViewModel
 import com.ninezero.shopang.view.dialog.CustomDialog
 import com.ninezero.shopang.view.dialog.CustomDialogInterface
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import javax.inject.Named
 
 @AndroidEntryPoint
 class UserFragment : BaseFragment<FragmentUserBinding>(
     R.layout.fragment_user
 ), CustomDialogInterface {
-    private val userInfoViewModel by activityViewModels<UserInfoViewModel>()
+    private val authViewModel by activityViewModels<AuthViewModel>()
+    private val userInfoViewModel by viewModels<UserInfoViewModel>()
 
     @Inject
     lateinit var fAuth: FirebaseAuth
-
-    @Inject
-    @Named(LOADING)
-    lateinit var loading: Dialog
 
     private var userInfo: com.ninezero.shopang.model.UserInfo? = null
 
@@ -38,17 +35,19 @@ class UserFragment : BaseFragment<FragmentUserBinding>(
     }
 
     private fun observeListener() {
+        userInfoViewModel.getUserInfoRealTime()
         userInfoViewModel.userInfoLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseWrapper.Success -> {
                     userInfo = it.data
                     binding.userInfo = userInfo
-                    loading.hide()
                 }
+
                 is ResponseWrapper.Error -> {
-                    loading.hide()
+                    binding.root.showSnack(it.msg!!, anchor = binding.anchor)
                 }
-                else -> loading.show()
+
+                else -> {}
             }
         }
     }
@@ -100,6 +99,7 @@ class UserFragment : BaseFragment<FragmentUserBinding>(
     override fun negativeClickListener() { }
     override fun positiveClickListener() {
         fAuth.signOut()
+        authViewModel.resetUserInfoLiveData()
         navigateToAuthFragment()
         showToast(getString(R.string.success_sign_out))
     }

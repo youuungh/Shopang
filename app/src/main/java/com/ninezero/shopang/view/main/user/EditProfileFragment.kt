@@ -1,37 +1,41 @@
 package com.ninezero.shopang.view.main.user
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.net.Uri
-import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.getSystemService
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentEditProfileBinding
+import com.ninezero.shopang.util.LOADING
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.closeFragment
 import com.ninezero.shopang.util.extension.showSnack
-import com.ninezero.shopang.util.extension.showToast
 import com.ninezero.shopang.view.BaseFragment
 import com.ninezero.shopang.view.auth.AuthViewModel
 import com.ninezero.shopang.view.auth.UserInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import javax.inject.Named
 
 @AndroidEntryPoint
 class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(
     R.layout.fragment_edit_profile
 ) {
     private val authViewModel by activityViewModels<AuthViewModel>()
-    private val userInfoViewModel by activityViewModels<UserInfoViewModel>()
+    private val userInfoViewModel by viewModels<UserInfoViewModel>()
+
+    @Inject
+    @Named(LOADING)
+    lateinit var loading: Dialog
 
     private var userInfo: com.ninezero.shopang.model.UserInfo? = null
 
@@ -40,6 +44,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(
             binding.profileImage.setImageURI(it)
             binding.profileImage.tag = it
         }
+        loading.hide()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -53,17 +58,23 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(
         }
     }
 
-    override fun initViewModel()  {
+    override fun initViewModel() {
         observeListener()
     }
 
     private fun observeListener() {
+        userInfoViewModel.getUserInfoRealTime()
         userInfoViewModel.userInfoLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseWrapper.Success -> {
                     userInfo = it.data
                     binding.userInfo = userInfo
                 }
+
+                is ResponseWrapper.Error -> {
+                    binding.root.showSnack(it.msg!!, anchor = binding.save)
+                }
+
                 else -> {}
             }
         }
@@ -71,30 +82,38 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(
 
     fun editProfileImage() {
         pickImage.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        loading.show()
     }
 
-    fun saveProfile() = with(binding) {
-        val editedName =  userName.text.toString()
-        if (editedName.isEmpty()) {
-            root.showSnack(getString(R.string.chk_empty_user_name), anchor = save)
-            return@with
-        }
+    fun saveProfile() {
+        with(binding) {
+            val editedName = userName.text.toString()
+            if (editedName.isEmpty()) {
+                root.showSnack(getString(R.string.chk_empty_user_name), anchor = save)
+                return@with
+            }
 
-        val editedProfileImageUri = if (profileImage.tag != null) {
-            profileImage.tag as? Uri
-        } else if (userInfo?.profileImageUrl != null) {
-            Uri.parse(userInfo?.profileImageUrl)
-        } else {
-            null
-        }
+            userInfoViewModel.updateUserName(editedName)
 
-        authViewModel.uploadUserInfo(
-            platform = userInfo!!.platform,
-            userName = editedName,
-            userAddress = userInfo!!.userAddress,
-            profileImageUri = editedProfileImageUri,
-            isUpdate = true
-        )
+            val editedProfileImageUri = if (profileImage.tag != null) {
+                profileImage.tag as? Uri
+            } else if (userInfo?.profileImageUrl != null) {
+                Uri.parse(userInfo?.profileImageUrl)
+            } else {
+                null
+            }
+
+            editedProfileImageUri?.let {
+                authViewModel.uploadUserInfo(
+                    platform = userInfo!!.platform,
+                    userName = editedName,
+                    userAddress = userInfo!!.userAddress,
+                    profileImageUri = editedProfileImageUri,
+                    isUpload = true,
+                    isUpdate = true
+                )
+            }
+        }
         closeFragment()
     }
 

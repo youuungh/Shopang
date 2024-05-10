@@ -1,17 +1,11 @@
 package com.ninezero.shopang.view
 
 import android.os.Bundle
-import android.view.ViewGroup
-import androidx.activity.SystemBarStyle
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
@@ -65,8 +59,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
 
         if (prefsUtil.onboardingState) {
-            val isUserLoggedIn = authViewModel.isUserLoggedIn()
-            if (isUserLoggedIn) {
+            if (authViewModel.isUserLoggedIn()) {
                 navGraph.setStartDestination(R.id.homeFragment)
             } else {
                 navGraph.setStartDestination(R.id.authFragment)
@@ -74,6 +67,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         } else {
             navGraph.setStartDestination(R.id.onBoardingFragment)
         }
+
         navController.graph = navGraph
         navController.addOnDestinationChangedListener(this)
         binding.bottomBar.setupWithNavController(navController)
@@ -88,6 +82,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             R.id.homeFragment, R.id.wishFragment, R.id.cartFragment, R.id.userFragment -> {
                 setBottomNavVisibility(visible = true)
             }
+
             else -> setBottomNavVisibility(visible = false)
         }
     }
