@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ninezero.shopang.R
+import com.ninezero.shopang.databinding.FragmentWishBinding
+import com.ninezero.shopang.view.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-class WishFragment : Fragment() {
+@AndroidEntryPoint
+class WishFragment : BaseFragment<FragmentWishBinding>(
+    R.layout.fragment_wish
+) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_wish, container, false)
-    }
+
 }

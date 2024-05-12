@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ninezero.shopang.R
+import com.ninezero.shopang.databinding.FragmentCartBinding
+import com.ninezero.shopang.view.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-class CartFragment : Fragment() {
+@AndroidEntryPoint
+class CartFragment : BaseFragment<FragmentCartBinding>(
+    R.layout.fragment_cart
+) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cart, container, false)
-    }
+
 }

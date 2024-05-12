@@ -15,6 +15,8 @@
     <string name="input_detail_address">동/호수 입력</string>
     <string name="phone_number">휴대폰 번호</string>
     <string name="count_down">00:%1$02d</string>
+    <string name="my_wish">위시리스트</string>
+    <string name="my_cart">장바구니</string>
     <string name="my_profile">내 프로필</string>
     <string name="menu_home">HOME</string>
     <string name="menu_wish">WISH</string>
@@ -47,6 +49,7 @@
     <string name="action_save">저장하기</string>
     <string name="action_set">설정하기</string>
     <string name="action_search_address">주소찾기</string>
+    <string name="action_order">주문하기</string>
     <string name="error_msg">오류가 발생했습니다, 나중에 다시 시도해주세요</string>
     <string name="error_auth_failed">인증 번호가 일치하지 않습니다</string>
     <string name="error_create_account">계정을 생성할 수 없습니다, 나중에 다시 시도해주세요</string>

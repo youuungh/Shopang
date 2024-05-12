@@ -107,7 +107,7 @@ dependencies {
 
     // Glide
     implementation(libs.glide)
-    annotationProcessor(libs.compiler)
+    kapt(libs.compiler)
 
     // BlurView
     implementation("com.github.Dimezis:BlurView:version-2.0.3")

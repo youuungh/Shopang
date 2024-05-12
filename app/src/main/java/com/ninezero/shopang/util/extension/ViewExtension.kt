@@ -6,8 +6,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.annotation.StringRes
 import androidx.core.content.getSystemService
-import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.ninezero.shopang.di.GlideApp
 
 fun View.show() {
     visibility = View.VISIBLE
@@ -34,14 +34,21 @@ fun View.showSnack(@StringRes resId: Int, length: Int = Snackbar.LENGTH_SHORT, a
 }
 
 fun ImageView.loadImageFromUrl(url: String) {
-    Glide.with(context)
+    GlideApp.with(context)
         .load(url)
         .into(this)
 }
 
 fun ImageView.loadImageFromResource(resId: Int) {
-    Glide.with(context)
+    GlideApp.with(context)
         .load(resId)
+        .into(this)
+}
+
+fun ImageView.loadGifFromResource(gifResId: Int) {
+    GlideApp.with(this.context)
+        .asGif()
+        .load(gifResId)
         .into(this)
 }
 
