@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentUserBinding
+import com.ninezero.shopang.model.UserInfo
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.showSnack
 import com.ninezero.shopang.util.extension.showToast
@@ -27,7 +28,7 @@ class UserFragment : BaseFragment<FragmentUserBinding>(
     @Inject
     lateinit var fAuth: FirebaseAuth
 
-    private var userInfo: com.ninezero.shopang.model.UserInfo? = null
+    private var userInfo: UserInfo? = null
 
     override fun initViewModel() = with(binding) {
         fragment = this@UserFragment

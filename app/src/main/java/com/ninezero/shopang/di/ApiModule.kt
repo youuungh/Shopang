@@ -2,7 +2,9 @@ package com.ninezero.shopang.di
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.ninezero.shopang.BuildConfig
+import com.ninezero.shopang.data.network.ApiService
 import com.ninezero.shopang.data.network.FirebaseFunctionsApiService
+import com.ninezero.shopang.util.API_URL
 import com.ninezero.shopang.util.FUNCTIONS_URL
 import dagger.Module
 import dagger.Provides
@@ -35,6 +37,17 @@ class ApiModule {
 
     @Singleton
     @Provides
+    @Named("ApiRetrofit")
+    fun provideApiRetrofit(httpClient: OkHttpClient) =
+        Retrofit.Builder()
+            .baseUrl(API_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .client(httpClient)
+            .build()
+
+    @Singleton
+    @Provides
     @Named("FirebaseFunctionsRetrofit")
     fun provideFirebaseFunctionsRetrofit(httpClient: OkHttpClient) =
         Retrofit.Builder()
@@ -43,6 +56,11 @@ class ApiModule {
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(httpClient)
             .build()
+
+    @Singleton
+    @Provides
+    fun provideApiService(@Named("ApiRetrofit") retrofit: Retrofit): ApiService =
+        retrofit.create(ApiService::class.java)
 
     @Singleton
     @Provides

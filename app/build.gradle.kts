@@ -118,6 +118,12 @@ dependencies {
     // CircleImageView
     implementation(libs.circleimageview)
 
+    // ImageSlider
+    implementation("com.github.smarteist:autoimageslider:1.4.0")
+
+    // sdp
+    implementation(libs.sdp.android)
+
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)

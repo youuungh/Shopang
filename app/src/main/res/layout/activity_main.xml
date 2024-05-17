@@ -24,7 +24,7 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_bar"
-            style="@style/Widget.MaterialComponents.BottomNavigationView"
+            style="@style/BottomNavigation.Shopang"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"

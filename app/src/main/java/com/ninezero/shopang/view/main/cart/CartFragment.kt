@@ -1,10 +1,5 @@
 package com.ninezero.shopang.view.main.cart
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentCartBinding
 import com.ninezero.shopang.view.BaseFragment

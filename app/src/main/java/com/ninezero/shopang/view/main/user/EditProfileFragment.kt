@@ -3,7 +3,6 @@ package com.ninezero.shopang.view.main.user
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.net.Uri
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -15,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentEditProfileBinding
+import com.ninezero.shopang.model.UserInfo
 import com.ninezero.shopang.util.LOADING
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.closeFragment
@@ -37,7 +37,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(
     @Named(LOADING)
     lateinit var loading: Dialog
 
-    private var userInfo: com.ninezero.shopang.model.UserInfo? = null
+    private var userInfo: UserInfo? = null
 
     private val pickImage = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {
         it?.let {

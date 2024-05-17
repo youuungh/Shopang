@@ -11,6 +11,7 @@ const val PHONE = "phone"
 const val GOOGLE = "google"
 const val NAVER = "naver"
 const val FUNCTIONS_URL = "https://asia-northeast3-shopang-48ecf.cloudfunctions.net/"
+const val API_URL = "https://shopang-api.fly.dev/"
 
 
 object SettingDefault {

@@ -37,7 +37,7 @@
                 android:id="@+id/rvWish"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:paddingTop="16dp"
+                android:paddingTop="@dimen/_8sdp"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toTopOf="parent"

@@ -23,6 +23,7 @@
         <item name="bottomSheetDialogTheme">@style/Theme.Shopang.BottomSheetDialog</item>
 
         <!-- Custom colors -->
+        <item name="colorPrimary">@color/base_theme_colorCustomBlue</item>
         <item name="colorCustomBlue">@color/base_theme_colorCustomBlue</item>
         <item name="colorOnCustomBlue">@color/base_theme_colorOnCustomBlue</item>
         <item name="colorCustomBlueContainer">@color/base_theme_colorCustomBlueContainer</item>

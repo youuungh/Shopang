@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="banner"
+            type="com.ninezero.shopang.model.Banner" />
+        <variable
+            name="onBannerClick"
+            type="com.ninezero.shopang.view.main.adapter.BannerAdapter.OnBannerClickListener" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/bannerImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop"
+            android:onClick="@{()-> onBannerClick.onBannerClick(banner)}"
+            imageUrl="@{banner.bannerImage}"
+            tools:src="@tools:sample/avatars" />
+
+    </RelativeLayout>
+</layout>

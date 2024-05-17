@@ -27,6 +27,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="?attr/actionBarSize"
+            android:layout_marginBottom="56dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +38,7 @@
                 android:id="@+id/rvCart"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:paddingTop="16dp"
+                android:paddingTop="@dimen/_8sdp"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toTopOf="parent"
@@ -52,19 +53,27 @@
                 android:layout_gravity="start"
                 android:background="?attr/colorTertiary"
                 android:visibility="invisible"
-                app:layout_constraintBottom_toTopOf="@id/getOrder"
+                app:layout_constraintBottom_toTopOf="@id/getOrderContainer"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent "/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/getOrder"
-                style="@style/Widget.Shopang.Button.UnelevatedButton"
+            <LinearLayout
+                android:id="@+id/getOrderContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:layout_marginHorizontal="24dp"
-                android:text="@string/action_order"
-                app:layout_constraintBottom_toBottomOf="@id/rvCart" />
+                android:paddingBottom="8dp"
+                android:background="@color/white"
+                app:layout_constraintBottom_toBottomOf="@id/rvCart">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/getOrder"
+                    style="@style/Widget.Shopang.Button.UnelevatedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:text="@string/action_order" />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.motion.widget.MotionLayout>
 
