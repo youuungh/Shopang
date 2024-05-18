@@ -17,11 +17,11 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="@dimen/_140sdp"
+            android:layout_width="@dimen/_145sdp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_6sdp"
             android:onClick="@{()-> onProductClick.onProductClick(product)}"
-            app:strokeWidth="0.5dp"
+            app:strokeWidth="0.8dp"
             app:strokeColor="?attr/colorSurfaceVariant"
             app:cardCornerRadius="@dimen/_8sdp"
             app:cardBackgroundColor="@color/transparent"
@@ -32,8 +32,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/_6sdp">
+                android:layout_height="match_parent">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/imageContainer"
@@ -41,7 +40,7 @@
                     android:layout_height="wrap_content"
                     app:strokeWidth="0dp"
                     app:cardCornerRadius="@dimen/_8sdp"
-                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardBackgroundColor="@color/transparent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
@@ -56,58 +55,70 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:layout_marginHorizontal="@dimen/_6sdp"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:text="@{@string/product_name(product.name, product.capacity, product.quantity, product.quantityType)}"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="@dimen/_6sdp"
+                    android:background="@color/selector_bg_card_view"
                     app:layout_constraintTop_toBottomOf="@+id/imageContainer"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="Name" />
-
-                <TextView
-                    android:id="@+id/price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_6sdp"
-                    android:text="@{String.format(@string/price, (int)product.price)}"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@+id/name"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:text="0,000원"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_6sdp"
-                    android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@id/price"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="@dimen/_9sdp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_star" />
+                    app:layout_constraintBottom_toBottomOf="parent">
 
                     <TextView
-                        android:id="@+id/rate"
+                        android:id="@+id/name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:layout_marginHorizontal="@dimen/_6sdp"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:text="@{@string/product_name(product.name, product.capacity, product.quantity, product.quantityType)}"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="Name" />
+
+                    <TextView
+                        android:id="@+id/price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_3sdp"
-                        android:text="@{String.valueOf(product.rate)}"
-                        android:textSize="@dimen/_9sdp"
-                        android:textColor="@color/box_text_hint"
-                        tools:text="0.0" />
+                        android:layout_marginHorizontal="@dimen/_6sdp"
+                        android:text="@{String.format(@string/price, (int)product.price)}"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold"
+                        android:textColor="@color/custom_red_50"
+                        app:layout_constraintTop_toBottomOf="@+id/name"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="0,000원"/>
 
-                </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/rateContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_6sdp"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toBottomOf="@id/price"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="@dimen/_9sdp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_star" />
+
+                        <TextView
+                            android:id="@+id/rate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_3sdp"
+                            android:text="@{String.valueOf(product.rate)}"
+                            android:textSize="@dimen/_9sdp"
+                            android:textColor="?attr/colorPrimary"
+                            tools:text="0.0" />
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

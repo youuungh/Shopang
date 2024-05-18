@@ -3,6 +3,7 @@ package com.ninezero.shopang.view.main.home
 import android.app.Dialog
 import android.util.Log
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentHomeBinding
 import com.ninezero.shopang.model.Banner
@@ -112,7 +113,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     }
 
     override fun onProductClick(product: Product) {
-        showToast("${product.name} 클릭됨")
+        val action = HomeFragmentDirections.actionHomeFragmentToProductDetailFragment(product)
+        findNavController().navigate(action)
     }
 
     override fun onCategoryClick(category: Category) {

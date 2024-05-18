@@ -14,7 +14,7 @@
     <string name="set_address">배송 주소 설정</string>
     <string name="input_detail_address">동/호수 입력</string>
     <string name="phone_number">휴대폰 번호</string>
-    <string name="recommend">추천</string>
+    <string name="bestseller">베스트셀러</string>
     <string name="price">%,d원</string>
     <string name="product_name">%1$s, %2$s, %3$d%4$s</string>
     <string name="count_down">00:%1$02d</string>
@@ -60,6 +60,7 @@
     <string name="success_sign_out">로그아웃됨</string>
     <string name="success_updated_account">업데이트됨</string>
     <string name="success_address">배송 주소 설정됨</string>
+    <string name="success_add_to_cart">장바구니에 추가됨</string>
     <string name="chk_internet_connection">인터넷 연결을 확인해주세요</string>
     <string name="chk_empty_postcode_and_address">우편번호 또는 주소를 확인해주세요</string>
     <string name="chk_empty_user_name">이름을 입력해주세요</string>
