@@ -21,7 +21,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/back"
             style="@style/Widget.Shopang.Button.IconButton"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/_8sdp"
             android:onClick="@{()-> fragment.onBackPressed()}"
             app:icon="@drawable/ic_arrow_back"
             app:layout_constraintTop_toTopOf="parent"
@@ -48,9 +48,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:paddingBottom="24dp">
+                android:layout_height="match_parent"
+                android:paddingVertical="@dimen/_14sdp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profileImage"
@@ -80,7 +79,7 @@
                     style="@style/Widget.Shopang.TextView.Label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="@dimen/_16sdp"
                     android:text="@string/name"
                     app:layout_constraintTop_toBottomOf="@id/profileImage"
                     app:layout_constraintStart_toStartOf="@id/inner_start"
@@ -122,7 +121,7 @@
                     android:id="@+id/labelAddress"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="@dimen/_16sdp"
                     android:orientation="horizontal"
                     android:onClick="@{()-> fragment.navigateToAddressFragment()}"
                     app:layout_constraintTop_toBottomOf="@id/userNameLayout"
@@ -206,7 +205,7 @@
             style="@style/Widget.Shopang.Button.UnelevatedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="@dimen/_8sdp"
             android:text="@string/action_save"
             android:onClick="@{()-> fragment.saveProfile()}"
             app:layout_constraintBottom_toBottomOf="parent"

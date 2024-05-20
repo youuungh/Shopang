@@ -96,8 +96,9 @@ class PhoneAuthFragment : BaseFragment<FragmentPhoneAuthBinding>(
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
-    override fun initView() {
-        binding.fragment = this@PhoneAuthFragment
+    override fun initView() = with(binding) {
+        applySystemWindowInsets(root)
+        fragment = this@PhoneAuthFragment
         authViewModel.startCountDown()
         formatPhoneNumber()
         setupCodeInputWatcher()

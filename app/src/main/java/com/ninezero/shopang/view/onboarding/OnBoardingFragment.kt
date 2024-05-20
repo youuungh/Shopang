@@ -6,6 +6,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentOnBoardingBinding
 import com.ninezero.shopang.util.PrefsUtil
+import com.ninezero.shopang.util.extension.applyWindowInsets
 import com.ninezero.shopang.view.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -20,6 +21,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding>(
     lateinit var prefsUtil: PrefsUtil
 
     override fun initView() = with(binding) {
+        applyWindowInsets(binding)
         updateOnBoardingUI(0, false)
 
         viewpager.apply {

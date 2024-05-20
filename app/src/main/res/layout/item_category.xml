@@ -41,10 +41,10 @@
                     app:cardBackgroundColor="@color/transparent">
 
                     <ImageView
+                        imageUrl="@{category.image}"
                         android:layout_width="@dimen/_24sdp"
                         android:layout_height="@dimen/_24sdp"
                         android:scaleType="fitCenter"
-                        imageUrl="@{category.image}"
                         tools:src="@tools:sample/avatars" />
 
                 </com.google.android.material.card.MaterialCardView>

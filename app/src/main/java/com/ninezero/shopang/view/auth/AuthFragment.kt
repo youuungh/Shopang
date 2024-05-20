@@ -85,6 +85,7 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
     @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
         with(binding) {
+            applySystemWindowInsets(root)
             fragment = this@AuthFragment
             root.setOnTouchListener { v, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {

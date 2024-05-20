@@ -1,6 +1,10 @@
 package com.ninezero.shopang.view.main.product
 
+import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.ninezero.shopang.R
@@ -19,6 +23,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(
     private val productData by lazy { args.product }
 
     override fun initView() = with(binding) {
+        applyWindowInsets()
         fragment = this@ProductDetailFragment
         product = productData
     }
@@ -46,6 +51,20 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(
 
     fun addProductToCart() {
 
+    }
+
+    private fun applyWindowInsets() = with(binding) {
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(top = insets.top)
+            windowInsets
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(root) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(bottom = insets.bottom)
+            windowInsets
+        }
     }
 
     fun onBackPressed() = closeFragment()

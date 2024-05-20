@@ -10,5 +10,8 @@ class CartFragment : BaseFragment<FragmentCartBinding>(
     R.layout.fragment_cart
 ) {
 
+    override fun initView() = with(binding) {
+        applySystemWindowInsets(root)
+    }
 
 }

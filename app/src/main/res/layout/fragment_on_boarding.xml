@@ -69,9 +69,9 @@
                 style="@style/Widget.Shopang.Button.UnelevatedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
                 android:layout_marginHorizontal="24dp"
-                android:text="시작하기" />
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:text="@string/action_start" />
 
             <LinearLayout
                 android:id="@+id/container"

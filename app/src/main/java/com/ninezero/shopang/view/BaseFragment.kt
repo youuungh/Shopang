@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.google.android.material.transition.MaterialSharedAxis
@@ -47,4 +50,11 @@ abstract class BaseFragment<T : ViewDataBinding>(
     protected open fun initView() {}
     protected open fun initViewModel() {}
     protected open fun initListener() {}
+    protected open fun applySystemWindowInsets(view: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(top = insets.top)
+            WindowInsetsCompat.CONSUMED
+        }
+    }
 }

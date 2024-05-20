@@ -17,7 +17,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/back"
             style="@style/Widget.Shopang.Button.IconButton"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/_8sdp"
             app:icon="@drawable/ic_arrow_back"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/scrollView"

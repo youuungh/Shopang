@@ -18,7 +18,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/back"
             style="@style/Widget.Shopang.Button.IconButton"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/_8sdp"
             android:onClick="@{()-> fragment.onBackPressed()}"
             app:icon="@drawable/ic_arrow_back"
             app:layout_constraintTop_toTopOf="parent"
@@ -46,8 +46,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:paddingBottom="24dp">
+                android:paddingVertical="@dimen/_14sdp">
 
                 <TextView
                     android:id="@+id/labelPostcode"
@@ -64,7 +63,7 @@
                     style="@style/Widget.Shopang.TextInputLayout.FilledBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="@dimen/_6sdp"
                     android:layout_marginHorizontal="6dp"
                     android:textColorHint="@color/box_text_hint"
                     app:hintTextColor="@color/box_text_hint"
@@ -96,7 +95,7 @@
                     style="@style/Widget.Shopang.TextInputLayout.FilledBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="@dimen/_4sdp"
                     android:layout_marginHorizontal="6dp"
                     android:textColorHint="@color/box_text_hint"
                     app:hintTextColor="@color/box_text_hint"
@@ -131,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="@dimen/_4sdp"
                     android:layout_marginHorizontal="6dp"
                     android:paddingVertical="10dp"
                     android:text="@string/action_search_address"
@@ -146,7 +145,7 @@
                     style="@style/Widget.Shopang.TextView.Label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     android:text="@string/detail_address"
                     app:layout_constraintTop_toBottomOf="@id/search"
                     app:layout_constraintStart_toStartOf="@id/inner_start"
@@ -157,7 +156,7 @@
                     style="@style/Widget.Shopang.TextInputLayout.FilledBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="@dimen/_6sdp"
                     android:layout_marginHorizontal="6dp"
                     android:textColorHint="@color/box_text_hint"
                     app:hintEnabled="false"
@@ -216,7 +215,7 @@
             style="@style/Widget.Shopang.Button.UnelevatedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="@dimen/_8sdp"
             android:text="@string/action_set"
             android:onClick="@{()-> fragment.setAddress()}"
             app:layout_constraintBottom_toBottomOf="parent"

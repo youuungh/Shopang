@@ -15,5 +15,7 @@ class WishFragment : BaseFragment<FragmentWishBinding>(
     R.layout.fragment_wish
 ) {
 
-
+    override fun initView() = with(binding) {
+        applySystemWindowInsets(root)
+    }
 }

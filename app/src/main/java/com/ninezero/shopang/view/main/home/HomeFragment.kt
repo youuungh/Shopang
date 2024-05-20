@@ -46,6 +46,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
     override fun initViewModel() = with(binding) {
         fragment = this@HomeFragment
+        applySystemWindowInsets(root)
         observeListener()
     }
 

@@ -31,6 +31,7 @@
     <string name="description_1">간편한 구매 프로세스와\n다양한 결제 옵션</string>
     <string name="description_2">주문한 제품의 배송 상황을\n실시간으로 확인</string>
     <string name="description_3">엄격한 품질 관리와\n신속한 배송 서비스</string>
+    <string name="action_start">시작하기</string>
     <string name="action_back">이전</string>
     <string name="action_close">닫기</string>
     <string name="action_sign_in">로그인</string>
@@ -53,6 +54,7 @@
     <string name="action_set">설정하기</string>
     <string name="action_search_address">주소찾기</string>
     <string name="action_order">주문하기</string>
+    <string name="action_add_cart">장바구니 담기</string>
     <string name="error_msg">오류가 발생했습니다, 나중에 다시 시도해주세요</string>
     <string name="error_auth_failed">인증 번호가 일치하지 않습니다</string>
     <string name="error_create_account">계정을 생성할 수 없습니다, 나중에 다시 시도해주세요</string>

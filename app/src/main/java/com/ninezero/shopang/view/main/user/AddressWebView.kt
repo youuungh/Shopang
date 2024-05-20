@@ -20,6 +20,7 @@ class AddressWebView : BaseFragment<AddressWebViewBinding>(
     @SuppressLint("SetJavaScriptEnabled")
     override fun initView() {
         with(binding) {
+            applySystemWindowInsets(root)
             webView.apply {
                 webViewClient = object : WebViewClient() {
                     override fun onPageFinished(view: WebView?, url: String?) {

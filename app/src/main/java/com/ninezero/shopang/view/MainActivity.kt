@@ -1,6 +1,7 @@
 package com.ninezero.shopang.view
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,6 +20,7 @@ import com.ninezero.shopang.databinding.ActivityMainBinding
 import com.ninezero.shopang.util.PrefsUtil
 import com.ninezero.shopang.util.ThemeUtil
 import com.ninezero.shopang.util.extension.hide
+import com.ninezero.shopang.util.extension.hideSystemUI
 import com.ninezero.shopang.util.extension.show
 import com.ninezero.shopang.view.auth.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,15 +40,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        hideSystemUI()
+        enableEdgeToEdge()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.updatePadding(top = insets.top)
-            WindowInsetsCompat.CONSUMED
-        }
-
         ThemeUtil.setTheme(this, prefsUtil.getSharedPrefs())
 
         setupNavigationController()
@@ -81,9 +77,13 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         when (destination.id) {
             R.id.homeFragment, R.id.wishFragment, R.id.cartFragment, R.id.userFragment -> {
                 setBottomNavVisibility(visible = true)
+                setNavigationBarColor(android.R.color.white)
             }
 
-            else -> setBottomNavVisibility(visible = false)
+            else -> {
+                setBottomNavVisibility(visible = false)
+                setNavigationBarColor(android.R.color.transparent)
+            }
         }
     }
 
@@ -93,5 +93,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         } else {
             bottomBar.hide()
         }
+    }
+
+    private fun setNavigationBarColor(color: Int) {
+        window.navigationBarColor = getColor(color)
     }
 }

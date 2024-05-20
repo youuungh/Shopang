@@ -18,33 +18,158 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.main.product.ProductDetailFragment">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/back"
-            style="@style/Widget.Shopang.Button.IconButton"
-            android:layout_marginStart="8dp"
-            android:onClick="@{()-> fragment.onBackPressed()}"
-            app:icon="@drawable/ic_arrow_back"
-            app:layout_constraintBottom_toTopOf="@id/scrollView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scrollView"
+        
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
-            android:overScrollMode="ifContentScrolls">
+            android:fitsSystemWindows="true">
+            
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                android:background="@color/transparent"
+                collapsingToolbar="@{collapsingToolbarLayout}"
+                collapsingToolbarTitle="@{product.name.toString()}"
+                frameLayout="@{frameLayout}">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/collapsingToolbarLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_280sdp"
+                    android:fitsSystemWindows="true"
+                    app:toolbarId="@id/toolbar"
+                    app:titleCollapseMode="scale"
+                    app:layout_scrollFlags="snap|scroll|exitUntilCollapsed">
+
+                    <FrameLayout
+                        android:id="@+id/frameLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fitsSystemWindows="true">
+
+                        <ImageView
+                            android:layout_width="@dimen/_160sdp"
+                            android:layout_height="@dimen/_160sdp"
+                            android:layout_gravity="center"
+                            imageUrl="@{product.image}"
+                            tools:src="@tools:sample/avatars" />
+
+                    </FrameLayout>
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:navigationIcon="@drawable/ic_arrow_back"
+                        app:layout_collapseMode="pin" />
+
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="ifContentScrolls"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingVertical="@dimen/_14sdp">
+
+                    <TextView
+                        android:id="@+id/productName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/product_name(product.name, product.capacity, product.quantity, product.quantityType)}"
+                        android:textSize="@dimen/_16sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/inner_start"
+                        tools:text="Name" />
+
+                    <TextView
+                        android:id="@+id/productPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:text="@{String.format(@string/price, (int)product.price)}"
+                        android:textSize="@dimen/_18sdp"
+                        android:textColor="?attr/colorPrimary"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@+id/productName"
+                        app:layout_constraintStart_toStartOf="@id/inner_start"
+                        tools:text="0,000원"/>
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/inner_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.03"/>
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/inner_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.97"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <LinearLayout
+            android:id="@+id/getOrderContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingBottom="24dp">
+            android:paddingHorizontal="@dimen/_19sdp"
+            android:paddingTop="@dimen/_4sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addCart"
+                style="@style/Widget.Shopang.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:text="@string/action_add_cart"
+                android:textSize="16sp"/>
 
-        </androidx.core.widget.NestedScrollView>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/getOrder"
+                style="@style/Widget.Shopang.Button.UnelevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/action_order" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.06"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.94"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

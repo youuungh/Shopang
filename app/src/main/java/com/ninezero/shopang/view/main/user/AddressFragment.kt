@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentAddressBinding
+import com.ninezero.shopang.util.extension.applyWindowInsets
 import com.ninezero.shopang.util.extension.closeFragment
 import com.ninezero.shopang.util.extension.showSnack
 import com.ninezero.shopang.view.BaseFragment
@@ -25,6 +26,7 @@ class AddressFragment : BaseFragment<FragmentAddressBinding>(
     @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
         with(binding) {
+            applyWindowInsets(binding)
             fragment = this@AddressFragment
             scrollView.setOnTouchListener { v, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {

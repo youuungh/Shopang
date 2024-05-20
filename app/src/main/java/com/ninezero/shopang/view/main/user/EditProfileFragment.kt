@@ -17,6 +17,7 @@ import com.ninezero.shopang.databinding.FragmentEditProfileBinding
 import com.ninezero.shopang.model.UserInfo
 import com.ninezero.shopang.util.LOADING
 import com.ninezero.shopang.util.ResponseWrapper
+import com.ninezero.shopang.util.extension.applyWindowInsets
 import com.ninezero.shopang.util.extension.closeFragment
 import com.ninezero.shopang.util.extension.showSnack
 import com.ninezero.shopang.view.BaseFragment
@@ -49,6 +50,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun initView() = with(binding) {
+        applyWindowInsets(binding)
         fragment = this@EditProfileFragment
         scrollView.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {

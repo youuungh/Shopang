@@ -71,7 +71,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:paddingTop="@dimen/_6sdp"
-            android:paddingBottom="?attr/actionBarSize"
             android:overScrollMode="never"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

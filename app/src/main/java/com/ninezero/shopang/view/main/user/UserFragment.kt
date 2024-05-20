@@ -32,6 +32,7 @@ class UserFragment : BaseFragment<FragmentUserBinding>(
 
     override fun initViewModel() = with(binding) {
         fragment = this@UserFragment
+        applySystemWindowInsets(root)
         observeListener()
     }
 

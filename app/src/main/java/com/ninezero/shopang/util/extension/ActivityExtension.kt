@@ -1,7 +1,9 @@
 package com.ninezero.shopang.util.extension
 
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -13,6 +15,14 @@ import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigationrail.NavigationRailView
 
 const val ANIM_DURATION = 300L
+
+fun Activity.hideSystemUI() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        window.setDecorFitsSystemWindows(false)
+    } else {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+    }
+}
 
 fun NavigationBarView.show() {
     if (this is NavigationRailView) return

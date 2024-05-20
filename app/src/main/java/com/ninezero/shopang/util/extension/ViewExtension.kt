@@ -1,5 +1,6 @@
 package com.ninezero.shopang.util.extension
 
+import android.graphics.Color
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
@@ -32,6 +33,13 @@ fun View.showSnack(@StringRes resId: Int, length: Int = Snackbar.LENGTH_SHORT, a
     }
     snackbar.show()
 }
+
+fun Int.isDarkColor(): Boolean {
+    val darkness = 1 - (0.299 * Color.red(this) + 0.587 * Color.green(this) + 0.114 * Color.blue(this)) / 255
+    return darkness >= 0.5
+}
+
+fun Int.setTintColor(reverse: Boolean = false): Int = if (this.isDarkColor() xor reverse) Color.WHITE else Color.BLACK
 
 fun ImageView.loadImageFromUrl(url: String) {
     GlideApp.with(context)
