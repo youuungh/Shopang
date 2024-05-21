@@ -11,7 +11,6 @@ data class UserInfo(
     val userAddress: String? = null,
     val profileImageUrl: String? = null,
 ): Parcelable {
-
     fun toMap(): Map<String, Any?> = mapOf(
         "userUid" to userUid,
         "platform" to platform,

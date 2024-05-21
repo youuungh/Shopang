@@ -1,21 +1,37 @@
 package com.ninezero.shopang.data.repository
 
 import android.content.Context
-import android.util.Log
+import androidx.lifecycle.LiveData
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.ninezero.shopang.R
+import com.ninezero.shopang.data.local.WishDao
 import com.ninezero.shopang.data.network.ApiService
 import com.ninezero.shopang.model.Category
 import com.ninezero.shopang.model.Product
+import com.ninezero.shopang.util.CART_COLLECTION
 import com.ninezero.shopang.util.ResponseWrapper
+import com.ninezero.shopang.util.USER_COLLECTION
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @ViewModelScoped
 class HomeRepository @Inject constructor(
     private val apiService: ApiService,
+    private val wishDao: WishDao,
+    private val fAuth: FirebaseAuth,
+    private val fStore: FirebaseFirestore,
     @ApplicationContext private val context: Context
-){
+) {
+
+    private val userUid: String
+        get() = fAuth.uid!!
+
+    private val userCart by lazy {
+        fStore.collection(USER_COLLECTION).document(userUid).collection(CART_COLLECTION)
+    }
 
     private val errorMsg by lazy { context.getString(R.string.error_msg) }
 
@@ -43,7 +59,7 @@ class HomeRepository @Inject constructor(
             Category("vegetable", emptyList(), "https://i.imgur.com/cbEnhhZ.png", "채소"),
             Category("fruit", emptyList(), "https://i.imgur.com/e6U6Y2y.png", "과일"),
             Category("beverage", emptyList(), "https://i.imgur.com/8FbSgvC.png", "음료"),
-            Category("dairy", emptyList(),"https://i.imgur.com/G1ZY381.png", "유제품"),
+            Category("dairy", emptyList(), "https://i.imgur.com/G1ZY381.png", "유제품"),
             Category("seafood", emptyList(), "https://i.imgur.com/CTiCpKk.png", "수산물"),
             Category("livestock", emptyList(), "https://i.imgur.com/z6ZmJCm.png", "축산물")
         )
@@ -51,6 +67,52 @@ class HomeRepository @Inject constructor(
         return categoryList.map { category ->
             val categoryProducts = products.filter { it.category == category.name }
             category.copy(products = categoryProducts)
+        }
+    }
+
+    suspend fun getAllUserProducts(): ResponseWrapper<List<Product>> {
+        return try {
+            val result = userCart.get().await()
+            val products = result.documents.map { Product.fromDocumentSnapshot(it) }
+            ResponseWrapper.Success(products)
+        } catch (e: Exception) {
+            ResponseWrapper.Error(errorMsg)
+        }
+    }
+
+    private suspend fun getProductFromWish(id: String): Boolean {
+        return wishDao.getWishProductById(id) != null
+    }
+
+    fun getProductFromWishLiveData(id: String): LiveData<Product?> =
+        wishDao.getWishProductByIdLiveData(id)
+
+    suspend fun toggleProductInWish(product: Product) {
+        if (getProductFromWish(product.id)) {
+            wishDao.deleteWish(product)
+        } else {
+            wishDao.saveProduct(product)
+        }
+    }
+
+    suspend fun addProductsToCart(
+        list: List<Product>,
+        deleteWishlistProducts : Boolean
+    ): ResponseWrapper<Any> {
+        return try {
+            val cartProductsList = getAllUserProducts().data.orEmpty()
+            list.forEach { product ->
+                cartProductsList.find { it.id == product.id }?.let {
+                    product.quantity += it.quantity
+                }
+                userCart.document(product.id).set(product).await()
+            }
+            if (deleteWishlistProducts) {
+                wishDao.deleteAllWishes()
+            }
+            ResponseWrapper.Success(Any())
+        } catch (e: Exception) {
+            ResponseWrapper.Error(errorMsg)
         }
     }
 }

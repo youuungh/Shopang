@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Shopang</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="lorem_ipsum_medium">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam efficitur consequat elit, id ultricies ipsum malesuada vel. Sed luctus diam quis congue laoreet. Morbi eget eros nec lectus scelerisque sagittis. Aliquam eget quam mi. Nulla facilisi.
+    </string>
 
     <string name="skip">SKIP</string>
     <string name="or">또는</string>
@@ -9,15 +12,19 @@
     <string name="postcode_and_address">우편번호 및 주소</string>
     <string name="address">배송지 주소</string>
     <string name="detail_address">상세주소</string>
+    <string name="detail_info">상세정보</string>
     <string name="no_address">주소가 없습니다</string>
     <string name="edit_profile">프로필 수정</string>
     <string name="set_address">배송 주소 설정</string>
     <string name="input_detail_address">동/호수 입력</string>
     <string name="phone_number">휴대폰 번호</string>
     <string name="bestseller">베스트셀러</string>
+    <string name="nutrition_facts">영양정보</string>
     <string name="price">%,d원</string>
     <string name="product_name">%1$s, %2$s, %3$d%4$s</string>
     <string name="count_down">00:%1$02d</string>
+    <string name="nutrition_value">%.0fg</string>
+    <string name="calories_format">%d Kcal</string>
     <string name="my_wish">위시리스트</string>
     <string name="my_cart">장바구니</string>
     <string name="my_profile">내 프로필</string>
@@ -58,11 +65,14 @@
     <string name="error_msg">오류가 발생했습니다, 나중에 다시 시도해주세요</string>
     <string name="error_auth_failed">인증 번호가 일치하지 않습니다</string>
     <string name="error_create_account">계정을 생성할 수 없습니다, 나중에 다시 시도해주세요</string>
+    <string name="error_max_quantity_reached">최대 구매 가능한 수량입니다</string>
     <string name="success_create_account">계정이 생성됨</string>
     <string name="success_sign_out">로그아웃됨</string>
     <string name="success_updated_account">업데이트됨</string>
     <string name="success_address">배송 주소 설정됨</string>
     <string name="success_add_to_cart">장바구니에 추가됨</string>
+    <string name="success_add_to_wish">위시리스트에 추가됨</string>
+    <string name="success_delete_from_wish">위시리스트에서 삭제됨</string>
     <string name="chk_internet_connection">인터넷 연결을 확인해주세요</string>
     <string name="chk_empty_postcode_and_address">우편번호 또는 주소를 확인해주세요</string>
     <string name="chk_empty_user_name">이름을 입력해주세요</string>

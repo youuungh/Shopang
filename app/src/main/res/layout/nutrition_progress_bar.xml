@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="value"
+            type="Integer" />
+        <variable
+            name="nutrition"
+            type="String" />
+        <variable
+            name="title"
+            type="String" />
+        <variable
+            name="showProgress"
+            type="Boolean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progress="@{value}"
+            android:visibility="@{showProgress? View.VISIBLE: View.INVISIBLE}"
+            app:indicatorSize="@dimen/_42sdp"
+            app:trackColor="?attr/colorSurfaceContainer"
+            app:trackThickness="@dimen/_4sdp"
+            app:indicatorColor="?attr/colorSurfaceDim"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="@id/progress"
+            app:layout_constraintBottom_toBottomOf="@id/progress"
+            app:layout_constraintStart_toStartOf="@id/progress"
+            app:layout_constraintEnd_toEndOf="@id/progress">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{nutrition}"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorPrimary"
+                android:textAlignment="center"
+                tools:text="0g" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{title}"
+                android:textSize="@dimen/_8sdp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                tools:text="영양분" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -7,6 +7,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.annotation.StringRes
 import androidx.core.content.getSystemService
+import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.marginBottom
+import androidx.core.view.marginLeft
+import androidx.core.view.marginRight
+import androidx.core.view.marginTop
 import com.google.android.material.snackbar.Snackbar
 import com.ninezero.shopang.di.GlideApp
 
@@ -33,13 +40,6 @@ fun View.showSnack(@StringRes resId: Int, length: Int = Snackbar.LENGTH_SHORT, a
     }
     snackbar.show()
 }
-
-fun Int.isDarkColor(): Boolean {
-    val darkness = 1 - (0.299 * Color.red(this) + 0.587 * Color.green(this) + 0.114 * Color.blue(this)) / 255
-    return darkness >= 0.5
-}
-
-fun Int.setTintColor(reverse: Boolean = false): Int = if (this.isDarkColor() xor reverse) Color.WHITE else Color.BLACK
 
 fun ImageView.loadImageFromUrl(url: String) {
     GlideApp.with(context)
@@ -85,5 +85,35 @@ fun View.showKeyBoard() {
 
             }
         }
+    }
+}
+
+fun View.doOnApplyWindowInsets(
+    windowInsetsListener: (
+        insetView: View,
+        windowInsets: WindowInsetsCompat,
+        initialPadding: Insets,
+        initialMargins: Insets
+    ) -> Unit
+) {
+    val initialPadding = Insets.of(paddingLeft, paddingTop, paddingRight, paddingBottom)
+    val initialMargins = Insets.of(marginLeft, marginTop, marginRight, marginBottom)
+
+    ViewCompat.setOnApplyWindowInsetsListener(this) { insetView, windowInsets ->
+        windowInsets.also {
+            windowInsetsListener(insetView, windowInsets, initialPadding, initialMargins)
+        }
+    }
+
+    addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+        override fun onViewAttachedToWindow(v: View) {
+            v.requestApplyInsets()
+        }
+
+        override fun onViewDetachedFromWindow(v: View) = Unit
+    })
+
+    if (isAttachedToWindow) {
+        requestApplyInsets()
     }
 }

@@ -31,28 +31,47 @@ class HomeViewModel @Inject constructor(
 
     private var isDataLoaded = false
 
-    fun setCartProductValue() {
-        _cartProductsLiveData.value = ResponseWrapper.Idle()
+    fun loadData() {
+        if (!isDataLoaded) {
+            getProducts()
+            getCategories()
+            isDataLoaded = true
+        }
     }
 
     fun getProducts() {
-        if (!isDataLoaded) {
-            _productsLiveData.value = ResponseWrapper.Loading()
-            viewModelScope.launch(IO) {
-                _productsLiveData.postValue(homeRepository.getProducts())
-                isDataLoaded = true
-            }
+        _productsLiveData.value = ResponseWrapper.Loading()
+        viewModelScope.launch(IO) {
+            _productsLiveData.postValue(homeRepository.getProducts())
         }
     }
 
     fun getCategories() {
-        if (!isDataLoaded) {
-            _categoriesLiveData.value = ResponseWrapper.Loading()
-            viewModelScope.launch(IO) {
-                _categoriesLiveData.postValue(homeRepository.getCategories())
-                isDataLoaded = true
-            }
+        _categoriesLiveData.value = ResponseWrapper.Loading()
+        viewModelScope.launch(IO) {
+            _categoriesLiveData.postValue(homeRepository.getCategories())
         }
+    }
+
+    fun wishProductLiveData(id: String): LiveData<Product?> =
+        homeRepository.getProductFromWishLiveData(id)
+
+    fun toggleProductInWishlist(product: Product) {
+        viewModelScope.launch(IO) {
+            homeRepository.toggleProductInWish(product)
+        }
+    }
+
+    fun addProductToCart(product: Product) {
+        viewModelScope.launch(IO) {
+            _cartProductsLiveData.postValue(
+                homeRepository.addProductsToCart(listOf(product), deleteWishlistProducts = false)
+            )
+        }
+    }
+
+    fun setCartProductsIdle() {
+        _cartProductsLiveData.value = ResponseWrapper.Idle()
     }
 
     override fun onCleared() {

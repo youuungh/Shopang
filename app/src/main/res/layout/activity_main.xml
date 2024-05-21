@@ -8,7 +8,6 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.MainActivity">
@@ -28,14 +27,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
-            app:menu="@menu/nav_menu"
-            app:itemBackground="@color/white"
+            android:background="?android:attr/windowBackground"
+            app:itemBackground="?android:attr/windowBackground"
             app:labelVisibilityMode="labeled"
+            app:itemHorizontalTranslationEnabled="false"
+            app:itemTextAppearanceActiveBoldEnabled="false"
             app:itemTextAppearanceInactive="@style/BottomNavigation.Shopang.InActive.Text"
             app:itemTextAppearanceActive="@style/BottomNavigation.Shopang.Active.Text"
-            app:itemTextAppearanceActiveBoldEnabled="false"
-            app:itemHorizontalTranslationEnabled="false"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/nav_menu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

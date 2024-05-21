@@ -7,12 +7,13 @@ const val COUNT_DOWN_DURATION_MILLIS = 60000L
 const val COUNT_DOWN_INTERVAL = 1000L
 const val MAX_ATTEMPTS = 5
 const val USER_COLLECTION = "user_collection"
+const val CART_COLLECTION = "cart_collection"
 const val PHONE = "phone"
 const val GOOGLE = "google"
 const val NAVER = "naver"
+const val WISH_DB = "WishDatabase"
 const val FUNCTIONS_URL = "https://asia-northeast3-shopang-48ecf.cloudfunctions.net/"
 const val API_URL = "https://shopang-api.fly.dev/"
-
 
 object SettingDefault {
     object Appearance {

@@ -18,53 +18,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.main.product.ProductDetailFragment">
-        
+
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinatorLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true">
-            
+
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
                 android:background="@color/transparent"
-                collapsingToolbar="@{collapsingToolbarLayout}"
-                collapsingToolbarTitle="@{product.name.toString()}"
-                frameLayout="@{frameLayout}">
+                android:fitsSystemWindows="true">
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:id="@+id/collapsingToolbarLayout"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_280sdp"
                     android:fitsSystemWindows="true"
-                    app:toolbarId="@id/toolbar"
-                    app:titleCollapseMode="scale"
-                    app:layout_scrollFlags="snap|scroll|exitUntilCollapsed">
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    app:titleCollapseMode="fade"
+                    app:toolbarId="@id/toolbar">
 
-                    <FrameLayout
-                        android:id="@+id/frameLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fitsSystemWindows="true">
+                    <ImageView
+                        imageUrl="@{product.image}"
+                        android:layout_width="@dimen/_160sdp"
+                        android:layout_height="@dimen/_160sdp"
+                        android:layout_gravity="center"
+                        android:fitsSystemWindows="true"
+                        android:importantForAccessibility="no"
+                        android:scaleType="fitCenter"
+                        tools:src="@tools:sample/avatars" />
 
-                        <ImageView
-                            android:layout_width="@dimen/_160sdp"
-                            android:layout_height="@dimen/_160sdp"
-                            android:layout_gravity="center"
-                            imageUrl="@{product.image}"
-                            tools:src="@tools:sample/avatars" />
+                    <ImageView
+                        android:id="@+id/wish"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_gravity="bottom|end"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:padding="@dimen/_8sdp"
+                        android:src="@drawable/ic_wish"
+                        android:onClick="@{()-> fragment.toggleProductInWishlist()}" />
 
-                    </FrameLayout>
-
-                    <androidx.appcompat.widget.Toolbar
+                    <com.google.android.material.appbar.MaterialToolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
-                        app:navigationIcon="@drawable/ic_arrow_back"
-                        app:layout_collapseMode="pin" />
+                        android:onClick="@{() -> fragment.onBackPressed()}"
+                        app:layout_collapseMode="pin"
+                        app:navigationIcon="@drawable/ic_arrow_back" />
 
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -75,50 +79,285 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:overScrollMode="ifContentScrolls"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingVertical="@dimen/_14sdp">
+                    android:paddingTop="@dimen/_14sdp"
+                    android:paddingBottom="@dimen/_60sdp">
+
+                    <LinearLayout
+                        android:id="@+id/ratingContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="@id/inner_start"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:layout_width="@dimen/_11sdp"
+                            android:layout_height="@dimen/_11sdp"
+                            android:layout_gravity="center"
+                            android:paddingTop="@dimen/_2sdp"
+                            android:src="@drawable/ic_star" />
+
+                        <TextView
+                            android:id="@+id/rate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_3sdp"
+                            android:text="@{String.valueOf(product.rate)}"
+                            android:textSize="@dimen/_10sdp"
+                            tools:text="0.0" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/productName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
                         android:text="@{@string/product_name(product.name, product.capacity, product.quantity, product.quantityType)}"
                         android:textSize="@dimen/_16sdp"
                         android:textStyle="bold"
-                        app:layout_constraintTop_toTopOf="parent"
+                        android:textAlignment="textStart"
+                        android:maxLines="2"
                         app:layout_constraintStart_toStartOf="@id/inner_start"
+                        app:layout_constraintEnd_toStartOf="@id/quantityContainer"
+                        app:layout_constraintTop_toBottomOf="@id/ratingContainer"
                         tools:text="Name" />
 
                     <TextView
                         android:id="@+id/productPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_4sdp"
                         android:text="@{String.format(@string/price, (int)product.price)}"
-                        android:textSize="@dimen/_18sdp"
                         android:textColor="?attr/colorPrimary"
+                        android:textSize="@dimen/_18sdp"
                         android:textStyle="bold"
-                        app:layout_constraintTop_toBottomOf="@+id/productName"
                         app:layout_constraintStart_toStartOf="@id/inner_start"
-                        tools:text="0,000원"/>
+                        app:layout_constraintTop_toBottomOf="@+id/productName"
+                        tools:text="0,000원" />
+
+                    <LinearLayout
+                        android:id="@+id/quantityContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="@id/productPrice"
+                        app:layout_constraintEnd_toEndOf="@id/inner_end"
+                        app:layout_constraintTop_toTopOf="@id/productName">
+
+                        <ImageView
+                            android:id="@+id/quantityMinus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:onClick="@{()-> fragment.changeProductQuantity(false)}"
+                            android:src="@drawable/ic_minus" />
+
+                        <TextView
+                            android:id="@+id/quantity"
+                            android:layout_width="@dimen/_32sdp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="1"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold"
+                            tools:text="00" />
+
+                        <ImageView
+                            android:id="@+id/quantityPlus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:onClick="@{()-> fragment.changeProductQuantity(true)}"
+                            android:src="@drawable/ic_plus" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/nutrition"
+                        style="@style/Widget.Shopang.TextView.Label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_16sdp"
+                        android:text="@string/nutrition_facts"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@id/inner_start"
+                        app:layout_constraintTop_toBottomOf="@id/productPrice" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/nutritionContainer"
+                        style="@style/Widget.Shopang.CardView.Text"
+                        android:layout_width="0dp"
+                        android:layout_marginHorizontal="6dp"
+                        android:layout_marginTop="6dp"
+                        app:cardBackgroundColor="@color/custom_background"
+                        app:cardCornerRadius="6dp"
+                        app:layout_constraintEnd_toEndOf="@id/inner_end"
+                        app:layout_constraintStart_toStartOf="@id/inner_start"
+                        app:layout_constraintTop_toBottomOf="@id/nutrition">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/_4sdp"
+                            android:orientation="horizontal"
+                            tools:ignore="RtlSymmetry">
+
+                            <com.google.android.material.card.MaterialCardView
+                                style="@style/Widget.Shopang.CardView.Text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginVertical="@dimen/_3sdp"
+                                app:contentPadding="@dimen/_11sdp"
+                                app:cardBackgroundColor="?attr/colorSurfaceVariant"
+                                app:cardCornerRadius="6dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="@{String.format(@string/calories_format, (int) Math.floor(product.calories))}"
+                                    android:textAlignment="center"
+                                    android:textColor="?attr/colorOnSurfaceVariant"
+                                    android:textStyle="bold"
+                                    android:textSize="@dimen/_14sdp"
+                                    tools:text="000 Kcal" />
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.divider.MaterialDivider
+                                android:layout_width="@dimen/_1sdp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="@dimen/_14sdp"
+                                android:layout_marginVertical="@dimen/_6sdp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_8sdp"
+                                android:orientation="horizontal">
+
+                                <include
+                                    android:id="@+id/carbContainer"
+                                    layout="@layout/nutrition_progress_bar"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    app:value="@{(int)(product.carb * 4 / product.calories * 100)}"
+                                    app:nutrition="@{@string/nutrition_value(product.carb)}"
+                                    app:title="@{`탄수화물`}"
+                                    app:showProgress="@{true}" />
+
+                                <include
+                                    android:id="@+id/proteinContainer"
+                                    layout="@layout/nutrition_progress_bar"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    app:value="@{(int)(product.protein * 4 / product.calories * 100)}"
+                                    app:nutrition="@{@string/nutrition_value(product.protein)}"
+                                    app:title="@{`단백질`}"
+                                    app:showProgress="@{true}" />
+
+                                <include
+                                    android:id="@+id/fatContainer"
+                                    layout="@layout/nutrition_progress_bar"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    app:value="@{(int)(product.fat * 9 / product.calories * 100)}"
+                                    app:nutrition="@{@string/nutrition_value(product.fat)}"
+                                    app:title="@{`지방`}"
+                                    app:showProgress="@{true}" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:id="@+id/labelDetail"
+                        style="@style/Widget.Shopang.TextView.Label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_16sdp"
+                        android:text="@string/detail_info"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@id/inner_start"
+                        app:layout_constraintTop_toBottomOf="@id/nutritionContainer" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/detailContainer"
+                        style="@style/Widget.Shopang.CardView.Text"
+                        android:layout_width="0dp"
+                        android:layout_marginHorizontal="6dp"
+                        android:layout_marginTop="6dp"
+                        app:cardBackgroundColor="@color/custom_background"
+                        app:cardCornerRadius="6dp"
+                        app:layout_constraintEnd_toEndOf="@id/inner_end"
+                        app:layout_constraintStart_toStartOf="@id/inner_start"
+                        app:layout_constraintTop_toBottomOf="@id/labelDetail">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/detail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{product.detail}"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="Details" />
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/imageContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_14sdp"
+                                app:cardCornerRadius="6dp"
+                                app:cardBackgroundColor="@color/transparent"
+                                app:layout_constraintTop_toBottomOf="@id/detail">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_230sdp"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_place_holder_img"/>
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="@dimen/_14sdp"
+                                android:text="@string/lorem_ipsum_medium"
+                                app:layout_constraintTop_toBottomOf="@id/imageContainer"
+                                app:layout_constraintBottom_toBottomOf="parent"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/inner_start"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.03"/>
+                        app:layout_constraintGuide_percent="0.06" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/inner_end"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.97"/>
+                        app:layout_constraintGuide_percent="0.94" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -126,15 +365,26 @@
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+        <View
+            android:id="@+id/anchor"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_gravity="start"
+            android:background="?attr/colorTertiary"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/getOrderContainer"
+            app:layout_constraintStart_toStartOf="@id/start"
+            app:layout_constraintEnd_toEndOf="@id/end" />
+
         <LinearLayout
             android:id="@+id/getOrderContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/_19sdp"
-            android:paddingTop="@dimen/_4sdp"
-            android:paddingBottom="@dimen/_8sdp"
-            android:orientation="horizontal"
             android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/_19sdp"
+            android:paddingTop="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_4sdp"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.button.MaterialButton
@@ -142,18 +392,11 @@
                 style="@style/Widget.Shopang.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginEnd="@dimen/_8sdp"
-                android:text="@string/action_add_cart"
-                android:textSize="16sp"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/getOrder"
-                style="@style/Widget.Shopang.Button.UnelevatedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/action_order" />
+                android:text="@string/action_add_cart"
+                android:textSize="16sp"
+                android:onClick="@{()-> fragment.addProductToCart()}" />
 
         </LinearLayout>
 
@@ -162,14 +405,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.06"/>
+            app:layout_constraintGuide_percent="0.06" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.94"/>
+            app:layout_constraintGuide_percent="0.94" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

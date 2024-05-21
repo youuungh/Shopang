@@ -2,6 +2,9 @@ package com.ninezero.shopang.view.main.home
 
 import android.app.Dialog
 import android.util.Log
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.ninezero.shopang.R

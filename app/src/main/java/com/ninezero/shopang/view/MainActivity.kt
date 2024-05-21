@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
@@ -14,6 +14,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.color.DynamicColors
 import com.google.firebase.auth.FirebaseAuth
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.ActivityMainBinding
@@ -39,9 +40,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     lateinit var prefsUtil: PrefsUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         hideSystemUI()
-        enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         ThemeUtil.setTheme(this, prefsUtil.getSharedPrefs())
 
@@ -77,13 +77,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         when (destination.id) {
             R.id.homeFragment, R.id.wishFragment, R.id.cartFragment, R.id.userFragment -> {
                 setBottomNavVisibility(visible = true)
-                setNavigationBarColor(android.R.color.white)
             }
 
-            else -> {
-                setBottomNavVisibility(visible = false)
-                setNavigationBarColor(android.R.color.transparent)
-            }
+            else -> setBottomNavVisibility(visible = false)
         }
     }
 
@@ -93,9 +89,5 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         } else {
             bottomBar.hide()
         }
-    }
-
-    private fun setNavigationBarColor(color: Int) {
-        window.navigationBarColor = getColor(color)
     }
 }

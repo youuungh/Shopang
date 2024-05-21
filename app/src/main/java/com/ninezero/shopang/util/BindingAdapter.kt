@@ -1,19 +1,16 @@
 package com.ninezero.shopang.util
 
-import android.widget.FrameLayout
+import android.graphics.Color
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.ninezero.shopang.model.Banner
 import com.ninezero.shopang.model.Category
 import com.ninezero.shopang.model.Product
 import com.ninezero.shopang.util.extension.loadImageFromUrl
-import com.ninezero.shopang.util.extension.setTintColor
 import com.ninezero.shopang.view.main.adapter.BannerAdapter
 import com.ninezero.shopang.view.main.adapter.CategoryAdapter
 import com.ninezero.shopang.view.main.adapter.ProductAdapter
@@ -33,32 +30,6 @@ fun setText(view: TextView, textResId: Int) {
 fun ImageView.setImageFromUrl(url: String?) {
     if (!url.isNullOrEmpty())
         loadImageFromUrl(url)
-}
-
-@BindingAdapter("collapsingToolbar", "frameLayout", "collapsingToolbarTitle", "backgroundColor", requireAll = false)
-fun AppBarLayout.setToolbarCollapseListener(
-    collapsingToolbar: CollapsingToolbarLayout,
-    frameLayout: FrameLayout,
-    collapsingToolbarTitle: String,
-    backgroundColor: Int
-) {
-    var isShow = true
-    var scrollRange = -1
-
-    addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-        if (scrollRange == -1) scrollRange = appBarLayout?.totalScrollRange!!
-
-        if (scrollRange + verticalOffset == 0) {
-            frameLayout.isVisible = false
-            collapsingToolbar.setCollapsedTitleTextColor(backgroundColor.setTintColor())
-            collapsingToolbar.title = collapsingToolbarTitle
-            isShow = true
-        } else if (isShow) {
-            frameLayout.isVisible = isShow
-            collapsingToolbar.title = " "
-            isShow = false
-        }
-    }
 }
 
 @BindingAdapter("bannerImage", "listener")
