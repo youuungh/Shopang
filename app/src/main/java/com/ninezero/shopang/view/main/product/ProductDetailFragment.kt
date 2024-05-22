@@ -113,7 +113,7 @@ class ProductDetailFragment : Fragment(R.layout.fragment_product_detail) {
     }
 
     private fun applyWindowInsets() = with(binding) {
-        getOrderContainer.doOnApplyWindowInsets { insetView, windowInsets, initialPadding, _ ->
+        addCartContainer.doOnApplyWindowInsets { insetView, windowInsets, initialPadding, _ ->
             insetView.updatePadding(
                 bottom = initialPadding.bottom + windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
             )

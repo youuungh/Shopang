@@ -39,6 +39,8 @@ class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
+    private var countDownTimer: CountDownTimer? = null
+
     private val _authLiveData = MutableLiveData<AuthState>()
     val authLiveData: LiveData<AuthState>
         get() = _authLiveData
@@ -63,8 +65,6 @@ class AuthViewModel @Inject constructor(
     val timerSharedFlow: SharedFlow<Long>
         get() = _timerSharedFlow.asSharedFlow()
 
-    private var countDownTimer: CountDownTimer? = null
-
     fun isUserLoggedIn(): Boolean = authRepository.isUserLoggedIn()
 
     fun checkSignInPlatform(platform: String) {
@@ -78,12 +78,10 @@ class AuthViewModel @Inject constructor(
     fun authCallBack() = authRepository.authCallBack(_authLiveData)
 
     fun setAuthLiveData(authState: AuthState) {
-        Log.d("AuthViewModel", "setAuthLiveData()")
         _authLiveData.value = authState
     }
 
     fun resetUserInfoLiveData() {
-        Log.d("AuthViewModel", "resetUserInfoLiveData()")
         _authInfoLiveData.value = ResponseWrapper.Idle()
     }
 
@@ -106,7 +104,6 @@ class AuthViewModel @Inject constructor(
     }
 
     fun signInAuthCredential(credential: PhoneAuthCredential) {
-        Log.d("AuthViewModel", "signInAuthCredential()")
         _authStatusLiveData.value = ResponseWrapper.Loading()
         viewModelScope.launch(IO) {
             _authStatusLiveData.postValue(authRepository.signInWithCredential(credential))
@@ -121,7 +118,6 @@ class AuthViewModel @Inject constructor(
         isUpload: Boolean,
         isUpdate: Boolean
     ) {
-        Log.d("AuthViewModel", "uploadUserInfo()")
         _authInfoLiveData.value = ResponseWrapper.Loading()
         viewModelScope.launch {
             _authInfoLiveData.postValue(
@@ -149,7 +145,6 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun fAuthWithGoogle(credential: AuthCredential) {
-        Log.d("AuthViewModel", "fAuthWithGoogle()")
         viewModelScope.launch {
             _googleAuthLiveData.postValue(authRepository.signInWithCredential(credential))
         }

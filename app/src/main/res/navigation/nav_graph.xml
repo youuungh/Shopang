@@ -48,7 +48,11 @@
         android:label="fragment_wish"
         app:popUpTo="@id/nav_graph"
         app:popUpToInclusive="true"
-        tools:layout="@layout/fragment_wish" />
+        tools:layout="@layout/fragment_wish" >
+        <action
+            android:id="@+id/action_wishFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.ninezero.shopang.view.main.cart.CartFragment"

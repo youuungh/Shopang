@@ -27,7 +27,7 @@ class HomeViewModel @Inject constructor(
         get() = _categoriesLiveData
 
     private val _cartProductsLiveData = MutableLiveData<ResponseWrapper<Any>>()
-    val cartProductsLiveData: LiveData<ResponseWrapper<Any>> = _cartProductsLiveData
+    val cartProductsLiveData: LiveData<ResponseWrapper<Any>> =_cartProductsLiveData
 
     private var isDataLoaded = false
 
@@ -39,14 +39,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getProducts() {
+    private fun getProducts() {
         _productsLiveData.value = ResponseWrapper.Loading()
         viewModelScope.launch(IO) {
             _productsLiveData.postValue(homeRepository.getProducts())
         }
     }
 
-    fun getCategories() {
+    private fun getCategories() {
         _categoriesLiveData.value = ResponseWrapper.Loading()
         viewModelScope.launch(IO) {
             _categoriesLiveData.postValue(homeRepository.getCategories())

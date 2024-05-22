@@ -4,7 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="android.view.View" />
+        <variable
+            name="adapter"
+            type="com.ninezero.shopang.view.main.cart.CartAdapter" />
+        <variable
+            name="fragment"
+            type="com.ninezero.shopang.view.main.cart.CartFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,79 +25,85 @@
             android:layout_height="wrap_content"
             android:text="@string/my_cart"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/container"
+            app:layout_constraintBottom_toTopOf="@id/header"
             app:layout_constraintStart_toStartOf="@id/start" />
 
-        <androidx.constraintlayout.motion.widget.MotionLayout
-            android:id="@+id/container"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvWish"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="?attr/actionBarSize"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layoutDescription="@xml/fragment_cart_scene">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvCart"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:paddingTop="@dimen/_8sdp"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <View
-                android:id="@+id/anchor"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_gravity="start"
-                android:background="?attr/colorTertiary"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toTopOf="@id/getOrderContainer"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent "/>
-
-            <LinearLayout
-                android:id="@+id/getOrderContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/_8sdp"
-                android:background="@color/white"
-                app:layout_constraintBottom_toBottomOf="@id/rvCart">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/getOrder"
-                    style="@style/Widget.Shopang.Button.UnelevatedButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:text="@string/action_order" />
-
-            </LinearLayout>
-
-        </androidx.constraintlayout.motion.widget.MotionLayout>
-
-        <ImageView
-            android:id="@+id/empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/vertical"
+            android:paddingTop="@dimen/_8sdp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/header"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <View
+            android:id="@+id/anchor"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_gravity="start"
+            android:background="?attr/colorTertiary"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/getOrderContainer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent "/>
+
+        <LinearLayout
+            android:id="@+id/getOrderContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_4sdp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/getOrder"
+                style="@style/Widget.Shopang.Button.UnelevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:text="@string/action_order" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/emptyContainer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingBottom="?attr/actionBarSize"
+            android:gravity="center"
+            android:visibility="gone"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/emptyWish"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_250sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_empty_cart" />
+
+            <TextView
+                android:id="@+id/emptyText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/empty_cart" />
+
+        </LinearLayout>
+
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/vertical"
+            android:id="@+id/header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@id/container" />
+            app:layout_constraintGuide_begin="?attr/actionBarSize" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/start"

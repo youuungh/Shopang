@@ -70,22 +70,15 @@ class HomeRepository @Inject constructor(
         }
     }
 
-    suspend fun getAllUserProducts(): ResponseWrapper<List<Product>> {
-        return try {
-            val result = userCart.get().await()
-            val products = result.documents.map { Product.fromDocumentSnapshot(it) }
-            ResponseWrapper.Success(products)
-        } catch (e: Exception) {
-            ResponseWrapper.Error(errorMsg)
-        }
-    }
-
     private suspend fun getProductFromWish(id: String): Boolean {
         return wishDao.getWishProductById(id) != null
     }
 
     fun getProductFromWishLiveData(id: String): LiveData<Product?> =
         wishDao.getWishProductByIdLiveData(id)
+
+    fun getAllWishesLiveData(): LiveData<List<Product>> =
+        wishDao.getAllWishes()
 
     suspend fun toggleProductInWish(product: Product) {
         if (getProductFromWish(product.id)) {
@@ -95,12 +88,40 @@ class HomeRepository @Inject constructor(
         }
     }
 
+    suspend fun deleteFromUserCarts(productId: String) {
+        userCart.document(productId).delete().await()
+    }
+
+    suspend fun getUserCarts(): ResponseWrapper<List<Product>> {
+        return try {
+            val result = userCart.get().await()
+            val products = result.documents.map { Product.fromDocumentSnapshot(it) }
+            ResponseWrapper.Success(products)
+        } catch (e: Exception) {
+            ResponseWrapper.Error(errorMsg)
+        }
+    }
+
+    suspend fun addProductToCartFromWish(product: Product): ResponseWrapper<Any> {
+        return try {
+            val cartProductsList = getUserCarts().data.orEmpty()
+            cartProductsList.find { it.id == product.id }?.let {
+                product.quantity += it.quantity
+            }
+            userCart.document(product.id).set(product).await()
+            wishDao.deleteWish(product)
+            ResponseWrapper.Success(Any())
+        } catch (e: Exception) {
+            ResponseWrapper.Error(errorMsg)
+        }
+    }
+
     suspend fun addProductsToCart(
         list: List<Product>,
-        deleteWishlistProducts : Boolean
+        deleteWishlistProducts: Boolean
     ): ResponseWrapper<Any> {
         return try {
-            val cartProductsList = getAllUserProducts().data.orEmpty()
+            val cartProductsList = getUserCarts().data.orEmpty()
             list.forEach { product ->
                 cartProductsList.find { it.id == product.id }?.let {
                     product.quantity += it.quantity

@@ -7,10 +7,12 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.ninezero.shopang.R
 import com.ninezero.shopang.model.Banner
 import com.ninezero.shopang.model.Category
 import com.ninezero.shopang.model.Product
 import com.ninezero.shopang.util.extension.loadImageFromUrl
+import com.ninezero.shopang.util.extension.showSnack
 import com.ninezero.shopang.view.main.adapter.BannerAdapter
 import com.ninezero.shopang.view.main.adapter.CategoryAdapter
 import com.ninezero.shopang.view.main.adapter.ProductAdapter
@@ -64,5 +66,28 @@ fun RecyclerView.setProductAdapter(
     productList?.let {
         layoutManager = GridLayoutManager(context, 2)
         adapter = ProductAdapter(it, listener)
+    }
+}
+
+@BindingAdapter("quantityText")
+fun changeProductQuantity(
+    imageView: ImageView,
+    quantityText: TextView,
+    isPlus: Boolean
+) {
+    imageView.setOnClickListener {
+        var quantity = quantityText.text.toString().toInt()
+
+        if (isPlus && quantity < 10) {
+            quantity++
+        } else if (!isPlus && quantity > 1) {
+            quantity--
+        }
+
+        quantityText.text = quantity.toString()
+
+//        if (quantity == 10) {
+//            binding.root.showSnack(getString(R.string.error_max_quantity_reached), anchor = binding.anchor)
+//        }
     }
 }

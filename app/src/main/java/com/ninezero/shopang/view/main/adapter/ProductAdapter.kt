@@ -14,15 +14,15 @@ class ProductAdapter(
     private val productList: List<Product>,
     private val onProductClick: OnProductClickListener
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        val binding = DataBindingUtil.inflate<ViewDataBinding>(
-            LayoutInflater.from(parent.context),
-            R.layout.item_product,
-            parent,
-            false
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder =
+        ProductViewHolder(
+            DataBindingUtil.inflate(
+                LayoutInflater.from(parent.context),
+                R.layout.item_product,
+                parent,
+                false
+            )
         )
-        return ProductViewHolder(binding)
-    }
 
     override fun onBindViewHolder(holder: ProductAdapter.ProductViewHolder, position: Int) {
         holder.bind(productList[position])

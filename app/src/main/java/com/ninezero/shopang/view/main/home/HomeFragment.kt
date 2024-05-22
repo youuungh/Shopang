@@ -47,14 +47,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         Banner("banner4", "https://i.imgur.com/zXrAeE5.png")
     )
 
-    override fun initViewModel() = with(binding) {
-        fragment = this@HomeFragment
+    override fun initView() = with(binding) {
         applySystemWindowInsets(root)
+        fragment = this@HomeFragment
+    }
+
+    override fun initViewModel()  {
+        userInfoViewModel.getUserInfoRealTime()
+        homeViewModel.loadData()
         observeListener()
     }
 
     private fun observeListener() {
-        userInfoViewModel.getUserInfoRealTime()
         userInfoViewModel.userInfoLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseWrapper.Success -> {
@@ -62,8 +66,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                     binding.userInfo = userInfo
 
                     homeAdapter.addBannerList(bannerList)
-                    homeViewModel.getProducts()
-                    homeViewModel.getCategories()
                 }
 
                 is ResponseWrapper.Error -> {
