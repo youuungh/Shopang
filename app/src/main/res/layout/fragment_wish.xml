@@ -33,6 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:paddingTop="@dimen/_6sdp"
+            android:clipToPadding="false"
             android:overScrollMode="never"
             android:orientation="vertical"
             android:adapter="@{adapter}"
@@ -51,8 +52,8 @@
             android:background="?attr/colorTertiary"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@id/addAllToCartContainer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent "/>
+            app:layout_constraintStart_toStartOf="@id/start"
+            app:layout_constraintEnd_toEndOf="@id/end"/>
 
         <LinearLayout
             android:id="@+id/addAllToCartContainer"
@@ -61,6 +62,7 @@
             android:paddingTop="@dimen/_2sdp"
             android:paddingBottom="@dimen/_4sdp"
             android:background="@color/white"
+            android:elevation="@dimen/_8sdp"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.button.MaterialButton

@@ -1,18 +1,14 @@
 package com.ninezero.shopang.util
 
-import android.graphics.Color
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.progressindicator.CircularProgressIndicator
-import com.ninezero.shopang.R
 import com.ninezero.shopang.model.Banner
 import com.ninezero.shopang.model.Category
 import com.ninezero.shopang.model.Product
 import com.ninezero.shopang.util.extension.loadImageFromUrl
-import com.ninezero.shopang.util.extension.showSnack
 import com.ninezero.shopang.view.main.adapter.BannerAdapter
 import com.ninezero.shopang.view.main.adapter.CategoryAdapter
 import com.ninezero.shopang.view.main.adapter.ProductAdapter
@@ -69,7 +65,7 @@ fun RecyclerView.setProductAdapter(
     }
 }
 
-@BindingAdapter("quantityText")
+@BindingAdapter("quantityText", "isPlus")
 fun changeProductQuantity(
     imageView: ImageView,
     quantityText: TextView,
@@ -85,9 +81,5 @@ fun changeProductQuantity(
         }
 
         quantityText.text = quantity.toString()
-
-//        if (quantity == 10) {
-//            binding.root.showSnack(getString(R.string.error_max_quantity_reached), anchor = binding.anchor)
-//        }
     }
 }

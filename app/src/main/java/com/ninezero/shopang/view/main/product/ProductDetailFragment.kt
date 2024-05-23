@@ -31,12 +31,15 @@ class ProductDetailFragment : Fragment(R.layout.fragment_product_detail) {
     private val args by navArgs<ProductDetailFragmentArgs>()
     private val productData by lazy { args.product }
 
+    private var isInWishlist = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_detail, container, false)
+        _binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_product_detail, container, false)
         binding.apply {
             fragment = this@ProductDetailFragment
             product = productData
@@ -46,10 +49,14 @@ class ProductDetailFragment : Fragment(R.layout.fragment_product_detail) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, /* forward= */ true).addTarget(view)
-        returnTransition = MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).addTarget(view)
-        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).addTarget(view)
-        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, /* forward= */ false).addTarget(view)
+        enterTransition =
+            MaterialSharedAxis(MaterialSharedAxis.Y, /* forward= */ true).addTarget(view)
+        returnTransition =
+            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).addTarget(view)
+        exitTransition =
+            MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).addTarget(view)
+        reenterTransition =
+            MaterialSharedAxis(MaterialSharedAxis.Y, /* forward= */ false).addTarget(view)
         applyWindowInsets()
         observeListener()
     }
@@ -57,19 +64,21 @@ class ProductDetailFragment : Fragment(R.layout.fragment_product_detail) {
     private fun observeListener() {
         homeViewModel.wishProductLiveData(productData.id).observe(viewLifecycleOwner) {
             binding.wish.apply {
-                if (it != null) {
+                isInWishlist = it != null
+                if (isInWishlist) {
                     setImageResource(R.drawable.ic_wish_fill)
-                    binding.root.showSnack(getString(R.string.success_add_to_wish))
                 } else {
                     setImageResource(R.drawable.ic_wish)
-                    binding.root.showSnack(getString(R.string.success_delete_from_wish))
                 }
             }
         }
         homeViewModel.cartProductsLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseWrapper.Success -> {
-                    binding.root.showSnack(getString(R.string.success_add_to_cart))
+                    binding.root.showSnack(
+                        getString(R.string.success_add_to_cart),
+                        anchor = binding.addCartContainer
+                    )
                     homeViewModel.setCartProductsIdle()
                 }
 
@@ -84,6 +93,17 @@ class ProductDetailFragment : Fragment(R.layout.fragment_product_detail) {
 
     fun toggleProductInWishlist() {
         homeViewModel.toggleProductInWishlist(productData)
+        if (isInWishlist) {
+            binding.root.showSnack(
+                getString(R.string.success_delete_from_wish),
+                anchor = binding.addCartContainer
+            )
+        } else {
+            binding.root.showSnack(
+                getString(R.string.success_add_to_wish),
+                anchor = binding.addCartContainer
+            )
+        }
     }
 
     fun addProductToCart() {
@@ -108,7 +128,10 @@ class ProductDetailFragment : Fragment(R.layout.fragment_product_detail) {
         binding.quantity.text = quantity.toString()
 
         if (quantity == 10) {
-            binding.root.showSnack(getString(R.string.error_max_quantity_reached), anchor = binding.anchor)
+            binding.root.showSnack(
+                getString(R.string.error_max_quantity_reached),
+                anchor = binding.addCartContainer
+            )
         }
     }
 

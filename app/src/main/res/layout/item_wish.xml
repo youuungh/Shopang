@@ -25,7 +25,8 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="@dimen/_80sdp"
-            android:layout_margin="@dimen/_6sdp"
+            android:layout_marginHorizontal="@dimen/_9sdp"
+            android:layout_marginVertical="@dimen/_3sdp"
             android:onClick="@{()-> onWishClick.onWishClick(product)}"
             app:strokeWidth="0.8dp"
             app:strokeColor="?attr/colorSurfaceVariant"

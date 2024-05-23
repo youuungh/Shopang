@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.ninezero.shopang.BR
 import com.ninezero.shopang.R
 import com.ninezero.shopang.model.Product
 import javax.inject.Inject

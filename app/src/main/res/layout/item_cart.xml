@@ -1,13 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="adapter"
+            type="com.ninezero.shopang.view.main.cart.CartAdapter" />
+        <variable
+            name="product"
+            type="com.ninezero.shopang.model.Product" />
+        <variable
+            name="cartListener"
+            type="com.ninezero.shopang.view.main.cart.CartAdapter.CartListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/imageContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:strokeWidth="0dp"
+            app:cardCornerRadius="@dimen/_8sdp"
+            app:cardBackgroundColor="@color/transparent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_14sdp"
+                imageUrl="@{product.image}"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingTop="@dimen/_3sdp"
+            app:layout_constraintStart_toEndOf="@+id/imageContainer"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:layout_marginHorizontal="@dimen/_6sdp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:text="@{product.name}"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/capacity"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Name" />
+
+            <TextView
+                android:id="@+id/capacity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginHorizontal="@dimen/_6sdp"
+                android:text="@{product.capacity}"
+                app:layout_constraintTop_toBottomOf="@id/name"
+                app:layout_constraintBottom_toTopOf="@id/quantityContainer"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="capacity"/>
+
+            <LinearLayout
+                android:id="@+id/quantityContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginHorizontal="@dimen/_6sdp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/name"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/quantityMinus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_minus"
+                    quantityText="@{quantityText}"
+                    isPlus="@{false}" />
+
+                <TextView
+                    android:id="@+id/quantityText"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@{String.valueOf(product.quantity)}"
+                    android:afterTextChanged="@{(text)-> adapter.onQuantityTextChanged(text, product, price)}"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold"
+                    tools:text="0" />
+
+                <ImageView
+                    android:id="@+id/quantityPlus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_plus"
+                    quantityText="@{quantityText}"
+                    isPlus="@{true}" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_6sdp"
+                android:text="@{String.format(@string/price, (int)product.price * product.quantity)}"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
+                android:textAlignment="textEnd"
+                android:ems="6"
+                app:layout_constraintStart_toEndOf="@id/quantityContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="0,000,000원"/>
+
+            <ImageView
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:src="@drawable/ic_close"
+                android:onClick="@{()-> cartListener.onDeleteClick(product)}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            style="@style/Widget.Shopang.Divider"
+            android:alpha="0.38"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

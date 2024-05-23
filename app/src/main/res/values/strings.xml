@@ -20,9 +20,11 @@
     <string name="phone_number">휴대폰 번호</string>
     <string name="bestseller">베스트셀러</string>
     <string name="nutrition_facts">영양정보</string>
+    <string name="total">합계</string>
     <string name="empty_wish_list">위시리스트가 비었습니다</string>
     <string name="empty_cart">장바구니가 비었습니다</string>
     <string name="price">%,d원</string>
+    <string name="default_price">0원</string>
     <string name="product_name">%1$s, %2$s, %3$d%4$s</string>
     <string name="count_down">00:%1$02d</string>
     <string name="nutrition_value">%.0fg</string>

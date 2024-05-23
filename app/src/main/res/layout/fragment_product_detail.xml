@@ -363,17 +363,6 @@
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <View
-            android:id="@+id/anchor"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_gravity="start"
-            android:background="?attr/colorTertiary"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@id/addCartContainer"
-            app:layout_constraintStart_toStartOf="@id/start"
-            app:layout_constraintEnd_toEndOf="@id/end" />
-
         <LinearLayout
             android:id="@+id/addCartContainer"
             android:layout_width="match_parent"
@@ -381,6 +370,7 @@
             android:paddingTop="@dimen/_2sdp"
             android:paddingBottom="@dimen/_4sdp"
             android:background="@color/white"
+            android:elevation="@dimen/_8sdp"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.button.MaterialButton

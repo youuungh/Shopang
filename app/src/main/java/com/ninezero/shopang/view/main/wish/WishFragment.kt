@@ -1,6 +1,7 @@
 package com.ninezero.shopang.view.main.wish
 
 import android.app.Dialog
+import android.os.Bundle
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
@@ -33,6 +34,11 @@ class WishFragment : BaseFragment<FragmentWishBinding>(
     @Named(LOADING)
     lateinit var loading: Dialog
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        wishViewModel.getAllWishes()
+    }
+
     override fun initView() = with(binding) {
         applySystemWindowInsets(root)
         applyBottomInsets()
@@ -41,7 +47,6 @@ class WishFragment : BaseFragment<FragmentWishBinding>(
     }
 
     override fun initViewModel() {
-        wishViewModel.getAllWishes()
         observeListener()
     }
 
@@ -49,10 +54,12 @@ class WishFragment : BaseFragment<FragmentWishBinding>(
         wishViewModel.wishProductsLiveData.observe(viewLifecycleOwner) {
             if (it.isEmpty()) {
                 binding.emptyContainer.show()
+                binding.addAllToCartContainer.hide()
                 binding.rvWish.hide()
             } else {
                 wishAdapter.setWishList(it, this)
                 binding.emptyContainer.hide()
+                binding.addAllToCartContainer.hide()
                 binding.rvWish.show()
             }
         }
@@ -67,12 +74,15 @@ class WishFragment : BaseFragment<FragmentWishBinding>(
                 }
 
                 is ResponseWrapper.Error -> {
-                    binding.root.showSnack(getString(R.string.error_msg), anchor = binding.anchor)
+                    binding.root.showSnack(
+                        getString(R.string.error_msg),
+                        anchor = binding.anchor
+                    )
                     loading.hide()
                 }
 
                 is ResponseWrapper.Loading -> loading.show()
-                is ResponseWrapper.Idle -> {}
+                is ResponseWrapper.Idle -> loading.hide()
             }
         }
     }
@@ -104,5 +114,9 @@ class WishFragment : BaseFragment<FragmentWishBinding>(
 
     override fun onAddCartClick(product: Product) {
         wishViewModel.addWishToCart(product)
+        binding.root.showSnack(
+            getString(R.string.success_add_to_cart),
+            anchor = binding.anchor
+        )
     }
 }

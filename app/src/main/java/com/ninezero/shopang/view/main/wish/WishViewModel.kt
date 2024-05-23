@@ -42,6 +42,7 @@ class WishViewModel @Inject constructor(
             _cartProductsLiveData.postValue(
                 homeRepository.addProductToCartFromWish(product)
             )
+            _cartProductsLiveData.postValue(ResponseWrapper.Idle())
         }
     }
 
@@ -51,6 +52,7 @@ class WishViewModel @Inject constructor(
             _cartProductsLiveData.postValue(
                 homeRepository.addProductsToCart(wishList, deleteWishlistProducts = true)
             )
+            _cartProductsLiveData.postValue(ResponseWrapper.Idle())
         }
     }
 }

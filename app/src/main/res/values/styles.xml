@@ -176,6 +176,14 @@
         <item name="fontFamily">@font/google_sans_regular</item>
     </style>
 
+    <!-- Divider -->
+
+    <style name="Widget.Shopang.Divider" parent="Widget.Material3.MaterialDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
     <!-- Toolbar -->
 
     <style name="Widget.Shopang.Toolbar" parent="@style/Widget.Material3.Toolbar.OnSurface">
