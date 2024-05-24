@@ -24,25 +24,24 @@ data class Product(
     val category: String,
     val rate: Double,
     val detail: String
-): Parcelable {
-    fun toMap(): Map<String, Any> {
-        return mapOf(
-            "id" to id,
-            "name" to name,
-            "image" to image,
-            "capacity" to capacity,
-            "calories" to calories,
-            "carb" to carb,
-            "fat" to fat,
-            "protein" to protein,
-            "price" to price,
-            "quantity" to quantity,
-            "quantityType" to quantityType,
-            "category" to category,
-            "rate" to rate,
-            "detail" to detail
-        )
-    }
+) : Parcelable {
+
+    fun toMap(): Map<String, Any> = mapOf(
+        "id" to id,
+        "name" to name,
+        "image" to image,
+        "capacity" to capacity,
+        "calories" to calories,
+        "carb" to carb,
+        "fat" to fat,
+        "protein" to protein,
+        "price" to price,
+        "quantity" to quantity,
+        "quantityType" to quantityType,
+        "category" to category,
+        "rate" to rate,
+        "detail" to detail
+    )
 
     companion object {
         fun fromMap(map: Map<String, Any>): Product {
@@ -70,6 +69,18 @@ data class Product(
     }
 }
 
-fun convertDocumentToProductList(documents: List<DocumentSnapshot>): List<Product> {
+fun convertMapToProduct(map: Map<String, Any>): Product {
+    return Product.fromMap(map)
+}
+
+fun convertArrayMapToProduct(map: ArrayList<Map<String, Any>>): List<Product> {
+    val list = mutableListOf<Product>()
+    map.forEach {
+        list.add(convertMapToProduct(it))
+    }
+    return list
+}
+
+fun convertDocumentToProduct(documents: List<DocumentSnapshot>): List<Product> {
     return documents.map { Product.fromDocumentSnapshot(it) }
 }

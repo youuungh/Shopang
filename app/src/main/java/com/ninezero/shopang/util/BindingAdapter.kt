@@ -13,6 +13,9 @@ import com.ninezero.shopang.view.main.adapter.BannerAdapter
 import com.ninezero.shopang.view.main.adapter.CategoryAdapter
 import com.ninezero.shopang.view.main.adapter.ProductAdapter
 import com.smarteist.autoimageslider.SliderView
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @BindingAdapter("imageResource")
 fun setImageResource(view: ImageView, resource: Int) {
@@ -42,6 +45,14 @@ fun bannerImage(
     banner.scrollTimeInSec = 3
     banner.isAutoCycle = true
     banner.startAutoCycle()
+}
+
+@BindingAdapter("formatDate")
+fun formatDateToKorean(textView: TextView, milliseconds: Long) {
+    val df = SimpleDateFormat("yyyy. MM. dd.", Locale.getDefault())
+    df.format(Date(milliseconds)).let {
+        textView.text = it
+    }
 }
 
 @BindingAdapter("categoryList", "listener")

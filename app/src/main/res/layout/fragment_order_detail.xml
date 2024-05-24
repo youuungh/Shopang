@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.ninezero.shopang.model.OrderEnums" />
+        <variable
+            name="constants"
+            type="com.ninezero.shopang.util.ConstantsKt" />
+        <variable
+            name="adapter"
+            type="com.ninezero.shopang.view.main.order.OrderDetailAdapter" />
+        <variable
+            name="order"
+            type="com.ninezero.shopang.model.Order" />
+        <variable
+            name="fragment"
+            type="com.ninezero.shopang.view.main.order.OrderDetailFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.main.order.OrderDetailFragment">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/back"
+            style="@style/Widget.Shopang.Button.IconButton"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:onClick="@{()-> fragment.onBackPressed()}"
+            app:icon="@drawable/ic_arrow_back"
+            app:layout_constraintBottom_toTopOf="@id/container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/order_and_shipping_detail"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/back"
+            app:layout_constraintStart_toEndOf="@id/back"
+            app:layout_constraintTop_toTopOf="@id/back" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/shipContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_18sdp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <View
+                    android:id="@+id/placedImage"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_marginStart="@dimen/_11sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/ic_check"
+                    app:layout_constraintStart_toStartOf="@id/inner_start"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/line1"
+                    android:layout_width="@dimen/_67sdp"
+                    android:layout_height="@dimen/_2sdp"
+                    android:background="?attr/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="@id/placedImage"
+                    app:layout_constraintStart_toEndOf="@+id/placedImage"
+                    app:layout_constraintTop_toTopOf="@id/placedImage" />
+
+                <View
+                    android:id="@+id/confirmedImage"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@{order.orderStatus != OrderEnums.CONFIRMED ? @drawable/ic_check : @drawable/ic_default_check}"
+                    app:layout_constraintStart_toEndOf="@id/line1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:background="@drawable/ic_default_check" />
+
+                <View
+                    android:id="@+id/line2"
+                    android:layout_width="@dimen/_67sdp"
+                    android:layout_height="@dimen/_2sdp"
+                    android:background="@{order.orderStatus != OrderEnums.CONFIRMED ? @color/fill_line : @color/default_line}"
+                    app:layout_constraintBottom_toBottomOf="@id/confirmedImage"
+                    app:layout_constraintStart_toEndOf="@+id/confirmedImage"
+                    app:layout_constraintTop_toTopOf="@id/confirmedImage" />
+
+                <View
+                    android:id="@+id/shippedImage"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@{order.orderStatus != OrderEnums.SHIPPED ? @drawable/ic_check : @drawable/ic_default_check}"
+                    app:layout_constraintStart_toEndOf="@id/line2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/line3"
+                    android:layout_width="@dimen/_67sdp"
+                    android:layout_height="@dimen/_2sdp"
+                    android:background="@{order.orderStatus != OrderEnums.SHIPPED ? @color/fill_line : @color/default_line}"
+                    app:layout_constraintBottom_toBottomOf="@id/shippedImage"
+                    app:layout_constraintStart_toEndOf="@+id/shippedImage"
+                    app:layout_constraintTop_toTopOf="@id/shippedImage" />
+
+                <View
+                    android:id="@+id/deliveredImage"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@{order.orderStatus != OrderEnums.DELIVERED ? @drawable/ic_check : @drawable/ic_default_check}"
+                    app:layout_constraintStart_toEndOf="@id/line3"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@string/placed"
+                    android:textStyle="@{order.orderStatus != OrderEnums.PLACED ? constants.BOLD : constants.NORMAL}"
+                    app:layout_constraintEnd_toEndOf="@id/placedImage"
+                    app:layout_constraintStart_toStartOf="@id/placedImage"
+                    app:layout_constraintTop_toBottomOf="@id/placedImage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@string/confirmed"
+                    android:textStyle="@{order.orderStatus != OrderEnums.CONFIRMED ? constants.BOLD : constants.NORMAL}"
+                    app:layout_constraintEnd_toEndOf="@id/confirmedImage"
+                    app:layout_constraintStart_toStartOf="@id/confirmedImage"
+                    app:layout_constraintTop_toBottomOf="@id/confirmedImage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@string/shipped"
+                    android:textStyle="@{order.orderStatus != OrderEnums.SHIPPED ? constants.BOLD : constants.NORMAL}"
+                    app:layout_constraintEnd_toEndOf="@id/shippedImage"
+                    app:layout_constraintStart_toStartOf="@id/shippedImage"
+                    app:layout_constraintTop_toBottomOf="@id/shippedImage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@string/delivered"
+                    android:textStyle="@{order.orderStatus != OrderEnums.DELIVERED ? constants.BOLD : constants.NORMAL}"
+                    app:layout_constraintEnd_toEndOf="@id/deliveredImage"
+                    app:layout_constraintStart_toStartOf="@id/deliveredImage"
+                    app:layout_constraintTop_toBottomOf="@id/deliveredImage" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/inner_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.06" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/inner_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.94" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/orderId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingHorizontal="@dimen/_11sdp"
+                android:text="@{@string/order_number(order.orderId)}"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@id/shipContainer"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="주문번호: 0" />
+
+            <TextView
+                android:id="@+id/orderPlacedTime"
+                formatDate="@{order.orderPlacedTime}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_6sdp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:paddingHorizontal="@dimen/_11sdp"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/orderId"
+                tools:text="0000. 00. 00." />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvOrder"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:adapter="@{adapter}"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                android:paddingTop="@dimen/_4sdp"
+                android:paddingBottom="@dimen/_8sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/orderPlacedTime"
+                tools:listitem="@layout/item_order_product" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

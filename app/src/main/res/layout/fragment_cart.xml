@@ -97,6 +97,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="@string/action_order"
+                android:onClick="@{()-> fragment.startPayment()}"
                 app:layout_constraintStart_toEndOf="@id/totalPrice"
                 app:layout_constraintEnd_toEndOf="@id/inner_end"/>
 

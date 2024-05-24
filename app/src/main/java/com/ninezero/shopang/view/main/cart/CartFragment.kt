@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentCartBinding
 import com.ninezero.shopang.model.Product
@@ -86,10 +87,29 @@ class CartFragment : BaseFragment<FragmentCartBinding>(
         }
     }
 
+    fun startPayment() {
+        val totalPrice = getTotalPrice()
+        openPaymentBottomSheet(totalPrice)
+    }
+
     private fun updateTotalPrice() {
+        val totalPrice = getTotalPrice()
+        binding.totalPrice.text = getString(R.string.price, totalPrice)
+    }
+
+    private fun getTotalPrice(): Int {
         val orderList = cartAdapter.getOrderList()
-        val totalPrice = orderList.sumOf { product -> product.price * product.quantity }
-        binding.totalPrice.text = getString(R.string.price, totalPrice.toInt())
+        return orderList.sumOf { product -> product.price * product.quantity }.toInt()
+    }
+
+    private fun openPaymentBottomSheet(totalPrice: Int) {
+        cartList.clear()
+        cartList.addAll(cartAdapter.getOrderList())
+        val action = CartFragmentDirections.actionCartFragmentToPaymentFragment(
+            totalPrice,
+            cartList.toTypedArray()
+        )
+        findNavController().navigate(action)
     }
 
     private fun applyBottomInsets() = with(binding) {

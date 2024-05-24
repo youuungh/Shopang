@@ -88,6 +88,11 @@ class UserFragment : BaseFragment<FragmentUserBinding>(
         findNavController().navigate(action)
     }
 
+    fun navigateToOrderFragment() {
+        val action = UserFragmentDirections.actionUserFragmentToOrderFragment()
+        findNavController().navigate(action)
+    }
+
     fun navigateToAddressFragment() {
         val action = UserFragmentDirections.actionUserFragmentToAddressFragment()
         findNavController().navigate(action)

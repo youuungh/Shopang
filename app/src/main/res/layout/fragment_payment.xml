@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="isProgress"
+            type="Boolean" />
+        <variable
+            name="Payment"
+            type="com.ninezero.shopang.model.Payment" />
+        <variable
+            name="fragment"
+            type="com.ninezero.shopang.view.main.payment.PaymentFragment" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".view.main.payment.PaymentFragment">
+        
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never">
+            
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/headline"
+                    style="@style/TextAppearance.Shopang.TitleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/my_order_and_payment"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/header"
+                    app:layout_constraintStart_toStartOf="@id/start" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/back"
+                    style="@style/Widget.Shopang.Button.IconButton"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:onClick="@{()-> fragment.closePaymentBottomSheet()}"
+                    app:icon="@drawable/ic_close"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/header"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/addressContainer"
+                    style="@style/Widget.Shopang.CardView.Text"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    app:contentPadding="@dimen/_6sdp"
+                    app:cardBackgroundColor="@color/custom_background"
+                    app:layout_constraintTop_toBottomOf="@id/header"
+                    app:layout_constraintStart_toStartOf="@id/start"
+                    app:layout_constraintEnd_toEndOf="@id/end">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/labelAddress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:padding="@dimen/_6sdp"
+                            android:text="@string/address"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_12sdp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <LinearLayout
+                            style="@style/Widget.Shopang.LinearLayout.ListItem.SingleLine.Clickable"
+                            android:background="@drawable/ripple_bottom_sheet_item"
+                            app:layout_constraintTop_toBottomOf="@id/labelAddress"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:onClick="@{()-> fragment.navigateToAddressFragment()}">
+
+                            <LinearLayout
+                                style="@style/Widget.Shopang.LinearLayout.ListItem.TextBox.Stretch">
+
+                                <TextView
+                                    style="@style/Widget.Shopang.TextView.ListItem.Title"
+                                    android:paddingVertical="@dimen/_4sdp"
+                                    android:paddingHorizontal="@dimen/_8sdp"
+                                    android:maxLines="1"
+                                    android:ellipsize="end"
+                                    android:text="@{Payment != null ? Payment.userAddress : `주소가 없습니다`}"
+                                    android:textAppearance="?attr/textAppearanceListItemSecondary" />
+
+                            </LinearLayout>
+
+                            <ImageView
+                                style="@style/Widget.Shopang.ImageView.Icon"
+                                android:layout_marginStart="16dp"
+                                android:src="@drawable/ic_round_chevron_right"
+                                tools:ignore="ContentDescription" />
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/methodContainer"
+                    style="@style/Widget.Shopang.CardView.Text"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    app:contentPadding="@dimen/_6sdp"
+                    app:cardBackgroundColor="@color/custom_background"
+                    app:layout_constraintTop_toBottomOf="@id/addressContainer"
+                    app:layout_constraintStart_toStartOf="@id/start"
+                    app:layout_constraintEnd_toEndOf="@id/end">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/labelMethod"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:padding="@dimen/_6sdp"
+                            android:text="@string/payment_method"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_12sdp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <LinearLayout
+                            style="@style/Widget.Shopang.LinearLayout.ListItem.SingleLine.Clickable"
+                            android:background="@drawable/ripple_bottom_sheet_item"
+                            app:layout_constraintTop_toBottomOf="@id/labelMethod"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent">
+
+                            <LinearLayout
+                                style="@style/Widget.Shopang.LinearLayout.ListItem.TextBox.Stretch">
+
+                                <TextView
+                                    style="@style/Widget.Shopang.TextView.ListItem.Title"
+                                    android:paddingVertical="@dimen/_4sdp"
+                                    android:paddingHorizontal="@dimen/_8sdp"
+                                    android:text="@string/empty_payment_method"
+                                    android:visibility="gone"
+                                    android:textAppearance="?attr/textAppearanceListItemSecondary" />
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingVertical="@dimen/_4sdp">
+
+                                    <ImageView
+                                        android:id="@+id/card"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_credit_card"
+                                        app:layout_constraintEnd_toStartOf="@id/cardNumber"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"/>
+
+                                    <TextView
+                                        android:id="@+id/cardNumber"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/test_credit_card_number"
+                                        android:textSize="@dimen/_14sdp"
+                                        app:layout_constraintStart_toEndOf="@id/card"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            </LinearLayout>
+
+                            <ImageView
+                                style="@style/Widget.Shopang.ImageView.Icon"
+                                android:layout_marginStart="16dp"
+                                android:src="@drawable/ic_round_chevron_right"
+                                tools:ignore="ContentDescription" />
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/priceContainer"
+                    style="@style/Widget.Shopang.CardView.Outlined"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    app:contentPadding="@dimen/_6sdp"
+                    app:cardBackgroundColor="@color/transparent"
+                    app:layout_constraintTop_toBottomOf="@id/methodContainer"
+                    app:layout_constraintStart_toStartOf="@id/start"
+                    app:layout_constraintEnd_toEndOf="@id/end">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/labelPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_6sdp"
+                            android:text="@string/final_payment_price"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_12sdp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/totalPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:padding="@dimen/_6sdp"
+                            android:text="@{Payment != null ? String.format(@string/price, Payment.totalPrice) : @string/default_price}"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_12sdp"
+                            android:textAlignment="textEnd"
+                            android:ems="8"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <View
+                    android:id="@+id/anchor"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="start"
+                    android:background="?attr/colorTertiary"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toTopOf="@id/payContainer"
+                    app:layout_constraintStart_toStartOf="@id/start"
+                    app:layout_constraintEnd_toEndOf="@id/end"/>
+
+                <FrameLayout
+                    android:id="@+id/payContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_12sdp"
+                    app:layout_constraintTop_toBottomOf="@id/priceContainer"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/start"
+                    app:layout_constraintEnd_toEndOf="@id/end">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/pay"
+                            style="@style/Widget.Shopang.Button.UnelevatedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/action_payment"
+                            android:clickable="@{isProgress ? false : true}"
+                            android:onClick="@{()-> fragment.toPay()}"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <ProgressBar
+                            android:id="@+id/orderProgress"
+                            android:layout_width="@dimen/_24sdp"
+                            android:layout_height="@dimen/_24sdp"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:indeterminateTint="?android:attr/windowBackground"
+                            android:visibility="@{isProgress ? View.VISIBLE : View.GONE}"
+                            app:layout_constraintTop_toTopOf="@id/pay"
+                            app:layout_constraintBottom_toBottomOf="@id/pay"
+                            app:layout_constraintEnd_toEndOf="@id/pay" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </FrameLayout>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="?attr/actionBarSize" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.04"/>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.96"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

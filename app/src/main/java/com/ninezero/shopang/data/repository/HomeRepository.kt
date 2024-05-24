@@ -8,8 +8,12 @@ import com.ninezero.shopang.R
 import com.ninezero.shopang.data.local.WishDao
 import com.ninezero.shopang.data.network.ApiService
 import com.ninezero.shopang.model.Category
+import com.ninezero.shopang.model.Order
+import com.ninezero.shopang.model.OrderEnums
 import com.ninezero.shopang.model.Product
+import com.ninezero.shopang.model.convertDocumentToOrder
 import com.ninezero.shopang.util.CART_COLLECTION
+import com.ninezero.shopang.util.PENDING_ORDERS
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.USER_COLLECTION
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -132,6 +136,52 @@ class HomeRepository @Inject constructor(
                 wishDao.deleteAllWishes()
             }
             ResponseWrapper.Success(Any())
+        } catch (e: Exception) {
+            ResponseWrapper.Error(errorMsg)
+        }
+    }
+
+    suspend fun submitUserOrder(
+        cartList: Array<Product>,
+        userAddress: String,
+        totalPrice: Int
+    ): ResponseWrapper<Order> {
+        return try {
+            val orderCollection = fStore.collection(PENDING_ORDERS)
+            val orderId = orderCollection.document().id
+            val order = Order(
+                orderId,
+                userUid,
+                System.currentTimeMillis(),
+                userAddress,
+                OrderEnums.PLACED,
+                totalPrice,
+                cartList.toList()
+            )
+            orderCollection.document(orderId).set(order.toMap()).await()
+            clearUserCart()
+            ResponseWrapper.Success(order)
+        } catch (e: Exception) {
+            ResponseWrapper.Error(errorMsg)
+        }
+    }
+
+    private suspend fun clearUserCart() {
+        userCart.get().await().let {
+            it.forEach { doc ->
+                userCart.document(doc.id).delete().await()
+            }
+        }
+    }
+
+    suspend fun getUserOrders(): ResponseWrapper<List<Order>> {
+        return try {
+            val result = fStore.collection(PENDING_ORDERS)
+                .whereEqualTo("userUid", userUid)
+                .get()
+                .await()
+            val orders = convertDocumentToOrder(result.documents)
+            ResponseWrapper.Success(orders)
         } catch (e: Exception) {
             ResponseWrapper.Error(errorMsg)
         }

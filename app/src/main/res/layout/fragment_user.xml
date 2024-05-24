@@ -109,10 +109,7 @@
                     style="@style/Widget.Shopang.CardView.Outlined"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
-                    app:contentPaddingTop="12dp"
-                    app:contentPaddingBottom="12dp"
-                    app:contentPaddingLeft="0dp"
-                    app:contentPaddingRight="0dp"
+                    app:contentPadding="12dp"
                     app:strokeWidth="0.6dp"
                     app:cardBackgroundColor="@color/transparent"
                     app:layout_constraintTop_toBottomOf="@id/profileImage"
@@ -125,27 +122,33 @@
                         android:orientation="vertical"
                         android:gravity="center">
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingVertical="32dp"
-                            android:gravity="center">
+                            android:paddingVertical="@dimen/_4sdp">
 
                             <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginEnd="8dp"
-                                android:paddingTop="1dp"
-                                android:src="@drawable/ic_add"
-                                tools:ignore="ContentDescription" />
-
-                            <TextView
+                                android:id="@+id/card"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/action_add_credit_card"
-                                android:textColor="?attr/colorOnSurfaceVariant" />
-                        </LinearLayout>
+                                android:src="@drawable/ic_credit_card"
+                                app:layout_constraintEnd_toStartOf="@id/cardNumber"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <TextView
+                                android:id="@+id/cardNumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/test_credit_card_number"
+                                android:textSize="@dimen/_14sdp"
+                                app:layout_constraintStart_toEndOf="@id/card"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </LinearLayout>
 
@@ -170,7 +173,8 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            style="@style/Widget.Shopang.LinearLayout.ListItem.SingleLine.Clickable">
+                            style="@style/Widget.Shopang.LinearLayout.ListItem.SingleLine.Clickable"
+                            android:onClick="@{()-> fragment.navigateToOrderFragment()}">
 
                             <ImageView
                                 style="@style/Widget.Shopang.ImageView.ListItem.Icon"

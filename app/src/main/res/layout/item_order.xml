@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="order"
+            type="com.ninezero.shopang.model.Order" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_6sdp"
+            app:strokeWidth="0.8dp"
+            app:strokeColor="?attr/colorSurfaceVariant"
+            app:cardCornerRadius="@dimen/_8sdp"
+            app:cardBackgroundColor="@color/transparent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_6sdp">
+
+                <TextView
+                    android:id="@+id/orderPlacedTime"
+                    formatDate="@{order.orderPlacedTime}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_6sdp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:paddingHorizontal="@dimen/_11sdp"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="0000. 00. 00." />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/divider"
+                    style="@style/Widget.Shopang.Divider"
+                    android:alpha="0.38"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

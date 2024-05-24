@@ -1,5 +1,6 @@
 package com.ninezero.shopang.util
 
+import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatDelegate
 
 const val LOADING = "loading"
@@ -12,6 +13,9 @@ const val PHONE = "phone"
 const val GOOGLE = "google"
 const val NAVER = "naver"
 const val WISH_DB = "WishDatabase"
+const val PENDING_ORDERS = "pending_orders"
+const val NORMAL = Typeface.NORMAL
+const val BOLD = Typeface.BOLD
 const val FUNCTIONS_URL = "https://asia-northeast3-shopang-48ecf.cloudfunctions.net/"
 const val API_URL = "https://shopang-api.fly.dev/"
 
