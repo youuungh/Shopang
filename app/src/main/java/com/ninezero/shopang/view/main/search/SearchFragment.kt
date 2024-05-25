@@ -9,6 +9,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.getSystemService
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -18,6 +20,7 @@ import com.ninezero.shopang.model.Product
 import com.ninezero.shopang.util.LOADING
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.closeFragment
+import com.ninezero.shopang.util.extension.doOnApplyWindowInsets
 import com.ninezero.shopang.util.extension.hide
 import com.ninezero.shopang.util.extension.show
 import com.ninezero.shopang.util.extension.showSnack
@@ -36,6 +39,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun initView() = with(binding) {
+        applyInsets()
         fragment = this@SearchFragment
         adapter = searchAdapter
 
@@ -71,6 +75,20 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
                 is ResponseWrapper.Loading -> {}
                 is ResponseWrapper.Idle -> searchAdapter.updateSearchList(emptyList())
             }
+        }
+    }
+
+    private fun applyInsets() = with(binding) {
+        root.doOnApplyWindowInsets { insetView, windowInsets, initialPadding, _ ->
+            insetView.updatePadding(
+                top = initialPadding.top + windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+            )
+        }
+
+        rvSearch.doOnApplyWindowInsets { insetView, windowInsets, initialPadding, _ ->
+            insetView.updatePadding(
+                bottom = initialPadding.bottom + windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+            )
         }
     }
 

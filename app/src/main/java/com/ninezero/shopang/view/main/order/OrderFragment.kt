@@ -1,6 +1,8 @@
 package com.ninezero.shopang.view.main.order
 
 import android.app.Dialog
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ninezero.shopang.R
@@ -9,6 +11,7 @@ import com.ninezero.shopang.model.Order
 import com.ninezero.shopang.util.LOADING
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.closeFragment
+import com.ninezero.shopang.util.extension.doOnApplyWindowInsets
 import com.ninezero.shopang.util.extension.hide
 import com.ninezero.shopang.util.extension.show
 import com.ninezero.shopang.util.extension.showSnack
@@ -32,7 +35,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(
     lateinit var loading: Dialog
 
     override fun initView() = with(binding) {
-        applySystemWindowInsets(root)
+        applyInsets()
         fragment = this@OrderFragment
         adapter = orderAdapter
     }
@@ -65,6 +68,20 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(
                 is ResponseWrapper.Loading -> loading.show()
                 is ResponseWrapper.Idle -> {}
             }
+        }
+    }
+
+    private fun applyInsets() = with(binding) {
+        root.doOnApplyWindowInsets { insetView, windowInsets, initialPadding, _ ->
+            insetView.updatePadding(
+                top = initialPadding.top + windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+            )
+        }
+
+        rvOrders.doOnApplyWindowInsets { insetView, windowInsets, initialPadding, _ ->
+            insetView.updatePadding(
+                bottom = initialPadding.bottom + windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+            )
         }
     }
 

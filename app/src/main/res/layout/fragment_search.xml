@@ -61,7 +61,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvCategoryProduct"
+            android:id="@+id/rvSearch"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:paddingHorizontal="@dimen/_4sdp"
