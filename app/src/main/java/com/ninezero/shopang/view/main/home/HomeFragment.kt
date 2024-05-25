@@ -29,7 +29,8 @@ import javax.inject.Named
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(
     R.layout.fragment_home
-), BannerAdapter.OnBannerClickListener, CategoryAdapter.OnCategoryClickListener, ProductAdapter.OnProductClickListener {
+), BannerAdapter.OnBannerClickListener, CategoryAdapter.OnCategoryClickListener,
+    ProductAdapter.OnProductClickListener {
     private val homeViewModel by activityViewModels<HomeViewModel>()
     private val userInfoViewModel by activityViewModels<UserInfoViewModel>()
     private val homeAdapter by lazy { HomeAdapter(this, this, this) }
@@ -52,7 +53,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         fragment = this@HomeFragment
     }
 
-    override fun initViewModel()  {
+    override fun initViewModel() {
         userInfoViewModel.getUserInfoRealTime()
         homeViewModel.loadData()
         observeListener()
@@ -70,7 +71,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
                 is ResponseWrapper.Error -> {
                     loading.hide()
-                    binding.root.showSnack(it.msg!!, anchor = binding.anchor)
+                    //binding.root.showSnack(it.msg!!, anchor = binding.anchor)
                 }
 
                 is ResponseWrapper.Loading -> loading.show()
@@ -115,7 +116,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     }
 
     private fun initViews() = with(binding) {
-        rvHome.adapter = homeAdapter
+        adapter = homeAdapter
+    }
+
+    fun navigateToSearchFragment() {
+        val action = HomeFragmentDirections.actionHomeFragmentToSearchFragment()
+        findNavController().navigate(action)
     }
 
     override fun onProductClick(product: Product) {
@@ -124,7 +130,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     }
 
     override fun onCategoryClick(category: Category) {
-        showToast("${category.name} 클릭됨")
+        val action = HomeFragmentDirections.actionHomeFragmentToCategoryProductFragment(category)
+        findNavController().navigate(action)
     }
 
     override fun onBannerClick(banner: Banner) {

@@ -75,7 +75,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         arguments: Bundle?
     ) {
         when (destination.id) {
-            R.id.homeFragment, R.id.wishFragment, R.id.cartFragment, R.id.userFragment -> {
+            R.id.homeFragment, R.id.wishFragment, R.id.cartFragment, R.id.userFragment,
+            R.id.paymentFragment -> {
                 setBottomNavVisibility(visible = true)
             }
 

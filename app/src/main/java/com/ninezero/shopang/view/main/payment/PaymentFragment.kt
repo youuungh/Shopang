@@ -2,13 +2,18 @@ package com.ninezero.shopang.view.main.payment
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -23,6 +28,8 @@ import com.ninezero.shopang.util.extension.closeFragment
 import com.ninezero.shopang.util.extension.showSnack
 import com.ninezero.shopang.view.auth.UserInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -59,7 +66,8 @@ class PaymentFragment : BottomSheetDialogFragment() {
         }
     }
 
-    init {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         observeListener()
     }
 
@@ -71,12 +79,14 @@ class PaymentFragment : BottomSheetDialogFragment() {
                     userInfo = it.data
                     isDataIntegrity = userInfo?.userAddress != null
 
-                    val payment = Payment(
-                        userInfo?.userAddress!!,
-                        getString(R.string.payment),
-                        totalPrice = totalPrice
-                    )
-                    binding.payment = payment
+                    if (userInfo != null) {
+                        val payment = Payment(
+                            userInfo?.userAddress,
+                            getString(R.string.payment),
+                            totalPrice = totalPrice
+                        )
+                        binding.payment = payment
+                    }
                 }
 
                 is ResponseWrapper.Error -> {
@@ -92,6 +102,7 @@ class PaymentFragment : BottomSheetDialogFragment() {
                     order = it.data!!
                     loading.hide()
                     navigateToOrderResultFragment()
+                    binding.isProgress = false
                 }
 
                 is ResponseWrapper.Error -> {

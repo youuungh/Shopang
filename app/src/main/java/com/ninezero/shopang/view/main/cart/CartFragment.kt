@@ -40,8 +40,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(
     }
 
     override fun initView() = with(binding) {
-        applySystemWindowInsets(root)
-        applyBottomInsets()
+        applyInsets()
         fragment = this@CartFragment
         adapter = cartAdapter
         cartAdapter.setOnQuantityChangedListener(object : CartAdapter.OnQuantityChangedListener {
@@ -112,8 +111,14 @@ class CartFragment : BaseFragment<FragmentCartBinding>(
         findNavController().navigate(action)
     }
 
-    private fun applyBottomInsets() = with(binding) {
-        getOrderContainer.doOnApplyWindowInsets { insetView, windowInsets, initialPadding, _ ->
+    private fun applyInsets() = with(binding) {
+        root.doOnApplyWindowInsets { insetView, windowInsets, initialPadding, _ ->
+            insetView.updatePadding(
+                top = initialPadding.top + windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+            )
+        }
+
+        rvCart.doOnApplyWindowInsets { insetView, windowInsets, initialPadding, _ ->
             insetView.updatePadding(
                 bottom = initialPadding.bottom + windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
             )

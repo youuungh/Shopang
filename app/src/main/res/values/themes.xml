@@ -16,7 +16,6 @@
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
-
         <!-- SnackBar -->
         <item name="snackbarStyle">@style/Widget.Shopang.Snackbar</item>
         <item name="snackbarTextViewStyle">@style/Widget.Shopang.Snackbar.TextView</item>

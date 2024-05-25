@@ -2,6 +2,7 @@ package com.ninezero.shopang.view.main.wish
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.View
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
@@ -40,8 +41,7 @@ class WishFragment : BaseFragment<FragmentWishBinding>(
     }
 
     override fun initView() = with(binding) {
-        applySystemWindowInsets(root)
-        applyBottomInsets()
+        applyInsets()
         fragment = this@WishFragment
         adapter = wishAdapter
     }
@@ -59,7 +59,7 @@ class WishFragment : BaseFragment<FragmentWishBinding>(
             } else {
                 wishAdapter.setWishList(it, this)
                 binding.emptyContainer.hide()
-                binding.addAllToCartContainer.hide()
+                binding.addAllToCartContainer.show()
                 binding.rvWish.show()
             }
         }
@@ -91,8 +91,14 @@ class WishFragment : BaseFragment<FragmentWishBinding>(
         wishViewModel.addWishesToCart(wishAdapter.getWishList())
     }
 
-    private fun applyBottomInsets() = with(binding) {
-        addAllToCartContainer.doOnApplyWindowInsets { insetView, windowInsets, initialPadding, _ ->
+    private fun applyInsets() = with(binding) {
+        root.doOnApplyWindowInsets { insetView, windowInsets, initialPadding, _ ->
+            insetView.updatePadding(
+                top = initialPadding.top + windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+            )
+        }
+
+        rvWish.doOnApplyWindowInsets { insetView, windowInsets, initialPadding, _ ->
             insetView.updatePadding(
                 bottom = initialPadding.bottom + windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
             )

@@ -5,6 +5,9 @@
 
     <data>
         <variable
+            name="adapter"
+            type="com.ninezero.shopang.view.main.home.HomeAdapter" />
+        <variable
             name="fragment"
             type="com.ninezero.shopang.view.main.home.HomeFragment" />
         <variable
@@ -63,6 +66,7 @@
             android:textAlignment="textStart"
             app:icon="@drawable/ic_search"
             app:iconGravity="end"
+            android:onClick="@{()-> fragment.navigateToSearchFragment()}"
             app:layout_constraintTop_toBottomOf="@id/thumbnail"
             app:layout_constraintStart_toStartOf="@id/header_start"
             app:layout_constraintEnd_toEndOf="@id/header_end" />
@@ -74,6 +78,7 @@
             android:paddingTop="@dimen/_6sdp"
             android:overScrollMode="never"
             android:orientation="vertical"
+            android:adapter="@{adapter}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/search"
             app:layout_constraintBottom_toBottomOf="parent"

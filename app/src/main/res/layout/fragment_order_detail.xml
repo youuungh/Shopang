@@ -4,16 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="com.ninezero.shopang.model.OrderEnums" />
+
         <variable
             name="constants"
             type="com.ninezero.shopang.util.ConstantsKt" />
+
         <variable
             name="adapter"
             type="com.ninezero.shopang.view.main.order.OrderDetailAdapter" />
+
         <variable
             name="order"
             type="com.ninezero.shopang.model.Order" />
+
         <variable
             name="fragment"
             type="com.ninezero.shopang.view.main.order.OrderDetailFragment" />
@@ -85,7 +90,7 @@
                     android:layout_width="@dimen/_14sdp"
                     android:layout_height="@dimen/_14sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@{order.orderStatus != OrderEnums.CONFIRMED ? @drawable/ic_check : @drawable/ic_default_check}"
+                    android:background="@drawable/ic_default_check"
                     app:layout_constraintStart_toEndOf="@id/line1"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:background="@drawable/ic_default_check" />
@@ -94,7 +99,7 @@
                     android:id="@+id/line2"
                     android:layout_width="@dimen/_67sdp"
                     android:layout_height="@dimen/_2sdp"
-                    android:background="@{order.orderStatus != OrderEnums.CONFIRMED ? @color/fill_line : @color/default_line}"
+                    android:background="@color/default_line"
                     app:layout_constraintBottom_toBottomOf="@id/confirmedImage"
                     app:layout_constraintStart_toEndOf="@+id/confirmedImage"
                     app:layout_constraintTop_toTopOf="@id/confirmedImage" />
@@ -104,7 +109,7 @@
                     android:layout_width="@dimen/_14sdp"
                     android:layout_height="@dimen/_14sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@{order.orderStatus != OrderEnums.SHIPPED ? @drawable/ic_check : @drawable/ic_default_check}"
+                    android:background="@drawable/ic_default_check"
                     app:layout_constraintStart_toEndOf="@id/line2"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -112,7 +117,7 @@
                     android:id="@+id/line3"
                     android:layout_width="@dimen/_67sdp"
                     android:layout_height="@dimen/_2sdp"
-                    android:background="@{order.orderStatus != OrderEnums.SHIPPED ? @color/fill_line : @color/default_line}"
+                    android:background="@color/default_line"
                     app:layout_constraintBottom_toBottomOf="@id/shippedImage"
                     app:layout_constraintStart_toEndOf="@+id/shippedImage"
                     app:layout_constraintTop_toTopOf="@id/shippedImage" />
@@ -122,7 +127,7 @@
                     android:layout_width="@dimen/_14sdp"
                     android:layout_height="@dimen/_14sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@{order.orderStatus != OrderEnums.DELIVERED ? @drawable/ic_check : @drawable/ic_default_check}"
+                    android:background="@drawable/ic_default_check"
                     app:layout_constraintStart_toEndOf="@id/line3"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -130,8 +135,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:text="@string/placed"
-                    android:textStyle="@{order.orderStatus != OrderEnums.PLACED ? constants.BOLD : constants.NORMAL}"
+                    android:text="@string/order_status_placed"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@id/placedImage"
                     app:layout_constraintStart_toStartOf="@id/placedImage"
                     app:layout_constraintTop_toBottomOf="@id/placedImage" />
@@ -140,8 +145,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:text="@string/confirmed"
-                    android:textStyle="@{order.orderStatus != OrderEnums.CONFIRMED ? constants.BOLD : constants.NORMAL}"
+                    android:text="@string/order_status_confirmed"
                     app:layout_constraintEnd_toEndOf="@id/confirmedImage"
                     app:layout_constraintStart_toStartOf="@id/confirmedImage"
                     app:layout_constraintTop_toBottomOf="@id/confirmedImage" />
@@ -150,8 +154,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:text="@string/shipped"
-                    android:textStyle="@{order.orderStatus != OrderEnums.SHIPPED ? constants.BOLD : constants.NORMAL}"
+                    android:text="@string/order_status_shipped"
                     app:layout_constraintEnd_toEndOf="@id/shippedImage"
                     app:layout_constraintStart_toStartOf="@id/shippedImage"
                     app:layout_constraintTop_toBottomOf="@id/shippedImage" />
@@ -160,8 +163,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:text="@string/delivered"
-                    android:textStyle="@{order.orderStatus != OrderEnums.DELIVERED ? constants.BOLD : constants.NORMAL}"
+                    android:text="@string/order_status_delivered"
                     app:layout_constraintEnd_toEndOf="@id/deliveredImage"
                     app:layout_constraintStart_toStartOf="@id/deliveredImage"
                     app:layout_constraintTop_toBottomOf="@id/deliveredImage" />
@@ -190,10 +192,10 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:paddingHorizontal="@dimen/_11sdp"
-                android:text="@{@string/order_number(order.orderId)}"
+                android:text="@{@string/order_id(order.orderId)}"
                 android:textSize="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@id/shipContainer"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/shipContainer"
                 tools:text="주문번호: 0" />
 
             <TextView

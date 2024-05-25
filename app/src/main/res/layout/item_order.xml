@@ -4,9 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.ninezero.shopang.model.OrderEnums" />
+        <variable
+            name="statusText"
+            type="String" />
         <variable
             name="order"
             type="com.ninezero.shopang.model.Order" />
+        <variable
+            name="onOrderClick"
+            type="com.ninezero.shopang.view.main.order.OrderAdapter.OnOrderClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,41 +23,119 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_6sdp"
-            app:strokeWidth="0.8dp"
-            app:strokeColor="?attr/colorSurfaceVariant"
-            app:cardCornerRadius="@dimen/_8sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_3sdp"
+            android:onClick="@{()-> onOrderClick.onOrderClick(order)}"
             app:cardBackgroundColor="@color/transparent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:cardCornerRadius="@dimen/_8sdp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="?attr/colorSurfaceVariant"
+            app:strokeWidth="0.8dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/_6sdp">
+                android:paddingBottom="@dimen/_8sdp">
 
                 <TextView
-                    android:id="@+id/orderPlacedTime"
+                    android:id="@+id/placedTime"
                     formatDate="@{order.orderPlacedTime}"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_12sdp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:paddingHorizontal="@dimen/_11sdp"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="0000. 00. 00." />
+
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/_6sdp"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:paddingHorizontal="@dimen/_11sdp"
+                    android:text="@{statusText}"
                     android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="0000. 00. 00." />
+                    app:layout_constraintBottom_toTopOf="@id/divider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="상품준비중" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:id="@+id/divider"
                     style="@style/Widget.Shopang.Divider"
                     android:alpha="0.38"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/placedTime" />
+
+                <TextView
+                    android:id="@+id/labelProducts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_11sdp"
+                    android:layout_marginVertical="@dimen/_8sdp"
+                    android:background="@drawable/bg_label"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:padding="@dimen/_1sdp"
+                    android:text="@string/order_product"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider" />
+
+                <TextView
+                    android:id="@+id/products"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_11sdp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/_2sdp"
+                    android:text="@{@string/order_products(order.totalPrice, order.cartList.size())}"
+                    app:layout_constraintBottom_toBottomOf="@id/labelProducts"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/labelProducts"
+                    app:layout_constraintTop_toTopOf="@id/labelProducts"
+                    tools:text="0,000원 · 0 개" />
+
+                <TextView
+                    android:id="@+id/labelAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_11sdp"
+                    android:layout_marginVertical="@dimen/_8sdp"
+                    android:background="@drawable/bg_label"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:padding="@dimen/_2sdp"
+                    android:text="@string/address"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/labelProducts" />
+
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_11sdp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{order.orderAddress}"
+                    app:layout_constraintBottom_toBottomOf="@id/labelAddress"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/labelAddress"
+                    app:layout_constraintTop_toTopOf="@id/labelAddress"
+                    tools:text="addressaddressaddressaddressaddressaddress" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

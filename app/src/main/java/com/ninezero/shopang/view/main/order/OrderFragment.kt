@@ -1,11 +1,6 @@
 package com.ninezero.shopang.view.main.order
 
 import android.app.Dialog
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ninezero.shopang.R
@@ -14,6 +9,8 @@ import com.ninezero.shopang.model.Order
 import com.ninezero.shopang.util.LOADING
 import com.ninezero.shopang.util.ResponseWrapper
 import com.ninezero.shopang.util.extension.closeFragment
+import com.ninezero.shopang.util.extension.hide
+import com.ninezero.shopang.util.extension.show
 import com.ninezero.shopang.util.extension.showSnack
 import com.ninezero.shopang.view.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,6 +32,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(
     lateinit var loading: Dialog
 
     override fun initView() = with(binding) {
+        applySystemWindowInsets(root)
         fragment = this@OrderFragment
         adapter = orderAdapter
     }
@@ -47,6 +45,15 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(
         orderViewModel.ordersLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseWrapper.Success -> {
+                    if (it.data.isNullOrEmpty()) {
+                        binding.emptyContainer.show()
+                        binding.rvOrders.hide()
+                    } else {
+                        val sortedOrders = it.data.sortedByDescending { order -> order.orderPlacedTime }
+                        orderAdapter.setOrderList(sortedOrders, this)
+                        binding.emptyContainer.hide()
+                        binding.rvOrders.show()
+                    }
                     loading.hide()
                 }
 
@@ -63,7 +70,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(
 
     fun onBackPressed() = closeFragment()
 
-    override fun onOrderClicked(order: Order) {
+    override fun onOrderClick(order: Order) {
         navigateToOrderDetailFragment(order)
     }
 

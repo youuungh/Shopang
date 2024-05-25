@@ -5,20 +5,20 @@
 
     <data>
         <variable
+            name="category"
+            type="com.ninezero.shopang.model.Category" />
+        <variable
             name="adapter"
-            type="com.ninezero.shopang.view.main.order.OrderAdapter" />
+            type="com.ninezero.shopang.view.main.adapter.CategoryProductAdapter" />
         <variable
             name="fragment"
-            type="com.ninezero.shopang.view.main.order.OrderFragment" />
-        <variable
-            name="onOrderClick"
-            type="com.ninezero.shopang.view.main.order.OrderAdapter.OnOrderClickListener" />
+            type="com.ninezero.shopang.view.main.product.CategoryProductFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.main.order.OrderFragment">
+        tools:context=".view.main.product.CategoryProductFragment">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/back"
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@string/action_order_list"
+            android:text="@{category.title}"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/back"
@@ -42,48 +42,21 @@
             app:layout_constraintTop_toTopOf="@id/back" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvOrders"
+            android:id="@+id/rvCategoryProduct"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:paddingTop="@dimen/_6sdp"
+            android:paddingHorizontal="@dimen/_4sdp"
+            android:paddingBottom="@dimen/_8sdp"
             android:clipToPadding="false"
             android:overScrollMode="never"
-            android:orientation="vertical"
             android:adapter="@{adapter}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:spanCount="2"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/header"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:listitem="@layout/item_order" />
-
-        <LinearLayout
-            android:id="@+id/emptyContainer"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:paddingBottom="?attr/actionBarSize"
-            android:gravity="center"
-            android:visibility="gone"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/header"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <ImageView
-                android:id="@+id/emptyWish"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_250sdp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_empty_wish_list" />
-
-            <TextView
-                android:id="@+id/emptyText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/empty_order_list" />
-
-        </LinearLayout>
+            tools:listitem="@layout/item_category_product" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/header"

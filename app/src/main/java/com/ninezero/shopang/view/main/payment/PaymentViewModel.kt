@@ -27,7 +27,6 @@ class PaymentViewModel @Inject constructor(
             _orderProductsLiveData.postValue(
                 homeRepository.submitUserOrder(cartList, userAddress, totalPrice)
             )
-            _orderProductsLiveData.postValue(ResponseWrapper.Idle())
         }
     }
 }

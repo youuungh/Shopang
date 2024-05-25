@@ -20,13 +20,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".view.main.payment.PaymentFragment">
-        
+
+        <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:overScrollMode="never">
-            
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -55,9 +59,8 @@
                     android:id="@+id/addressContainer"
                     style="@style/Widget.Shopang.CardView.Text"
                     android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_12sdp"
                     app:contentPadding="@dimen/_6sdp"
-                    app:cardBackgroundColor="@color/custom_background"
+                    app:cardBackgroundColor="?attr/colorSurfaceDim"
                     app:layout_constraintTop_toBottomOf="@id/header"
                     app:layout_constraintStart_toStartOf="@id/start"
                     app:layout_constraintEnd_toEndOf="@id/end">
@@ -94,7 +97,7 @@
                                     android:paddingHorizontal="@dimen/_8sdp"
                                     android:maxLines="1"
                                     android:ellipsize="end"
-                                    android:text="@{Payment != null ? Payment.userAddress : `주소가 없습니다`}"
+                                    android:text="@{Payment.userAddress != null ? Payment.userAddress : `주소가 없습니다`}"
                                     android:textAppearance="?attr/textAppearanceListItemSecondary" />
 
                             </LinearLayout>
@@ -117,7 +120,7 @@
                     android:layout_marginHorizontal="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_12sdp"
                     app:contentPadding="@dimen/_6sdp"
-                    app:cardBackgroundColor="@color/custom_background"
+                    app:cardBackgroundColor="?attr/colorSurfaceDim"
                     app:layout_constraintTop_toBottomOf="@id/addressContainer"
                     app:layout_constraintStart_toStartOf="@id/start"
                     app:layout_constraintEnd_toEndOf="@id/end">
@@ -282,7 +285,7 @@
                             android:layout_width="@dimen/_24sdp"
                             android:layout_height="@dimen/_24sdp"
                             android:layout_marginEnd="@dimen/_8sdp"
-                            android:indeterminateTint="?android:attr/windowBackground"
+                            android:indeterminateTint="@color/white"
                             android:visibility="@{isProgress ? View.VISIBLE : View.GONE}"
                             app:layout_constraintTop_toTopOf="@id/pay"
                             app:layout_constraintBottom_toBottomOf="@id/pay"
@@ -314,7 +317,7 @@
                     app:layout_constraintGuide_percent="0.96"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-            
+
         </androidx.core.widget.NestedScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

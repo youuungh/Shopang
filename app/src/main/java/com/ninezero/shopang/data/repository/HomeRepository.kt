@@ -74,6 +74,16 @@ class HomeRepository @Inject constructor(
         }
     }
 
+    suspend fun searchProducts(query: String): ResponseWrapper<List<Product>> {
+        return try {
+            val products = apiService.getProducts()
+            val searchResult = products.filter { it.name.contains(query, ignoreCase = true) }
+            ResponseWrapper.Success(searchResult)
+        } catch (e: Exception) {
+            ResponseWrapper.Error(errorMsg)
+        }
+    }
+
     private suspend fun getProductFromWish(id: String): Boolean {
         return wishDao.getWishProductById(id) != null
     }

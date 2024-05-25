@@ -1,10 +1,6 @@
 package com.ninezero.shopang.view.main.order
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.navigation.fragment.navArgs
@@ -25,7 +21,7 @@ class OrderDetailFragment : BaseFragment<FragmentOrderDetailBinding>(
     private val orderDetailAdapter by lazy { OrderDetailAdapter(orderProduct.cartList) }
 
     override fun initView() = with(binding) {
-        applyWindowInsets()
+        applyInsets()
         fragment = this@OrderDetailFragment
         order = orderProduct
         adapter = orderDetailAdapter
@@ -33,10 +29,10 @@ class OrderDetailFragment : BaseFragment<FragmentOrderDetailBinding>(
 
     fun onBackPressed() = closeFragment()
 
-    private fun applyWindowInsets() = with(binding) {
-        layout.doOnApplyWindowInsets { insetView, windowInsets, initialPadding, _ ->
+    private fun applyInsets() = with(binding) {
+        root.doOnApplyWindowInsets { insetView, windowInsets, initialPadding, _ ->
             insetView.updatePadding(
-                bottom = initialPadding.bottom + windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+                top = initialPadding.top + windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).top
             )
         }
 

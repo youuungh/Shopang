@@ -32,7 +32,10 @@
             android:id="@+id/rvCart"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:paddingTop="@dimen/_8sdp"
+            android:paddingTop="@dimen/_6sdp"
+            android:paddingBottom="@dimen/_14sdp"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
             android:orientation="vertical"
             android:visibility="invisible"
             android:adapter="@{adapter}"
@@ -62,7 +65,6 @@
             android:paddingTop="@dimen/_2sdp"
             android:paddingBottom="@dimen/_4sdp"
             android:background="@color/white"
-            android:orientation="vertical"
             android:elevation="@dimen/_8sdp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -142,7 +144,7 @@
                 android:id="@+id/emptyText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/empty_cart" />
+                android:text="@string/empty_cart_list" />
 
         </LinearLayout>
 

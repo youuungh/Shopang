@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ninezero.shopang.BR
 import com.ninezero.shopang.R
 import com.ninezero.shopang.model.Order
+import com.ninezero.shopang.model.OrderEnums
 import javax.inject.Inject
 
 class OrderAdapter @Inject constructor(
@@ -36,12 +37,21 @@ class OrderAdapter @Inject constructor(
         )
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
-        holder.bind(orderList[position])
+        val order = orderList[position]
+        holder.bind(order)
+
+        val statusText = when (order.orderStatus) {
+            OrderEnums.PLACED -> holder.itemView.context.getString(R.string.order_status_placed)
+            OrderEnums.CONFIRMED -> holder.itemView.context.getString(R.string.order_status_confirmed)
+            OrderEnums.SHIPPED -> holder.itemView.context.getString(R.string.order_status_shipped)
+            OrderEnums.DELIVERED -> holder.itemView.context.getString(R.string.order_status_delivered)
+        }
+        holder.binding.setVariable(BR.statusText, statusText)
     }
 
     override fun getItemCount(): Int = orderList.size
 
-    inner class OrderViewHolder(private val binding: ViewDataBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class OrderViewHolder(val binding: ViewDataBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(order: Order) = with(binding) {
             setVariable(BR.order, order)
             setVariable(BR.onOrderClick, orderClickListener)
@@ -49,6 +59,6 @@ class OrderAdapter @Inject constructor(
     }
 
     interface OnOrderClickListener {
-        fun onOrderClicked(order: Order)
+        fun onOrderClick(order: Order)
     }
 }

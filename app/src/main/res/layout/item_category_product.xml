@@ -9,7 +9,7 @@
             type="com.ninezero.shopang.model.Product" />
         <variable
             name="onProductClick"
-            type="com.ninezero.shopang.view.main.adapter.ProductAdapter.OnProductClickListener" />
+            type="com.ninezero.shopang.view.main.adapter.CategoryProductAdapter.OnProductClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

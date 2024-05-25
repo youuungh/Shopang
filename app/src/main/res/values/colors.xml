@@ -21,8 +21,8 @@
     <color name="custom_stroke">#efefef</color>
     <color name="custom_off">#eeeeee</color>
 
-    <color name="default_line">?attr/colorSurface</color>
-    <color name="fill_line">?attr/colorPrimary</color>
+    <color name="default_line">#7c7c7c</color>
+    <color name="fill_line">#39608f</color>
 
     <color name="green_neutral_99">#FDFDF6</color>
 
