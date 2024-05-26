@@ -3,7 +3,7 @@
 # Shopang
 Shopang은 Firebase Firestore를 통해 실시간으로 동기화되는 온라인 데이터베이스를 사용하여 제품 정보와 사용자 데이터를 효과적으로 관리합니다. </br>
 사용자 인증과 계정 관리는 Firebase Authentication을 통해 안전하고 간편하게 처리되며 소셜 로그인도 제공합니다. </br>
-백엔드 API는 Node.js로 개발되었으며, MongoDB와 연동하여 확장성과 유연성을 갖춘 서버 환경을 구축했습니다. </br>
+백엔드 API는 Node.js로 개발되었으며, MongoDB와 연동하여 확장성과 유연성을 갖춘 서버 환경을 구축했습니다. </br> 
 이 앱의 주요 목적은 사용자가 간편하고 빠르게 식품을 구매할 수 있도록 하는 것이며, 직관적인 사용자 인터페이스로 몇 번의 클릭만으로 원하는 상품을 주문할 수 있습니다. 
 
 ## Downloads
@@ -34,6 +34,7 @@ Shopang은 Firebase Firestore를 통해 실시간으로 동기화되는 온라�
   <li><a href="https://github.com/intuit/sdp" target="_blank">SDP</li>
   <li><a href="https://firebase.google.com/" target="_blank">Firebase</li>
   <li><a href="https://developers.naver.com/docs/login/api/api.md" target="_blank">Naver Login SDK</li>
+  <li><a href="https://postcode.map.daum.net/guide" target="_blank">KaKao PostCode Service</li>
 </ul>
 
 ## Screenshots
