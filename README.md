@@ -10,6 +10,12 @@ Shopang은 Firebase Firestore를 통해 실시간으로 동기화되는 온라�
 
 <a href='https://github.com/youuungh/Shopang/releases'><img alt='Get it on GitHub' height="80" src='https://github.com/youuungh/Shopang/assets/97438155/d19cce65-aaa3-4d0d-a7ec-d0d26479e9f2'/></a>
 
+## Demo Video
+
+<a href="https://streamable.com/nja5us">
+  <img src="https://github.com/youuungh/Shopang/assets/97438155/5335d814-0e90-4d9d-9531-89ea74215c4b" height="600px"/>
+</a>
+
 ## Built With
 <ul>
   <li><a href="https://developer.android.com/topic/architecture?hl=ko" target="_blank">MVVM Design Pattern</a></li>
