@@ -32,6 +32,7 @@ retrofit2KotlinCoroutinesAdapter = "0.9.2"
 roomKtx = "2.6.1"
 googleServices = "4.4.1"
 sdpAndroid = "1.1.1"
+playServicesOssLicenses = "17.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -75,6 +76,7 @@ google-services = { group = "com.google.gms", name = "google-services", version.
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 retrofit2-kotlin-coroutines-adapter = { module = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter", version.ref = "retrofit2KotlinCoroutinesAdapter" }
 sdp-android = { module = "com.intuit.sdp:sdp-android", version.ref = "sdpAndroid" }
+play-services-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "playServicesOssLicenses" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

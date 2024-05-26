@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="naver">#03C75A</color>
     <color name="google">#2684f9</color>
+    <color name="error">#ffb3261e</color>
     <color name="transparent">@android:color/transparent</color>
 
     <color name="box_outline_focused">#353E43</color>

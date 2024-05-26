@@ -47,7 +47,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
             text?.toString()?.let(searchViewModel::searchProducts)
         }
 
-        root.setOnTouchListener { v, event ->
+        rvSearch.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 hideKeyBoard(v)
             }

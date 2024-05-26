@@ -1,6 +1,5 @@
 package com.ninezero.shopang.view.main.order
 
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.navigation.fragment.navArgs

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="adapter"
+            type="com.ninezero.shopang.view.main.adapter.AllProductAdapter" />
+        <variable
+            name="fragment"
+            type="com.ninezero.shopang.view.main.product.AllProductFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.main.product.AllProductFragment">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/back"
+            style="@style/Widget.Shopang.Button.IconButton"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:onClick="@{()-> fragment.onBackPressed()}"
+            app:icon="@drawable/ic_arrow_back"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/header"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/best_seller"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/back"
+            app:layout_constraintStart_toEndOf="@id/back"
+            app:layout_constraintTop_toTopOf="@id/back" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAllProduct"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingHorizontal="@dimen/_4sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:adapter="@{adapter}"
+            app:spanCount="2"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:listitem="@layout/item_category_product" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="?attr/actionBarSize" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.06"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.94"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

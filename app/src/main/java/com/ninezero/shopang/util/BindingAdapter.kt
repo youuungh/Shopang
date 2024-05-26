@@ -1,6 +1,7 @@
 package com.ninezero.shopang.util
 
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.GridLayoutManager
@@ -74,6 +75,11 @@ fun RecyclerView.setProductAdapter(
         layoutManager = GridLayoutManager(context, 2)
         adapter = ProductAdapter(it, listener)
     }
+}
+
+@BindingAdapter("onAllProductClick")
+fun LinearLayout.setOnAllProductClickListener(listener: ProductAdapter.OnAllProductClickListener) {
+    setOnClickListener { listener.onAllProductClick() }
 }
 
 @BindingAdapter("quantityText", "isPlus")

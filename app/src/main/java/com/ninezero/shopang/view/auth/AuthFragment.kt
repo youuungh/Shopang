@@ -184,6 +184,11 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
                 root.showSnack(getString(R.string.chk_valid_phone_number))
             }
 
+            authViewModel.isNetworkConnected.value != true -> {
+                root.showSnack(getString(R.string.chk_internet_connection))
+                return@with
+            }
+
             else -> {
                 if (authViewModel.isTimerRunning.value) {
                     showAlertDialog()
@@ -293,7 +298,9 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
                                 if (task.isSuccessful) {
                                     if (prefsUtil.naverSignedIn) {
                                         userInfoViewModel.getUserInfo()
-                                        userInfoViewModel.userInfoLiveData.observe(viewLifecycleOwner) { response ->
+                                        userInfoViewModel.userInfoLiveData.observe(
+                                            viewLifecycleOwner
+                                        ) { response ->
                                             if (response is ResponseWrapper.Success) {
                                                 userInfo = response.data
                                                 userInfo?.let {
@@ -301,7 +308,11 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>(
                                                         NAVER,
                                                         userName = it.userName,
                                                         userAddress = it.userAddress,
-                                                        profileImageUri = it.profileImageUrl?.let { uri -> Uri.parse(uri) },
+                                                        profileImageUri = it.profileImageUrl?.let { uri ->
+                                                            Uri.parse(
+                                                                uri
+                                                            )
+                                                        },
                                                         isUpload = false,
                                                         isUpdate = true,
                                                     )

@@ -2,12 +2,15 @@ package com.ninezero.shopang.util.extension
 
 import android.animation.ValueAnimator
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.core.animation.doOnEnd
+import androidx.core.net.toUri
 import androidx.core.view.drawToBitmap
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -88,4 +91,11 @@ fun NavigationBarView.hide() {
         }
         start()
     }
+}
+
+fun Context.openUrl(url: String) {
+    val i = Intent(Intent.ACTION_VIEW)
+    i.data = url.toUri()
+    i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    startActivity(i)
 }

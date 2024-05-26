@@ -1,12 +1,9 @@
 package com.ninezero.shopang.view.main.home
 
 import android.app.Dialog
-import android.util.Log
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.FragmentHomeBinding
 import com.ninezero.shopang.model.Banner
@@ -30,16 +27,17 @@ import javax.inject.Named
 class HomeFragment : BaseFragment<FragmentHomeBinding>(
     R.layout.fragment_home
 ), BannerAdapter.OnBannerClickListener, CategoryAdapter.OnCategoryClickListener,
-    ProductAdapter.OnProductClickListener {
+    ProductAdapter.OnProductClickListener, ProductAdapter.OnAllProductClickListener {
     private val homeViewModel by activityViewModels<HomeViewModel>()
     private val userInfoViewModel by activityViewModels<UserInfoViewModel>()
-    private val homeAdapter by lazy { HomeAdapter(this, this, this) }
+    private val homeAdapter by lazy { HomeAdapter(this, this, this, this) }
 
     @Inject
     @Named(LOADING)
     lateinit var loading: Dialog
 
     private var userInfo: UserInfo? = null
+    private var allProductList: List<Product>? = null
 
     private val bannerList = mutableListOf(
         Banner("banner1", "https://i.imgur.com/VjUePxW.png"),
@@ -81,6 +79,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         homeViewModel.productsLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseWrapper.Success -> {
+                    allProductList = it.data
                     val randomProducts = it.data?.asSequence()?.shuffled()?.take(10)?.toList()
                     homeAdapter.addProductList(randomProducts)
                     loading.hide()
@@ -119,6 +118,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         adapter = homeAdapter
     }
 
+    fun navigateToUserFragment() {
+        val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_bar)
+        bottomNavigationView?.selectedItemId = R.id.userFragment
+    }
+
     fun navigateToSearchFragment() {
         val action = HomeFragmentDirections.actionHomeFragmentToSearchFragment()
         findNavController().navigate(action)
@@ -127,6 +131,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     override fun onProductClick(product: Product) {
         val action = HomeFragmentDirections.actionHomeFragmentToProductDetailFragment(product)
         findNavController().navigate(action)
+    }
+
+    override fun onAllProductClick() {
+        allProductList?.let {
+            val action = HomeFragmentDirections.actionHomeFragmentToAllProductFragment(it.toTypedArray())
+            findNavController().navigate(action)
+        }
     }
 
     override fun onCategoryClick(category: Category) {

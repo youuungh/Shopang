@@ -18,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:defaultNavHost="true"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/bottom_bar" />
+            app:layout_constraintBottom_toTopOf="@id/bottom_bar"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_bar"
@@ -29,13 +29,32 @@
             android:animateLayoutChanges="true"
             android:background="?android:attr/windowBackground"
             app:itemBackground="?android:attr/windowBackground"
-            app:labelVisibilityMode="labeled"
             app:itemHorizontalTranslationEnabled="false"
+            app:itemTextAppearanceActive="@style/BottomNavigation.Shopang.Active.Text"
             app:itemTextAppearanceActiveBoldEnabled="false"
             app:itemTextAppearanceInactive="@style/BottomNavigation.Shopang.InActive.Text"
-            app:itemTextAppearanceActive="@style/BottomNavigation.Shopang.Active.Text"
+            app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/nav_menu" />
+
+        <LinearLayout
+            android:id="@+id/lostContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorError"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/bottom_bar">
+
+            <TextView
+                style="@style/Widget.Shopang.TextView.OfflineIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/offline" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

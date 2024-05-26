@@ -1,23 +1,19 @@
 package com.ninezero.shopang.view
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
-import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.color.DynamicColors
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.ninezero.shopang.R
 import com.ninezero.shopang.databinding.ActivityMainBinding
+import com.ninezero.shopang.util.NetworkStatusViewModel
 import com.ninezero.shopang.util.PrefsUtil
 import com.ninezero.shopang.util.ThemeUtil
 import com.ninezero.shopang.util.extension.hide
@@ -31,6 +27,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var networkStatusViewModel: NetworkStatusViewModel
     private val authViewModel by viewModels<AuthViewModel>()
 
     @Inject
@@ -44,11 +41,22 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         ThemeUtil.setTheme(this, prefsUtil.getSharedPrefs())
-
-        setupNavigationController()
+        setNetworkStatusObserver()
+        setNavigationController()
     }
 
-    private fun setupNavigationController() {
+    private fun setNetworkStatusObserver() {
+        networkStatusViewModel = NetworkStatusViewModel(applicationContext)
+        networkStatusViewModel.observe(this) { isConnected ->
+            if (isConnected) {
+                binding.lostContainer.hide()
+            } else {
+                binding.lostContainer.show()
+            }
+        }
+    }
+
+    private fun setNavigationController() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
         val navController = navHostFragment.findNavController()

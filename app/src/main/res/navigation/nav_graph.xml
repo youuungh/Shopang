@@ -44,6 +44,12 @@
         <action
             android:id="@+id/action_homeFragment_to_categoryProductFragment"
             app:destination="@id/categoryProductFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_userFragment"
+            app:destination="@id/userFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_allProductFragment"
+            app:destination="@id/allProductFragment" />
     </fragment>
     <fragment
         android:id="@+id/wishFragment"
@@ -82,6 +88,9 @@
         <action
             android:id="@+id/action_userFragment_to_orderFragment"
             app:destination="@id/orderFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -198,4 +207,21 @@
             android:id="@+id/action_categoryProductFragment_to_productDetailFragment"
             app:destination="@id/productDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/allProductFragment"
+        android:name="com.ninezero.shopang.view.main.product.AllProductFragment"
+        android:label="AllProductFragment"
+        tools:layout="@layout/fragment_all_product" >
+        <argument
+            android:name="productList"
+            app:argType="com.ninezero.shopang.model.Product[]" />
+        <action
+            android:id="@+id/action_allProductFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.ninezero.shopang.view.main.about.AboutFragment"
+        android:label="AboutFragment"
+        tools:layout="@layout/fragment_about" />
 </navigation>

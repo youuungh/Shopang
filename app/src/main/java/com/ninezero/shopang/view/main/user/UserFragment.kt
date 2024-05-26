@@ -98,6 +98,11 @@ class UserFragment : BaseFragment<FragmentUserBinding>(
         findNavController().navigate(action)
     }
 
+    fun navigateToAboutFragment() {
+        val action = UserFragmentDirections.actionUserFragmentToAboutFragment()
+        findNavController().navigate(action)
+    }
+
     private fun navigateToAuthFragment() {
         val action = UserFragmentDirections.actionUserFragmentToAuthFragment()
         findNavController().navigate(action)

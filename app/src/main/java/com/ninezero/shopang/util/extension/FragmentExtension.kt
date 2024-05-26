@@ -28,3 +28,7 @@ fun applyWindowInsets(binding: ViewBinding) {
         windowInsets
     }
 }
+
+fun Fragment.openUrl(url: String) {
+    requireContext().openUrl(url)
+}

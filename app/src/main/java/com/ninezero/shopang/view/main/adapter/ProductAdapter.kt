@@ -14,6 +14,7 @@ class ProductAdapter(
     private val productList: List<Product>,
     private val onProductClick: OnProductClickListener
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder =
         ProductViewHolder(
             DataBindingUtil.inflate(
@@ -41,5 +42,9 @@ class ProductAdapter(
 
     interface OnProductClickListener {
         fun onProductClick(product: Product)
+    }
+
+    interface OnAllProductClickListener {
+        fun onAllProductClick()
     }
 }

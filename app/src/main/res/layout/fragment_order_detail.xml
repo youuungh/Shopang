@@ -4,21 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="com.ninezero.shopang.model.OrderEnums" />
-
-        <variable
-            name="constants"
-            type="com.ninezero.shopang.util.ConstantsKt" />
-
         <variable
             name="adapter"
             type="com.ninezero.shopang.view.main.order.OrderDetailAdapter" />
-
         <variable
             name="order"
             type="com.ninezero.shopang.model.Order" />
-
         <variable
             name="fragment"
             type="com.ninezero.shopang.view.main.order.OrderDetailFragment" />

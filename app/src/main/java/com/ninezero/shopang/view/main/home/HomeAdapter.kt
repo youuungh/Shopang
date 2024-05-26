@@ -20,7 +20,8 @@ import com.smarteist.autoimageslider.SliderView
 class HomeAdapter(
     private val onBannerClick: BannerAdapter.OnBannerClickListener,
     private val onCategoryClick: CategoryAdapter.OnCategoryClickListener,
-    private val onProductClick: ProductAdapter.OnProductClickListener
+    private val onProductClick: ProductAdapter.OnProductClickListener,
+    private val onAllProductClick: ProductAdapter.OnAllProductClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val bannerList: MutableList<Banner> = mutableListOf()
@@ -136,6 +137,7 @@ class HomeAdapter(
         fun bind() = with(binding) {
             setVariable(BR.productList, productList)
             setVariable(BR.onProductClick, this@HomeAdapter.onProductClick)
+            setVariable(BR.onAllProductClick, this@HomeAdapter.onAllProductClick)
             executePendingBindings()
         }
     }

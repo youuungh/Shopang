@@ -20,7 +20,7 @@
     <string name="order_and_shipping_detail">주문 및 배송 상세</string>
     <string name="input_detail_address">동/호수 입력</string>
     <string name="phone_number">휴대폰 번호</string>
-    <string name="bestseller">베스트셀러</string>
+    <string name="best_seller">베스트셀러</string>
     <string name="nutrition_facts">영양정보</string>
     <string name="total">합계</string>
     <string name="final_payment_price">최종 결제 금액</string>
@@ -117,4 +117,12 @@
     <string name="phone_auth_failed_dialog_msg">반복적으로 코드를 잘못 입력했습니다\n처음으로 돌아가 다시 시도해 주세요</string>
     <string name="cart_delete_dialog_msg">상품을 삭제하시겠습니까?</string>
     <string name="user_dialog_msg">로그아웃 하시겠습니까?</string>
+    <string name="offline">인터넷 연결: 오프라인</string>
+    <string name="online">인터넷 연결: 온라인</string>
+    <string name="dev">Ninezero</string>
+    <string name="dev_info">개발자 정보</string>
+    <string name="dev_id">(youuungh)</string>
+    <string name="open_source">오픈소스 라이선스</string>
+    <string name="open_source_detail">오픈소스 라이선스 상세정보</string>
+    <string name="extra">기타</string>
 </resources>

@@ -9,16 +9,16 @@ import com.ninezero.shopang.BR
 import com.ninezero.shopang.R
 import com.ninezero.shopang.model.Product
 
-class CategoryProductAdapter(
+class AllProductAdapter(
     private val productList: List<Product>,
     private val onProductClick: OnProductClickListener
-) : RecyclerView.Adapter<CategoryProductAdapter.CategoryProductViewHolder>() {
+): RecyclerView.Adapter<AllProductAdapter.AllProductViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryProductViewHolder =
-        CategoryProductViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllProductViewHolder =
+        AllProductViewHolder(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.item_category_product,
+                R.layout.item_all_product,
                 parent,
                 false
             )
@@ -26,12 +26,11 @@ class CategoryProductAdapter(
 
     override fun getItemCount(): Int = productList.size
 
-    override fun onBindViewHolder(holder: CategoryProductViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AllProductViewHolder, position: Int) {
         holder.bind(productList[position])
     }
 
-    inner class CategoryProductViewHolder(private val binding: ViewDataBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class AllProductViewHolder(private val binding: ViewDataBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(product: Product) = with(binding) {
             setVariable(BR.product, product)
             setVariable(BR.onProductClick, onProductClick)

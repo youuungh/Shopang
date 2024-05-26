@@ -1,10 +1,12 @@
 package com.ninezero.shopang.view.auth
 
+import android.app.Application
 import android.net.Uri
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -20,6 +22,7 @@ import com.ninezero.shopang.util.COUNT_DOWN_DURATION_MILLIS
 import com.ninezero.shopang.util.COUNT_DOWN_INTERVAL
 import com.ninezero.shopang.util.GOOGLE
 import com.ninezero.shopang.util.NAVER
+import com.ninezero.shopang.util.NetworkStatusViewModel
 import com.ninezero.shopang.util.PHONE
 import com.ninezero.shopang.util.PrefsUtil
 import com.ninezero.shopang.util.ResponseWrapper
@@ -35,6 +38,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
+    private val application: Application,
     private val prefsUtil: PrefsUtil,
     private val authRepository: AuthRepository
 ) : ViewModel() {
@@ -57,6 +61,9 @@ class AuthViewModel @Inject constructor(
     val googleAuthLiveData
         get() = _googleAuthLiveData
 
+    private val _isNetworkConnected = MutableLiveData<Boolean>()
+    val isNetworkConnected: LiveData<Boolean> = _isNetworkConnected
+
     private val _isTimerRunning = MutableStateFlow(false)
     val isTimerRunning: StateFlow<Boolean>
         get() = _isTimerRunning
@@ -64,6 +71,13 @@ class AuthViewModel @Inject constructor(
     private val _timerSharedFlow = MutableSharedFlow<Long>()
     val timerSharedFlow: SharedFlow<Long>
         get() = _timerSharedFlow.asSharedFlow()
+
+    init {
+        val networkConnectionLiveData = NetworkStatusViewModel(application)
+        networkConnectionLiveData.observe(ProcessLifecycleOwner.get()) { isConnected ->
+            _isNetworkConnected.value = isConnected
+        }
+    }
 
     fun isUserLoggedIn(): Boolean = authRepository.isUserLoggedIn()
 

@@ -27,7 +27,6 @@ class CartAdapter @Inject constructor() : RecyclerView.Adapter<CartAdapter.CartV
         onQuantityChangedListener = listener
     }
 
-
     fun setCartList(list: List<Product>, listener: CartListener) {
         cartListener = listener
         cartList.clear()

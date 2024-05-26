@@ -301,6 +301,11 @@
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
+    <style name="Widget.Shopang.TextView.OfflineIndicator" parent="Widget.Shopang.TextView.Medium">
+        <item name="android:textAppearance">@style/TextAppearance.Shopang.LabelLarge</item>
+        <item name="android:textColor">?attr/colorOnError</item>
+    </style>
+
     <!-- MD3 Typography -->
 
     <style name="Widget.Shopang.TextView.HeadlineSmall" parent="Widget.Shopang.TextView">

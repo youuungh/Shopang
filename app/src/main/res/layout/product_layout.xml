@@ -10,17 +10,22 @@
         <variable
             name="onProductClick"
             type="com.ninezero.shopang.view.main.adapter.ProductAdapter.OnProductClickListener" />
+        <variable
+            name="onAllProductClick"
+            type="com.ninezero.shopang.view.main.adapter.ProductAdapter.OnAllProductClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_6sdp">
 
         <LinearLayout
             android:id="@+id/label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            onAllProductClick="@{onAllProductClick}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -29,9 +34,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:paddingVertical="@dimen/_6sdp"
                 android:paddingHorizontal="@dimen/_8sdp"
-                android:text="@string/bestseller"
+                android:paddingVertical="@dimen/_6sdp"
+                android:text="@string/best_seller"
                 android:textSize="@dimen/_16sdp"
                 android:textStyle="bold" />
 
