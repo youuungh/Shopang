@@ -17,9 +17,9 @@ class WishViewModel @Inject constructor(
     private val homeRepository: HomeRepository
 ): ViewModel() {
 
-    private lateinit var _wishProductsLiveData: LiveData<List<Product>>
-    val wishProductsLiveData
-        get() = _wishProductsLiveData
+    private var _wishProductsLiveData: LiveData<List<Product>>? = null
+    val wishProductsLiveData: LiveData<List<Product>>
+        get() = _wishProductsLiveData ?: MutableLiveData()
 
     private val _cartProductsLiveData = MutableLiveData<ResponseWrapper<Any>>()
     val cartProductsLiveData: LiveData<ResponseWrapper<Any>> = _cartProductsLiveData
