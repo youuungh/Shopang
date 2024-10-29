@@ -12,7 +12,7 @@ Shopang은 Firebase Firestore를 통해 실시간으로 동기화되는 온라�
 
 ## Demo Video
 
-<a href="https://streamable.com/nja5us">
+<a href="https://streamable.com/9ahvxw">
   <img src="https://github.com/youuungh/Shopang/assets/97438155/5335d814-0e90-4d9d-9531-89ea74215c4b" height="600px"/>
 </a>
 
